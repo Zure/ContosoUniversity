@@ -34,32 +34,23 @@ Before starting the main lab, set up two MCP servers that will help you access u
 
 Model Context Protocol (MCP) servers provide AI assistants with real-time access to external data sources and tools. For this lab, we'll use:
 
-1. **Microsoft Docs MCP Server**: Access to Microsoft Learn documentation for .NET, ASP.NET Core, etc.
-2. **Context7 MCP Server**: Access to library documentation for React, shadcn/ui, Tailwind CSS, etc.
+1. **[Microsoft Docs MCP Server](https://github.com/MicrosoftDocs/mcp)**: Access to Microsoft Learn documentation for .NET, ASP.NET Core, etc.
+2. **[Context7 MCP Server](https://github.com/upstash/context7)**: Access to library documentation for React, shadcn/ui, Tailwind CSS, etc.
 
 ### Installing Microsoft Docs MCP Server
 
 #### For VS Code
 
-1. Install the MCP extension for VS Code (if not already installed):
-
-   - Open VS Code
-   - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
-   - Type "Extensions: Install Extensions"
-   - Search for "Model Context Protocol" and install
-
-2. Add the Microsoft Docs MCP server to your VS Code settings:
-   - Open VS Code settings JSON: `Cmd+Shift+P` → "Preferences: Open User Settings (JSON)"
+1. Add the Microsoft Docs MCP server to your VS Code settings:
+   - Open VS Code settings JSON: `Cmd+Shift+P` → "MCP: Open User Configuration" (you can also search the extension store with @mcp)
    - Add to the `mcpServers` configuration:
 
 ```json
 {
-  "mcp": {
-    "servers": {
-      "microsoft-docs": {
-        "command": "npx",
-        "args": ["-y", "@microsoft/docs-mcp-server"]
-      }
+  "servers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
     }
   }
 }
@@ -71,16 +62,14 @@ Model Context Protocol (MCP) servers provide AI assistants with real-time access
 
 ```json
 {
-  "mcp": {
-    "servers": {
-      "microsoft-docs": {
-        "command": "npx",
-        "args": ["-y", "@microsoft/docs-mcp-server"]
-      },
-      "context7": {
-        "command": "npx",
-        "args": ["-y", "@context7/mcp-server"]
-      }
+  "servers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
     }
   }
 }
