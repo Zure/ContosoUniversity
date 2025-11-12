@@ -5,6 +5,8 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { useNotification } from '../../context/NotificationContext';
 import { getCourseById, deleteCourse } from '../../services/api/courseService';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import type { Course } from '../../types/course';
 
 const CourseDetailsPage: React.FC = () => {
@@ -69,73 +71,71 @@ const CourseDetailsPage: React.FC = () => {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Course Details</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Course Details</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             View course information and manage enrollments
           </p>
         </div>
         <div className="flex space-x-3">
-          <Link
-            to={`/courses/edit/${course.courseId}`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Edit
-          </Link>
-          <button
+          <Button asChild>
+            <Link to={`/courses/edit/${course.courseId}`}>
+              Edit
+            </Link>
+          </Button>
+          <Button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            variant="destructive"
           >
             Delete
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">{course.title}</h2>
-          <p className="mt-1 text-sm text-gray-600">Course #{course.courseNumber}</p>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{course.title}</CardTitle>
+          <p className="mt-1 text-sm text-muted-foreground">Course #{course.courseNumber}</p>
+        </CardHeader>
 
-        <div className="px-6 py-5 space-y-4">
+        <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <dt className="text-sm font-medium text-gray-500">Course Number</dt>
-              <dd className="mt-1 text-sm text-gray-900">{course.courseNumber}</dd>
+              <dt className="text-sm font-medium text-muted-foreground">Course Number</dt>
+              <dd className="mt-1 text-sm text-foreground">{course.courseNumber}</dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">Credits</dt>
-              <dd className="mt-1 text-sm text-gray-900">{course.credits}</dd>
+              <dt className="text-sm font-medium text-muted-foreground">Credits</dt>
+              <dd className="mt-1 text-sm text-foreground">{course.credits}</dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">Department</dt>
-              <dd className="mt-1 text-sm text-gray-900">{course.departmentName}</dd>
+              <dt className="text-sm font-medium text-muted-foreground">Department</dt>
+              <dd className="mt-1 text-sm text-foreground">{course.departmentName}</dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">Enrollments</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-muted-foreground">Enrollments</dt>
+              <dd className="mt-1 text-sm text-foreground">
                 {course.enrollmentCount} student{course.enrollmentCount !== 1 ? 's' : ''}
               </dd>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-200">
-            <dt className="text-sm font-medium text-gray-500 mb-2">Title</dt>
-            <dd className="text-sm text-gray-900">{course.title}</dd>
+          <div className="pt-4 border-t border-border">
+            <dt className="text-sm font-medium text-muted-foreground mb-2">Title</dt>
+            <dd className="text-sm text-foreground">{course.title}</dd>
           </div>
-        </div>
+        </CardContent>
 
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <Link
-            to="/courses"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
-          >
-            ← Back to Courses
-          </Link>
-        </div>
-      </div>
+        <CardFooter className="bg-muted">
+          <Button asChild variant="link" className="px-0">
+            <Link to="/courses">
+              ← Back to Courses
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

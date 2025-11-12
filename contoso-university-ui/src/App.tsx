@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NotificationProvider } from './context/NotificationContext';
-import NavigationBar from './components/common/NavigationBar';
+import { AppLayout } from './components/layout/AppLayout';
 import NotificationDisplay from './components/common/NotificationDisplay';
 import StudentList from './pages/students/StudentList';
 import CreateStudent from './pages/students/CreateStudent';
@@ -24,6 +24,7 @@ import CreateInstructorPage from './pages/instructors/CreateInstructor';
 import EditInstructorPage from './pages/instructors/EditInstructor';
 import InstructorDetails from './pages/instructors/InstructorDetails';
 import StatisticsPage from './pages/StatisticsPage';
+import DesignSystemTest from './pages/DesignSystemTest';
 
 // T163: Home page with navigation
 const HomePage: React.FC = () => (
@@ -156,36 +157,34 @@ const App: React.FC = () => {
   return (
     <NotificationProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-gray-50">
-          <NavigationBar />
+        <AppLayout>
           <NotificationDisplay />
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/students" element={<StudentList />} />
-              <Route path="/students/create" element={<CreateStudent />} />
-              <Route path="/students/edit/:id" element={<EditStudent />} />
-              <Route path="/students/:id" element={<StudentDetails />} />
-              <Route path="/courses" element={<CourseList />} />
-              <Route path="/courses/create" element={<CreateCourse />} />
-              <Route path="/courses/edit/:id" element={<EditCourse />} />
-              <Route path="/courses/:id" element={<CourseDetails />} />
-              <Route path="/enrollments" element={<EnrollmentList />} />
-              <Route path="/enrollments/create" element={<CreateEnrollment />} />
-              <Route path="/enrollments/edit/:id" element={<EditEnrollment />} />
-              <Route path="/departments" element={<DepartmentList />} />
-              <Route path="/departments/create" element={<CreateDepartment />} />
-              <Route path="/departments/edit/:id" element={<EditDepartment />} />
-              <Route path="/departments/:id" element={<DepartmentDetails />} />
-              <Route path="/instructors" element={<InstructorList />} />
-              <Route path="/instructors/create" element={<CreateInstructorPage />} />
-              <Route path="/instructors/edit/:id" element={<EditInstructorPage />} />
-              <Route path="/instructors/:id" element={<InstructorDetails />} />
-              <Route path="/statistics" element={<StatisticsPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-        </div>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/students" element={<StudentList />} />
+            <Route path="/students/create" element={<CreateStudent />} />
+            <Route path="/students/edit/:id" element={<EditStudent />} />
+            <Route path="/students/:id" element={<StudentDetails />} />
+            <Route path="/courses" element={<CourseList />} />
+            <Route path="/courses/create" element={<CreateCourse />} />
+            <Route path="/courses/edit/:id" element={<EditCourse />} />
+            <Route path="/courses/:id" element={<CourseDetails />} />
+            <Route path="/enrollments" element={<EnrollmentList />} />
+            <Route path="/enrollments/create" element={<CreateEnrollment />} />
+            <Route path="/enrollments/edit/:id" element={<EditEnrollment />} />
+            <Route path="/departments" element={<DepartmentList />} />
+            <Route path="/departments/create" element={<CreateDepartment />} />
+            <Route path="/departments/edit/:id" element={<EditDepartment />} />
+            <Route path="/departments/:id" element={<DepartmentDetails />} />
+            <Route path="/instructors" element={<InstructorList />} />
+            <Route path="/instructors/create" element={<CreateInstructorPage />} />
+            <Route path="/instructors/edit/:id" element={<EditInstructorPage />} />
+            <Route path="/instructors/:id" element={<InstructorDetails />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/design-system-test" element={<DesignSystemTest />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AppLayout>
       </BrowserRouter>
     </NotificationProvider>
   );

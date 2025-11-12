@@ -1,5 +1,8 @@
-// T021: Pagination component
+// T069: Pagination component with Button components and design system
 import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface PaginationProps {
   currentPage: number;
@@ -65,43 +68,32 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <nav
-      className={`flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 ${className}`}
+      className={cn(
+        'flex items-center justify-between border-t border-border px-4 sm:px-0',
+        className
+      )}
       aria-label="Pagination"
     >
       <div className="flex w-0 flex-1">
-        <button
+        <Button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!hasPrevious}
-          className={`inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium ${
-            hasPrevious
-              ? 'text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              : 'text-gray-300 cursor-not-allowed'
-          }`}
+          variant="ghost"
+          size="sm"
+          className="border-t-2 border-transparent pr-1 pt-4"
           aria-label="Previous page"
         >
-          <svg
-            className="mr-3 h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <ChevronLeft className="mr-2 h-4 w-4" />
           Previous
-        </button>
+        </Button>
       </div>
-      <div className="hidden md:flex">
+      <div className="hidden md:flex gap-1">
         {getPageNumbers().map((page, index) => {
           if (page === '...') {
             return (
               <span
                 key={`ellipsis-${index}`}
-                className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500"
+                className="inline-flex items-center px-4 pt-4 text-sm font-medium text-muted-foreground"
               >
                 ...
               </span>
@@ -112,47 +104,34 @@ const Pagination: React.FC<PaginationProps> = ({
           const isCurrent = pageNum === currentPage;
 
           return (
-            <button
+            <Button
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
-              className={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium ${
-                isCurrent
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              }`}
+              variant={isCurrent ? 'default' : 'ghost'}
+              size="sm"
+              className={cn(
+                'border-t-2 pt-4',
+                isCurrent ? 'border-primary' : 'border-transparent'
+              )}
               aria-current={isCurrent ? 'page' : undefined}
             >
               {pageNum}
-            </button>
+            </Button>
           );
         })}
       </div>
       <div className="flex w-0 flex-1 justify-end">
-        <button
+        <Button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={!hasNext}
-          className={`inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium ${
-            hasNext
-              ? 'text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              : 'text-gray-300 cursor-not-allowed'
-          }`}
+          variant="ghost"
+          size="sm"
+          className="border-t-2 border-transparent pl-1 pt-4"
           aria-label="Next page"
         >
           Next
-          <svg
-            className="ml-3 h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+          <ChevronRight className="ml-2 h-4 w-4" />
+        </Button>
       </div>
     </nav>
   );

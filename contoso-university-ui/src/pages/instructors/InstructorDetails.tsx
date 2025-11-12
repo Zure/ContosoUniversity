@@ -5,6 +5,8 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { useNotification } from '../../context/NotificationContext';
 import { getInstructorById, deleteInstructor } from '../../services/api/instructorService';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import type { Instructor } from '../../types/instructor';
 
 const InstructorDetails: React.FC = () => {
@@ -75,102 +77,99 @@ const InstructorDetails: React.FC = () => {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Instructor Details</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Instructor Details</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             View instructor information and course assignments
           </p>
         </div>
         <div className="flex space-x-3">
-          <Link
-            to={`/instructors/edit/${instructor.id}`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Edit
-          </Link>
-          <button
+          <Button asChild>
+            <Link to={`/instructors/edit/${instructor.id}`}>
+              Edit
+            </Link>
+          </Button>
+          <Button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            variant="destructive"
           >
             Delete
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">{instructor.fullName}</h2>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{instructor.fullName}</CardTitle>
+        </CardHeader>
 
-        <div className="px-6 py-5 space-y-4">
+        <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <dt className="text-sm font-medium text-gray-500">Last Name</dt>
-              <dd className="mt-1 text-sm text-gray-900">{instructor.lastName}</dd>
+              <dt className="text-sm font-medium text-muted-foreground">Last Name</dt>
+              <dd className="mt-1 text-sm text-foreground">{instructor.lastName}</dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">First Name</dt>
-              <dd className="mt-1 text-sm text-gray-900">{instructor.firstMidName}</dd>
+              <dt className="text-sm font-medium text-muted-foreground">First Name</dt>
+              <dd className="mt-1 text-sm text-foreground">{instructor.firstMidName}</dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">Hire Date</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-muted-foreground">Hire Date</dt>
+              <dd className="mt-1 text-sm text-foreground">
                 {formatDate(instructor.hireDate)}
               </dd>
             </div>
 
             <div>
-              <dt className="text-sm font-medium text-gray-500">Office Location</dt>
-              <dd className="mt-1 text-sm text-gray-900">
+              <dt className="text-sm font-medium text-muted-foreground">Office Location</dt>
+              <dd className="mt-1 text-sm text-foreground">
                 {instructor.officeLocation || (
-                  <span className="text-gray-400">Not assigned</span>
+                  <span className="text-muted-foreground">Not assigned</span>
                 )}
               </dd>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-200">
-            <dt className="text-sm font-medium text-gray-500 mb-3">Course Assignments</dt>
+          <div className="pt-4 border-t border-border">
+            <dt className="text-sm font-medium text-muted-foreground mb-3">Course Assignments</dt>
             {instructor.courseAssignments.length === 0 ? (
-              <dd className="text-sm text-gray-400">No courses assigned</dd>
+              <dd className="text-sm text-muted-foreground">No courses assigned</dd>
             ) : (
               <dd className="space-y-2">
                 {instructor.courseAssignments.map((course) => (
                   <div
                     key={course.courseId}
-                    className="flex items-start justify-between p-3 bg-gray-50 rounded-md"
+                    className="flex items-start justify-between p-3 bg-muted rounded-md"
                   >
                     <div>
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-foreground">
                         {course.courseNumber} - {course.courseTitle}
                       </div>
-                      <div className="text-sm text-gray-500 mt-1">
+                      <div className="text-sm text-muted-foreground mt-1">
                         Department: {course.departmentName}
                       </div>
                     </div>
-                    <Link
-                      to={`/courses/${course.courseId}`}
-                      className="text-sm text-blue-600 hover:text-blue-800"
-                    >
-                      View →
-                    </Link>
+                    <Button asChild variant="link" size="sm">
+                      <Link to={`/courses/${course.courseId}`}>
+                        View →
+                      </Link>
+                    </Button>
                   </div>
                 ))}
               </dd>
             )}
           </div>
-        </div>
+        </CardContent>
 
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <Link
-            to="/instructors"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
-          >
-            ← Back to Instructors
-          </Link>
-        </div>
-      </div>
+        <CardFooter className="bg-muted">
+          <Button asChild variant="link" className="px-0">
+            <Link to="/instructors">
+              ← Back to Instructors
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
