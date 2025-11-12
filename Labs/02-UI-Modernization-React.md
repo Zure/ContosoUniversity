@@ -34,32 +34,23 @@ Before starting the main lab, set up two MCP servers that will help you access u
 
 Model Context Protocol (MCP) servers provide AI assistants with real-time access to external data sources and tools. For this lab, we'll use:
 
-1. **Microsoft Docs MCP Server**: Access to Microsoft Learn documentation for .NET, ASP.NET Core, etc.
-2. **Context7 MCP Server**: Access to library documentation for React, shadcn/ui, Tailwind CSS, etc.
+1. **[Microsoft Docs MCP Server](https://github.com/MicrosoftDocs/mcp)**: Access to Microsoft Learn documentation for .NET, ASP.NET Core, etc.
+2. **[Context7 MCP Server](https://github.com/upstash/context7)**: Access to library documentation for React, shadcn/ui, Tailwind CSS, etc.
 
 ### Installing Microsoft Docs MCP Server
 
 #### For VS Code
 
-1. Install the MCP extension for VS Code (if not already installed):
-
-   - Open VS Code
-   - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
-   - Type "Extensions: Install Extensions"
-   - Search for "Model Context Protocol" and install
-
-2. Add the Microsoft Docs MCP server to your VS Code settings:
-   - Open VS Code settings JSON: `Cmd+Shift+P` → "Preferences: Open User Settings (JSON)"
+1. Add the Microsoft Docs MCP server to your VS Code settings:
+   - Open VS Code settings JSON: `Cmd+Shift+P` → "MCP: Open User Configuration" (you can also search the extension store with @mcp)
    - Add to the `mcpServers` configuration:
 
 ```json
 {
-  "mcp": {
-    "servers": {
-      "microsoft-docs": {
-        "command": "npx",
-        "args": ["-y", "@microsoft/docs-mcp-server"]
-      }
+  "servers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
     }
   }
 }
@@ -71,35 +62,14 @@ Model Context Protocol (MCP) servers provide AI assistants with real-time access
 
 ```json
 {
-  "mcp": {
-    "servers": {
-      "microsoft-docs": {
-        "command": "npx",
-        "args": ["-y", "@microsoft/docs-mcp-server"]
-      },
-      "context7": {
-        "command": "npx",
-        "args": ["-y", "@context7/mcp-server"]
-      }
-    }
-  }
-}
-```
-
-### Alternative: Claude Desktop Configuration
-
-If you're using Claude Desktop instead of VS Code, configure MCP servers in `~/Library/Application Support/Claude/claude_desktop_config.json` (Mac) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
-
-```json
-{
-  "mcpServers": {
-    "microsoft-docs": {
-      "command": "npx",
-      "args": ["-y", "@microsoft/docs-mcp-server"]
+  "servers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
     },
     "context7": {
-      "command": "npx",
-      "args": ["-y", "@context7/mcp-server"]
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
     }
   }
 }
@@ -107,7 +77,7 @@ If you're using Claude Desktop instead of VS Code, configure MCP servers in `~/L
 
 ### Verify Installation
 
-1. Restart VS Code or Claude Desktop
+1. Restart VS Code
 2. You should see the MCP servers appear in the tools menu or sidebar
 3. Test by asking: "What MCP servers are available?"
 
