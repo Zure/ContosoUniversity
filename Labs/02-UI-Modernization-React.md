@@ -102,10 +102,12 @@ Use the context7 MCP server to retrieve documentation for React (latest version)
 Now use the `/speckit.specify` command to create your specification:
 
 ````bash
-/speckit.specify Migrate the Contoso University UI from Razor Pages to a React SPA with a REST API backend. Focus on separating frontend and backend concerns, maintaining all existing CRUD functionality, and enabling future mobile app development.
+/speckit.specify Migrate the Contoso University UI from Razor Pages to a React SPA with a REST API backend. The UI should be built with React, TypeScript, Tailwind CSS, and shadcn/ui components for a modern, professional, and visually appealing design. Focus on separating frontend and backend concerns, maintaining all existing CRUD functionality, and enabling future mobile app development.
+
+The UI must look professional and polished using shadcn/ui default components as the foundation for all interactive elements (buttons, inputs, forms, tables, cards, dialogs, etc.). The design should be cohesive with proper spacing, typography, and color scheme.
 
 Use the Microsoft Docs MCP server to reference current ASP.NET Core Web API best practices.
-Use the Context7 MCP server to reference current React and TypeScript patterns.
+Use the Context7 MCP server to reference current React, TypeScript, Tailwind CSS, and shadcn/ui patterns.
 
 ```markdown
 ````
@@ -129,10 +131,10 @@ You can refine the spec if needed, or ask Copilot to enhance it:
 
 ### Step 3: Update the Constitution
 
-Update your project constitution to include guidance about API design:
+Update your project constitution to include guidance about API design and testing:
 
 ```bash
-/speckit.constitution Update the constitution to include REST API design principles, React best practices, and guidelines for frontend-backend separation.
+/speckit.constitution Update the constitution to include REST API design principles, React best practices, guidelines for frontend-backend separation, UI design standards using shadcn/ui and Tailwind CSS, and a requirement that all changes must be tested by running at minimum a build of the application (dotnet build for backend, npm run build for frontend) before considering any task complete.
 ```
 
 ---
@@ -144,23 +146,9 @@ Update your project constitution to include guidance about API design:
 Use Spec-Kit to generate a detailed implementation plan:
 
 ```bash
-/speckit.plan Create a comprehensive plan for implementing the React UI migration, including backend API development, frontend React app setup, data transfer objects, routing strategy, and testing approach.
-```
+/speckit.plan Create a comprehensive plan for implementing the React UI migration, including backend API development, frontend React app setup with Tailwind CSS and shadcn/ui, data transfer objects, routing strategy, professional UI design implementation, and testing approach.
 
-Review the generated `specs/002-**/plan.md`. It should break down the work into phases:
-
-- Phase 1: Backend API endpoints
-- Phase 2: React application setup
-- Phase 3: Component implementation
-- Phase 4: Integration and testing
-
-### Step 2: Research Best Practices
-
-Use both MCP servers to gather comprehensive information:
-
-```bash
-# Get Microsoft's latest guidance on ASP.NET Core APIs
-/speckit.clarify Use the microsoft-docs MCP server to research:
+Use the microsoft-docs MCP server to research:
 - Latest ASP.NET Core REST API best practices
 - DTO patterns and AutoMapper configuration
 - CORS setup for SPA applications
@@ -168,14 +156,31 @@ Use both MCP servers to gather comprehensive information:
 - API versioning strategies
 - Error handling and validation patterns
 
-# Get React ecosystem best practices
-/speckit.clarify Use the context7 MCP server to research:
+Use the context7 MCP server to research:
 - Current React TypeScript project setup
+- Tailwind CSS v3+ installation and configuration
+- shadcn/ui installation, setup, and component usage
+- shadcn/ui component catalog (Button, Input, Card, Table, Select, Form, Dialog)
 - React Query (TanStack Query) for data fetching
 - React Router v6 patterns
-- Component composition patterns
+- Component composition patterns with shadcn/ui
 - State management recommendations
-- Form handling with React Hook Form
+- Form handling with React Hook Form and shadcn/ui Form components
+```
+
+Review the generated `specs/002-**/plan.md`. It should break down the work into phases:
+
+- Phase 1: Backend API endpoints
+- Phase 2: React application setup with Tailwind CSS and shadcn/ui
+- Phase 3: Component implementation with professional UI design
+- Phase 4: Integration and testing
+
+### Step 2: Clarify Open Questions
+
+If you feel like there is still need to clarify anything in the implementation plan, use the clarify command to make decisions
+
+```bash
+/speckit.clarify
 ```
 
 Spec-Kit will gather this information and potentially generate `specs/002-**/research.md` with findings from both MCP servers.
@@ -221,8 +226,8 @@ Copilot will work through your tasks systematically, creating:
 - REST API controllers for all entities
 - DTOs and mapping configurations
 - CORS and Swagger setup
-- React application structure
-- Components for each entity
+- React application structure with Tailwind CSS and shadcn/ui
+- Professional, visually appealing components for each entity using shadcn/ui defaults
 - API service layers
 - Routing configuration
 
@@ -237,7 +242,7 @@ Focus on the Students entity first as a complete example, then apply the same pa
 Or:
 
 ```
-For the React components, use functional components with hooks, and implement proper loading and error states for all API calls.
+For the React components, use functional components with hooks, and implement proper loading and error states for all API calls. All UI components must use shadcn/ui defaults for a professional, cohesive look. Pay attention to spacing, typography, and visual hierarchy.
 ```
 
 ### Step 3: Validate as You Go
@@ -248,6 +253,9 @@ After each major component is implemented, test it:
 
 ```bash
 cd ContosoUniversity
+# First verify it builds successfully
+dotnet build
+# Then run the application
 dotnet run
 # Navigate to https://localhost:7054/swagger
 # Test each endpoint
@@ -257,76 +265,16 @@ dotnet run
 
 ```bash
 cd contoso-university-ui
+# First verify it builds successfully
+npm run build
+# Then run in development mode
 npm start
 # Test the UI in browser at http://localhost:3000
 ```
 
 ---
 
-## Part 5: Add Tailwind CSS and shadcn/ui
-
-### Step 1: Specify the Design System Setup
-
-Now that your React app is functional, add a modern design system using the latest library information:
-
-```bash
-# First, get the latest shadcn/ui and Tailwind CSS information
-Use the context7 MCP server to retrieve:
-- Latest shadcn/ui installation and configuration guide
-- Tailwind CSS v3+ setup for React applications
-- shadcn/ui component catalog and usage patterns
-- Best practices for theming and customization
-
-# Then create your specification
-/speckit.specify Set up Tailwind CSS and shadcn/ui in the React application. Configure a professional design system with cohesive color palette, typography scale, and reusable component patterns. Install essential shadcn/ui components (Button, Input, Card, Table, Select, Form) and create a base layout with navigation. Use the latest installation methods and configuration patterns from the context7 MCP server.
-```
-
-### Step 2: Plan and Implement
-
-```bash
-# Get comprehensive setup guidance
-Use the context7 MCP server to get detailed information about:
-- shadcn/ui CLI installation and initialization
-- Tailwind configuration for shadcn/ui
-- Component installation commands
-- Theme customization best practices
-
-# Create your plan
-/speckit.plan Create a setup plan for Tailwind CSS and shadcn/ui including:
-- Installation steps using the latest CLI tools
-- Configuration for Vite/Create React App
-- Theme customization with design tokens
-- Component installation (Button, Input, Card, Table, Select, Form, Dialog)
-- Update the Students page as a reference implementation
-
-Use guidance from the context7 MCP server for all setup steps.
-
-/speckit.tasks
-/speckit.implement
-```
-
-Copilot will:
-
-- Install and configure Tailwind CSS with the latest version
-- Initialize shadcn/ui using the official CLI
-- Set up design tokens (colors, fonts, spacing) following shadcn/ui conventions
-- Install base components using the shadcn CLI
-- Update the Students page to use the new components
-- Ensure TypeScript types are properly configured
-
-### Step 3: Verify Design System
-
-Test the updated Students page:
-
-- [ ] Tailwind classes apply correctly
-- [ ] shadcn/ui components render properly
-- [ ] Color scheme looks professional
-- [ ] Responsive layout works on mobile
-- [ ] Components are accessible (keyboard navigation works)
-
----
-
-## Part 6: Testing and Validation
+## Part 5: Testing and Validation
 
 ### Step 1: Test Against Success Criteria
 
@@ -337,7 +285,11 @@ Review your spec's success criteria and verify each one:
 - [ ] Pagination works in React UI
 - [ ] Related data loading works (e.g., courses with departments)
 - [ ] Error handling displays properly
+- [ ] UI looks professional using shadcn/ui components
+- [ ] Tailwind CSS styling is cohesive and polished
 - [ ] Application maintainable and testable
+- [ ] Backend builds successfully (`dotnet build`)
+- [ ] Frontend builds successfully (`npm run build`)
 
 ### Step 2: Integration Testing
 
@@ -376,7 +328,7 @@ Update the main README.md to include instructions for running both the API and R
 
 ---
 
-## Part 7: Commit and Create Pull Request
+## Part 6: Commit and Create Pull Request
 
 ### Step 1: Review Changes
 
@@ -397,7 +349,8 @@ git commit -m "Implement React UI with REST API backend
 - Implemented DTOs and AutoMapper configuration
 - Configured Swagger for API documentation
 - Added CORS support for React frontend
-- Built React SPA with TypeScript
+- Built React SPA with TypeScript, Tailwind CSS, and shadcn/ui
+- Implemented professional UI design using shadcn/ui default components
 - Implemented all CRUD operations in React
 - Added React Query for efficient data fetching
 - Configured routing with React Router
