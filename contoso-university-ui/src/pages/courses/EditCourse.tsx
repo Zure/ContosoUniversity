@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CourseForm from '../../components/features/CourseForm';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
+import { Card, CardContent } from '@/components/ui/card';
 import { useNotification } from '../../context/NotificationContext';
 import { getCourseById, updateCourse } from '../../services/api/courseService';
 import type { Course, UpdateCourse } from '../../types/course';
@@ -78,13 +79,14 @@ const EditCoursePage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Course</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-foreground">Edit Course</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Update the course information below. All fields marked with * are required.
         </p>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
+      <Card>
+        <CardContent className="pt-6">
         <CourseForm
           initialData={{
             courseNumber: course.courseNumber,
@@ -98,7 +100,8 @@ const EditCoursePage: React.FC = () => {
           isEdit={true}
           isSubmitting={isSubmitting}
         />
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

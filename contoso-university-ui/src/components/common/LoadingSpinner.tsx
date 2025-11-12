@@ -1,4 +1,4 @@
-// T020: Loading spinner component
+// T067: Loading spinner component with design system colors
 import React from 'react';
 
 interface LoadingSpinnerProps {
@@ -21,19 +21,19 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   const spinner = (
     <div className="flex flex-col items-center justify-center gap-3">
       <div
-        className={`${sizeClasses[size]} border-blue-500 border-t-transparent rounded-full animate-spin`}
+        className={`${sizeClasses[size]} border-primary border-t-transparent rounded-full animate-spin`}
         role="status"
         aria-label="Loading"
       />
       {message && (
-        <p className="text-gray-600 text-sm font-medium">{message}</p>
+        <p className="text-muted-foreground text-sm font-medium">{message}</p>
       )}
     </div>
   );
 
   if (fullPage) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+      <div className="fixed inset-0 flex items-center justify-center bg-background/90 z-50">
         {spinner}
       </div>
     );

@@ -6,6 +6,7 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { useNotification } from '../../context/NotificationContext';
 import { getDepartmentById, updateDepartment } from '../../services/api/departmentService';
+import { Card, CardContent } from '@/components/ui/card';
 import type { Department, UpdateDepartment } from '../../types/course';
 
 const EditDepartmentPage: React.FC = () => {
@@ -78,13 +79,14 @@ const EditDepartmentPage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Department</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-foreground">Edit Department</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Update the department information below. All fields marked with * are required.
         </p>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
+      <Card>
+        <CardContent className="pt-6">
         <DepartmentForm
           initialData={department}
           onSubmit={handleSubmit}
@@ -92,7 +94,8 @@ const EditDepartmentPage: React.FC = () => {
           isEdit={true}
           isSubmitting={isSubmitting}
         />
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
