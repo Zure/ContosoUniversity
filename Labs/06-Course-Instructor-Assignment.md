@@ -46,6 +46,7 @@ Create `specs/006-course-instructor-assignment/spec.md`:
 
 Currently, the database has a many-to-many relationship between Instructors and Courses
 through CourseAssignment, but there's no UI to manage these assignments. We need to:
+
 - View which instructors teach which courses
 - Assign instructors to courses
 - Remove instructor assignments
@@ -54,6 +55,7 @@ through CourseAssignment, but there's no UI to manage these assignments. We need
 ## Current State
 
 The `CourseAssignment` table exists but is not being used:
+
 - Instructor has `CourseAssignments` navigation property
 - Course should have `CourseAssignments` navigation property (needs to be added)
 - No UI for managing assignments
@@ -61,10 +63,12 @@ The `CourseAssignment` table exists but is not being used:
 ## Proposed Solution
 
 ### Database Changes
+
 1. Ensure Course model has CourseAssignments navigation property
 2. Update migrations if needed
 
 ### UI Changes
+
 1. **Courses Index**: Show count of assigned instructors
 2. **Course Details**: List assigned instructors with remove option
 3. **Course Edit**: Multi-select dropdown to assign instructors
@@ -72,6 +76,7 @@ The `CourseAssignment` table exists but is not being used:
 5. **Instructor Edit**: Multi-select dropdown to assign courses
 
 ### Business Rules
+
 - A course can have 0 to many instructors
 - An instructor can teach 0 to many courses
 - Can't assign the same instructor to a course twice
@@ -93,10 +98,11 @@ The `CourseAssignment` table exists but is not being used:
 ### Step 3: Research Implementation
 
 In GitHub Copilot Chat:
+
 ```
 Research best practices for implementing many-to-many relationships in Entity Framework Core,
 specifically for managing course-instructor assignments. Include examples of handling
-join tables and navigation properties. Document your findings in 
+join tables and navigation properties. Document your findings in
 specs/006-course-instructor-assignment/research.md
 ```
 
@@ -283,7 +289,7 @@ public class EditModel : DepartmentNamePageModel
         }
 
         PopulateDepartmentsDropDownList(_context, Course.DepartmentID);
-        
+
         // Load all instructors
         AllInstructors = await _context.Instructors
             .OrderBy(i => i.LastName)
@@ -335,7 +341,7 @@ public class EditModel : DepartmentNamePageModel
         PopulateDepartmentsDropDownList(_context, courseToUpdate.DepartmentID);
         AllInstructors = await _context.Instructors.OrderBy(i => i.LastName).ToListAsync();
         CurrentInstructorIds = courseToUpdate.CourseAssignments.Select(ca => ca.InstructorID).ToHashSet();
-        
+
         return Page();
     }
 
@@ -382,74 +388,81 @@ public class EditModel : DepartmentNamePageModel
 In `Pages/Courses/Details.cshtml`:
 
 ```html
-@page
-@model ContosoUniversity.Pages.Courses.DetailsModel
-
-@{
-    ViewData["Title"] = "Course Details";
-}
+@page @model ContosoUniversity.Pages.Courses.DetailsModel @{ ViewData["Title"] =
+"Course Details"; }
 
 <h2>Course Details</h2>
 
 <div class="card mb-4">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.CourseID)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.CourseID)</dd>
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Course.CourseID)
+      </dt>
+      <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.CourseID)</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Title)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Title)</dd>
+      <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Course.Title)
+      </dt>
+      <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Title)</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Credits)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Credits)</dd>
+      <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Course.Credits)
+      </dt>
+      <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Credits)</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Department)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Department.Name)</dd>
-        </dl>
-    </div>
+      <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Course.Department)
+      </dt>
+      <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.Course.Department.Name)
+      </dd>
+    </dl>
+  </div>
 </div>
 
 <div class="card">
-    <div class="card-header">
-        <h4>Assigned Instructors</h4>
-    </div>
-    <div class="card-body">
-        @if (Model.AssignedInstructors.Any())
-        {
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Hire Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var instructor in Model.AssignedInstructors)
-                    {
-                        <tr>
-                            <td>
-                                <a asp-page="/Instructors/Details" asp-route-id="@instructor.ID">
-                                    @instructor.FullName
-                                </a>
-                            </td>
-                            <td>@instructor.Email</td>
-                            <td>@instructor.HireDate.ToShortDateString()</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+  <div class="card-header">
+    <h4>Assigned Instructors</h4>
+  </div>
+  <div class="card-body">
+    @if (Model.AssignedInstructors.Any()) {
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Hire Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var instructor in Model.AssignedInstructors) {
+        <tr>
+          <td>
+            <a asp-page="/Instructors/Details" asp-route-id="@instructor.ID">
+              @instructor.FullName
+            </a>
+          </td>
+          <td>@instructor.Email</td>
+          <td>@instructor.HireDate.ToShortDateString()</td>
+        </tr>
         }
-        else
-        {
-            <p class="text-muted">No instructors assigned to this course yet.</p>
-        }
-    </div>
+      </tbody>
+    </table>
+    } else {
+    <p class="text-muted">No instructors assigned to this course yet.</p>
+    }
+  </div>
 </div>
 
 <div class="mt-3">
-    <a asp-page="./Edit" asp-route-id="@Model.Course.CourseID" class="btn btn-primary">Edit</a>
-    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+  <a
+    asp-page="./Edit"
+    asp-route-id="@Model.Course.CourseID"
+    class="btn btn-primary"
+    >Edit</a
+  >
+  <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
 </div>
 ```
 
@@ -458,91 +471,101 @@ In `Pages/Courses/Details.cshtml`:
 In `Pages/Courses/Edit.cshtml`:
 
 ```html
-@page
-@model ContosoUniversity.Pages.Courses.EditModel
-
-@{
-    ViewData["Title"] = "Edit Course";
-}
+@page @model ContosoUniversity.Pages.Courses.EditModel @{ ViewData["Title"] =
+"Edit Course"; }
 
 <h2>Edit Course</h2>
 
 <form method="post">
-    <input type="hidden" asp-for="Course.CourseID" />
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Course Information</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group mb-3">
-                        <label asp-for="Course.Title" class="form-label"></label>
-                        <input asp-for="Course.Title" class="form-control" />
-                        <span asp-validation-for="Course.Title" class="text-danger"></span>
-                    </div>
+  <input type="hidden" asp-for="Course.CourseID" />
 
-                    <div class="form-group mb-3">
-                        <label asp-for="Course.Credits" class="form-label"></label>
-                        <input asp-for="Course.Credits" class="form-control" />
-                        <span asp-validation-for="Course.Credits" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label asp-for="Course.DepartmentID" class="form-label">Department</label>
-                        <select asp-for="Course.DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID">
-                            <option value="">-- Select Department --</option>
-                        </select>
-                        <span asp-validation-for="Course.DepartmentID" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Course Information</h4>
         </div>
+        <div class="card-body">
+          <div class="form-group mb-3">
+            <label asp-for="Course.Title" class="form-label"></label>
+            <input asp-for="Course.Title" class="form-control" />
+            <span asp-validation-for="Course.Title" class="text-danger"></span>
+          </div>
 
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Assign Instructors</h4>
-                </div>
-                <div class="card-body">
-                    <div class="instructor-list">
-                        @foreach (var instructor in Model.AllInstructors)
-                        {
-                            var isChecked = Model.CurrentInstructorIds.Contains(instructor.ID);
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" 
-                                       type="checkbox" 
-                                       name="SelectedInstructorIds" 
-                                       value="@instructor.ID" 
-                                       id="instructor_@instructor.ID"
-                                       @(isChecked ? "checked" : "") />
-                                <label class="form-check-label" for="instructor_@instructor.ID">
-                                    @instructor.FullName
-                                    <small class="text-muted">(@instructor.Email)</small>
-                                </label>
-                            </div>
-                        }
-                    </div>
-                    
-                    @if (!Model.AllInstructors.Any())
-                    {
-                        <p class="text-muted">No instructors available. <a asp-page="/Instructors/Create">Create one</a>.</p>
-                    }
-                </div>
-            </div>
+          <div class="form-group mb-3">
+            <label asp-for="Course.Credits" class="form-label"></label>
+            <input asp-for="Course.Credits" class="form-control" />
+            <span
+              asp-validation-for="Course.Credits"
+              class="text-danger"
+            ></span>
+          </div>
+
+          <div class="form-group mb-3">
+            <label asp-for="Course.DepartmentID" class="form-label"
+              >Department</label
+            >
+            <select
+              asp-for="Course.DepartmentID"
+              class="form-control"
+              asp-items="ViewBag.DepartmentID"
+            >
+              <option value="">-- Select Department --</option>
+            </select>
+            <span
+              asp-validation-for="Course.DepartmentID"
+              class="text-danger"
+            ></span>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div class="form-group mt-3">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a asp-page="./Details" asp-route-id="@Model.Course.CourseID" class="btn btn-secondary">Cancel</a>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Assign Instructors</h4>
+        </div>
+        <div class="card-body">
+          <div class="instructor-list">
+            @foreach (var instructor in Model.AllInstructors) { var isChecked =
+            Model.CurrentInstructorIds.Contains(instructor.ID);
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox"
+              name="SelectedInstructorIds" value="@instructor.ID"
+              id="instructor_@instructor.ID" @(isChecked ? "checked" : "") />
+              <label class="form-check-label" for="instructor_@instructor.ID">
+                @instructor.FullName
+                <small class="text-muted">(@instructor.Email)</small>
+              </label>
+            </div>
+            }
+          </div>
+
+          @if (!Model.AllInstructors.Any()) {
+          <p class="text-muted">
+            No instructors available.
+            <a asp-page="/Instructors/Create">Create one</a>.
+          </p>
+          }
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="form-group mt-3">
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a
+      asp-page="./Details"
+      asp-route-id="@Model.Course.CourseID"
+      class="btn btn-secondary"
+      >Cancel</a
+    >
+  </div>
 </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@section Scripts { @{await
+Html.RenderPartialAsync("_ValidationScriptsPartial");} }
 ```
 
 ### Step 3: Add Styling for Instructor List
@@ -552,27 +575,27 @@ Add to `wwwroot/css/site.css`:
 ```css
 /* Instructor Assignment Styles */
 .instructor-list {
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-    background-color: var(--color-background);
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  background-color: var(--color-background);
 }
 
 .form-check {
-    padding: var(--space-sm);
-    border-radius: var(--radius-sm);
-    transition: background-color var(--transition-fast);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
 }
 
 .form-check:hover {
-    background-color: rgba(255, 107, 53, 0.05);
+  background-color: rgba(255, 107, 53, 0.05);
 }
 
 .form-check-input:checked {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 ```
 
@@ -618,43 +641,41 @@ In `Pages/Instructors/Details.cshtml`, add a section:
 
 ```html
 <div class="card mt-4">
-    <div class="card-header">
-        <h4>Courses Teaching</h4>
-    </div>
-    <div class="card-body">
-        @if (Model.AssignedCourses.Any())
-        {
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Course Number</th>
-                        <th>Title</th>
-                        <th>Department</th>
-                        <th>Credits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var course in Model.AssignedCourses)
-                    {
-                        <tr>
-                            <td>
-                                <a asp-page="/Courses/Details" asp-route-id="@course.CourseID">
-                                    @course.CourseID
-                                </a>
-                            </td>
-                            <td>@course.Title</td>
-                            <td>@course.Department.Name</td>
-                            <td>@course.Credits</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+  <div class="card-header">
+    <h4>Courses Teaching</h4>
+  </div>
+  <div class="card-body">
+    @if (Model.AssignedCourses.Any()) {
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Course Number</th>
+          <th>Title</th>
+          <th>Department</th>
+          <th>Credits</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var course in Model.AssignedCourses) {
+        <tr>
+          <td>
+            <a asp-page="/Courses/Details" asp-route-id="@course.CourseID">
+              @course.CourseID
+            </a>
+          </td>
+          <td>@course.Title</td>
+          <td>@course.Department.Name</td>
+          <td>@course.Credits</td>
+        </tr>
         }
-        else
-        {
-            <p class="text-muted">This instructor is not assigned to any courses yet.</p>
-        }
-    </div>
+      </tbody>
+    </table>
+    } else {
+    <p class="text-muted">
+      This instructor is not assigned to any courses yet.
+    </p>
+    }
+  </div>
 </div>
 ```
 
@@ -665,18 +686,21 @@ In `Pages/Instructors/Details.cshtml`, add a section:
 ### Test Scenarios
 
 1. **Assign Instructor to Course**
+
    - Go to Courses → Select a course → Edit
    - Check one or more instructors
    - Save
    - Verify on Course Details page
 
 2. **Remove Instructor from Course**
+
    - Go to Courses → Select a course with instructors → Edit
    - Uncheck an instructor
    - Save
    - Verify removal on Course Details page
 
 3. **View Instructor's Courses**
+
    - Go to Instructors → Select an instructor → Details
    - Verify assigned courses are displayed
 
@@ -772,7 +796,7 @@ public async Task<IActionResult> RemoveInstructor(int id, int instructorId)
 
     _context.Remove(assignment);
     await _context.SaveChangesAsync();
-    
+
     return NoContent();
 }
 ```
@@ -802,4 +826,3 @@ public async Task<IActionResult> RemoveInstructor(int id, int instructorId)
 ---
 
 Continue to **Lab 7: Course Scheduling** to add dates and times to courses!
-

@@ -20,6 +20,7 @@ In this lab, you'll learn how to use GitHub's Spec-Kit to plan and execute a mod
 ## Important Note
 
 This lab uses **GitHub Copilot** as your AI coding assistant. Make sure you have:
+
 - GitHub Copilot subscription activated
 - Copilot extension installed in your editor
 - Copilot enabled and signed in
@@ -50,6 +51,7 @@ specify init
 ```
 
 This creates:
+
 - `specs/` directory for your specifications
 - `memory/constitution.md` for project rules and principles
 - Context files for AI assistance (can be used with GitHub Copilot)
@@ -87,6 +89,7 @@ Or manually create a spec file at `specs/001-upgrade-dotnet/spec.md`:
 ## Problem Statement
 
 The Contoso University application currently runs on .NET 6.0, which will reach end of support soon. We need to upgrade to .NET 8 to:
+
 - Benefit from performance improvements
 - Access new language features
 - Ensure long-term support and security updates
@@ -95,6 +98,7 @@ The Contoso University application currently runs on .NET 6.0, which will reach 
 ## Scope
 
 ### In Scope
+
 - Upgrade .csproj target framework to net8.0
 - Update all NuGet packages to .NET 8 compatible versions
 - Update EntityFramework Core to version 8.x
@@ -102,6 +106,7 @@ The Contoso University application currently runs on .NET 6.0, which will reach 
 - Update documentation
 
 ### Out of Scope
+
 - Adding new features
 - Changing application architecture
 - UI redesign
@@ -117,17 +122,20 @@ The Contoso University application currently runs on .NET 6.0, which will reach 
 ## Technical Considerations
 
 ### Dependencies to Update
+
 - Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore: 6.0.2 → 8.0.x
 - Microsoft.EntityFrameworkCore.SqlServer: 6.0.2 → 8.0.x
 - Microsoft.EntityFrameworkCore.Tools: 6.0.2 → 8.0.x
 - Microsoft.VisualStudio.Web.CodeGeneration.Design: 6.0.2 → 8.0.x
 
 ### Potential Breaking Changes
+
 - Review Entity Framework Core 8 breaking changes
 - Check for deprecated APIs in ASP.NET Core 8
 - Validate Razor Pages compatibility
 
 ### Testing Strategy
+
 1. Clean build verification
 2. Database migration verification
 3. Manual testing of all CRUD operations
@@ -140,8 +148,8 @@ The Contoso University application currently runs on .NET 6.0, which will reach 
 In your IDE with GitHub Copilot, ask Copilot Chat to research specific concerns:
 
 ```
-I want you to research the breaking changes between .NET 6 and .NET 8, 
-specifically for ASP.NET Core Razor Pages and Entity Framework Core. 
+I want you to research the breaking changes between .NET 6 and .NET 8,
+specifically for ASP.NET Core Razor Pages and Entity Framework Core.
 Focus on changes that would affect this Contoso University application.
 Create a research.md document with your findings.
 ```
@@ -167,14 +175,15 @@ This creates `specs/001-upgrade-dotnet/tasks.md` with ordered tasks.
 In GitHub Copilot Chat, use the `/speckit.implement` command or ask:
 
 ```
-Following the spec in specs/001-upgrade-dotnet/spec.md, 
-upgrade the ContosoUniversity.csproj file to target .NET 8 
+Following the spec in specs/001-upgrade-dotnet/spec.md,
+upgrade the ContosoUniversity.csproj file to target .NET 8
 and update all package references to their .NET 8 versions.
 ```
 
 ### Step 3: Verify the Changes
 
 GitHub Copilot should have updated the `.csproj` file with:
+
 - `<TargetFramework>net8.0</TargetFramework>`
 - Updated package versions (8.0.x)
 
@@ -257,4 +266,3 @@ Proceed to **Lab 2: UI Modernization** to learn how to use Spec-Kit for larger a
 - [.NET 8 Release Notes](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-8)
 - [EF Core 8 Breaking Changes](https://learn.microsoft.com/ef/core/what-is-new/ef-core-8.0/breaking-changes)
 - [Spec-Kit Documentation](https://github.com/github/spec-kit)
-

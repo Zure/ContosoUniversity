@@ -30,6 +30,7 @@ Approximately 90-120 minutes
 [shadcn/ui](https://ui.shadcn.com/) is a collection of beautifully designed, accessible React components built with Radix UI and Tailwind CSS. Unlike traditional component libraries, shadcn/ui components are copied into your project, giving you full control and ownership.
 
 **Key Benefits:**
+
 - Modern, professional design out of the box
 - Fully customizable with Tailwind
 - Accessible by default (WCAG compliant)
@@ -53,8 +54,8 @@ git checkout -b feature/ui-modernization-shadcn
 Open GitHub Copilot Chat and ask:
 
 ```
-I want to modernize the Contoso University application UI using shadcn/ui 
-components and Tailwind CSS. Help me create a comprehensive specification 
+I want to modernize the Contoso University application UI using shadcn/ui
+components and Tailwind CSS. Help me create a comprehensive specification
 document in specs/005-ui-enhancement/spec.md that covers:
 
 1. Current state analysis (current Bootstrap-based UI)
@@ -127,7 +128,7 @@ Walk me through each step with the exact commands to run.
 For each major page, create a specification. Ask GitHub Copilot:
 
 ```
-Following spec-kit methodology, create a specification for redesigning 
+Following spec-kit methodology, create a specification for redesigning
 the Students page using shadcn/ui components. The spec should include:
 
 1. Current component structure
@@ -176,7 +177,7 @@ Help me create a modern navigation layout using shadcn/ui. I want:
 3. A main content area with consistent padding
 4. Dark mode toggle (using shadcn/ui theme system)
 
-Use shadcn/ui navigation components and follow the spec in 
+Use shadcn/ui navigation components and follow the spec in
 specs/005-ui-enhancement/layout.md (create this spec first if needed)
 ```
 
@@ -203,7 +204,7 @@ Provide step-by-step instructions.
 ### Step 2: Create Design System Specification
 
 ```
-Create a specification for a Tailwind-based design system in 
+Create a specification for a Tailwind-based design system in
 specs/005-ui-enhancement/design-system.md that includes:
 
 1. Color palette (CSS variables)
@@ -221,7 +222,7 @@ Base this on shadcn/ui's design tokens but adapted for use in Razor Pages.
 Ask GitHub Copilot:
 
 ```
-Following the design system specification, help me update 
+Following the design system specification, help me update
 Pages/Shared/_Layout.cshtml to use Tailwind CSS with:
 
 1. Modern navigation bar (responsive, with mobile menu)
@@ -238,7 +239,7 @@ Show me the updated markup using Tailwind utility classes.
 For each main page, ask GitHub Copilot:
 
 ```
-Help me refactor the Students Index page (Pages/Students/Index.cshtml) 
+Help me refactor the Students Index page (Pages/Students/Index.cshtml)
 using Tailwind CSS. The page should have:
 
 1. A modern table design (rounded corners, hover effects, proper spacing)
@@ -259,7 +260,7 @@ Apply Tailwind utility classes following our design system spec.
 Create a specification and implement:
 
 ```
-Help me create a spec for an advanced data table component 
+Help me create a spec for an advanced data table component
 (specs/005-ui-enhancement/data-table.md) with:
 
 1. Sorting by columns
@@ -270,14 +271,14 @@ Help me create a spec for an advanced data table component
 6. Loading states
 7. Empty states
 
-Then implement it using shadcn/ui's table component (React) 
+Then implement it using shadcn/ui's table component (React)
 or with Tailwind + Alpine.js (Razor Pages).
 ```
 
 ### Feature 2: Form Validation and UX
 
 ```
-Create a specification for improved form handling 
+Create a specification for improved form handling
 (specs/005-ui-enhancement/forms.md) with:
 
 1. Real-time validation with visual feedback
@@ -292,7 +293,7 @@ Then implement for the Student create/edit forms.
 ### Feature 3: Dashboard/Home Page
 
 ```
-Design and implement a modern dashboard for the home page 
+Design and implement a modern dashboard for the home page
 (specs/005-ui-enhancement/dashboard.md) with:
 
 1. Stat cards showing student/course/instructor counts
@@ -333,7 +334,7 @@ Run an accessibility audit on the updated UI. Check:
 - Focus indicators
 - ARIA labels
 
-Use browser dev tools or tools like axe DevTools. 
+Use browser dev tools or tools like axe DevTools.
 Document issues and fixes in specs/005-ui-enhancement/accessibility-report.md
 ```
 
@@ -346,7 +347,7 @@ Document issues and fixes in specs/005-ui-enhancement/accessibility-report.md
 Ask GitHub Copilot:
 
 ```
-Create comprehensive design system documentation 
+Create comprehensive design system documentation
 (specs/005-ui-enhancement/design-system-guide.md) that includes:
 
 1. Color palette with usage guidelines
@@ -396,6 +397,7 @@ Follows spec: specs/005-ui-enhancement/spec.md"
 ## Comparison: Traditional vs. Spec-Kit Approach
 
 ### Traditional Approach:
+
 1. Manually browse component libraries
 2. Copy-paste code snippets
 3. Tweak styles iteratively
@@ -404,6 +406,7 @@ Follows spec: specs/005-ui-enhancement/spec.md"
 6. **Time**: 2-3 days
 
 ### Spec-Kit + GitHub Copilot Approach:
+
 1. Define specifications for desired outcome
 2. Let GitHub Copilot generate components
 3. Review and refine with AI assistance
@@ -418,7 +421,7 @@ If you encounter issues:
 
 ```
 Ask GitHub Copilot:
-"I'm getting [specific error] when installing shadcn/ui. 
+"I'm getting [specific error] when installing shadcn/ui.
 What's wrong and how do I fix it?"
 ```
 
@@ -426,14 +429,14 @@ What's wrong and how do I fix it?"
 
 ```
 Check with Copilot:
-"My Tailwind classes aren't applying in Razor Pages. 
+"My Tailwind classes aren't applying in Razor Pages.
 Help me debug the Tailwind configuration and build process."
 ```
 
 ### Component Styling Conflicts
 
 ```
-"I have styling conflicts between Bootstrap (existing) and Tailwind (new). 
+"I have styling conflicts between Bootstrap (existing) and Tailwind (new).
 How do I safely migrate without breaking existing pages?"
 ```
 
