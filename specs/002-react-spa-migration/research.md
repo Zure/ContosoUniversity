@@ -51,7 +51,7 @@ public class StudentsController : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaginatedResponse<StudentDto>>> GetStudents(
-        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
     { /* ... */ }
 
@@ -408,11 +408,11 @@ builder.Services.AddApiVersioning(options =>
 
 ```typescript
 // Standard functional component with hooks
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function Component({ propValue }: { propValue: string }) {
-  const [state, setState] = useState<string>('');
-  
+  const [state, setState] = useState<string>("");
+
   useEffect(() => {
     // Effect runs when propValue changes
     setState(propValue);
@@ -423,14 +423,9 @@ function Component({ propValue }: { propValue: string }) {
 
 // Controlled form input pattern
 function FormComponent() {
-  const [value, setValue] = useState('');
-  
-  return (
-    <input 
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
+  const [value, setValue] = useState("");
+
+  return <input value={value} onChange={(e) => setValue(e.target.value)} />;
 }
 ```
 
@@ -520,12 +515,12 @@ import { useNavigate } from "react-router-dom";
 
 function StudentForm() {
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (data: StudentDto) => {
     await studentsApi.create(data);
     navigate("/students"); // Navigate after successful creation
   };
-  
+
   const handleCancel = () => {
     navigate(-1); // Go back one page
   };
@@ -538,13 +533,13 @@ function Navigation() {
   return (
     <nav>
       {/* NavLink provides active state styling */}
-      <NavLink 
-        to="/students" 
-        className={({ isActive }) => isActive ? "active" : ""}
+      <NavLink
+        to="/students"
+        className={({ isActive }) => (isActive ? "active" : "")}
       >
         Students
       </NavLink>
-      
+
       {/* Link for simple navigation */}
       <Link to="/courses">Courses</Link>
     </nav>
@@ -560,7 +555,7 @@ import { useLocation } from "react-router-dom";
 
 function Analytics() {
   const location = useLocation();
-  
+
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location]);
@@ -568,8 +563,8 @@ function Analytics() {
 
 // Navigate with state
 const navigate = useNavigate();
-navigate("/dashboard", { 
-  state: { from: location.pathname, username } 
+navigate("/dashboard", {
+  state: { from: location.pathname, username },
 });
 
 // Replace history entry (no back button)
@@ -618,20 +613,20 @@ TanStack Query (React Query) is an excellent data-fetching library with automati
 
 ```typescript
 // If we were to use TanStack Query (future consideration)
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Query with automatic caching
 const { data, isLoading, error } = useQuery({
-  queryKey: ['students', pageNumber],
-  queryFn: () => studentsApi.getAll(pageNumber, pageSize)
+  queryKey: ["students", pageNumber],
+  queryFn: () => studentsApi.getAll(pageNumber, pageSize),
 });
 
 // Mutation with cache invalidation
 const mutation = useMutation({
   mutationFn: postStudent,
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['students'] })
-  }
+    queryClient.invalidateQueries({ queryKey: ["students"] });
+  },
 });
 ```
 
@@ -794,15 +789,21 @@ React Hook Form is an excellent, performant form library with features like:
 import { useForm } from "react-hook-form";
 
 function StudentForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm<StudentDto>();
-  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<StudentDto>();
+
   const onSubmit = (data: StudentDto) => {
     studentsApi.create(data);
   };
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("firstName", { required: "First name is required" })} />
+      <input
+        {...register("firstName", { required: "First name is required" })}
+      />
       {errors.firstName && <span>{errors.firstName.message}</span>}
     </form>
   );
@@ -1100,26 +1101,26 @@ function Pagination({
 
 ## Summary of Key Technology Choices
 
-| Area                      | Technology                           | Rationale                                                    |
-| ------------------------- | ------------------------------------ | ------------------------------------------------------------ |
-| **Backend Framework**     | ASP.NET Core Web API (.NET 9.0)      | Existing project base, modern, cross-platform                |
-| **Architecture**          | Service Layer + EF Core Direct       | Balance of separation and simplicity                         |
-| **API Controllers**       | [ApiController] + Attribute Routing  | Automatic validation, ProblemDetails, binding inference      |
-| **Error Handling**        | ProblemDetails (RFC 7807)            | Standard machine-readable format, middleware support         |
-| **DTO Mapping**           | Manual Mapping                       | Educational clarity, explicit logic, prevents over-posting   |
-| **CORS**                  | Named Policy with Explicit Origins   | Security best practice, credential support                   |
-| **API Documentation**     | Swashbuckle.AspNetCore + XML         | Industry standard OpenAPI generator, compile-time docs       |
-| **API Versioning**        | URI-based (deferred)                 | Simplest strategy, bookmarkable, explicit routing            |
-| **Frontend Framework**    | React 19+ with TypeScript            | Modern, component-based, type-safe                           |
-| **Build Tool**            | Vite                                 | Fast development experience, native ESM                      |
-| **Routing**               | React Router v6/v7                   | Standard SPA routing, hooks-based API                        |
-| **HTTP Client**           | Axios                                | Interceptors, better error handling, timeout support         |
-| **State Management**      | Context API + useState               | Sufficient for complexity, built-in, educational clarity     |
-| **Form Handling**         | Custom useForm Hook                  | Educational value, no dependencies                           |
-| **Form Library Research** | React Hook Form (noted, not chosen)  | Excellent but reduces educational value for workshops        |
-| **Data Fetching Research**| TanStack Query (noted, not chosen)   | Powerful caching but adds complexity (future consideration)  |
-| **Concurrency**           | EF Core RowVersion + ETag            | Built-in support, RESTful standard                           |
-| **Pagination**            | Offset-Based (pageNumber/pageSize)   | Simple, bookmarkable, spec requirement                       |
+| Area                       | Technology                          | Rationale                                                   |
+| -------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| **Backend Framework**      | ASP.NET Core Web API (.NET 9.0)     | Existing project base, modern, cross-platform               |
+| **Architecture**           | Service Layer + EF Core Direct      | Balance of separation and simplicity                        |
+| **API Controllers**        | [ApiController] + Attribute Routing | Automatic validation, ProblemDetails, binding inference     |
+| **Error Handling**         | ProblemDetails (RFC 7807)           | Standard machine-readable format, middleware support        |
+| **DTO Mapping**            | Manual Mapping                      | Educational clarity, explicit logic, prevents over-posting  |
+| **CORS**                   | Named Policy with Explicit Origins  | Security best practice, credential support                  |
+| **API Documentation**      | Swashbuckle.AspNetCore + XML        | Industry standard OpenAPI generator, compile-time docs      |
+| **API Versioning**         | URI-based (deferred)                | Simplest strategy, bookmarkable, explicit routing           |
+| **Frontend Framework**     | React 19+ with TypeScript           | Modern, component-based, type-safe                          |
+| **Build Tool**             | Vite                                | Fast development experience, native ESM                     |
+| **Routing**                | React Router v6/v7                  | Standard SPA routing, hooks-based API                       |
+| **HTTP Client**            | Axios                               | Interceptors, better error handling, timeout support        |
+| **State Management**       | Context API + useState              | Sufficient for complexity, built-in, educational clarity    |
+| **Form Handling**          | Custom useForm Hook                 | Educational value, no dependencies                          |
+| **Form Library Research**  | React Hook Form (noted, not chosen) | Excellent but reduces educational value for workshops       |
+| **Data Fetching Research** | TanStack Query (noted, not chosen)  | Powerful caching but adds complexity (future consideration) |
+| **Concurrency**            | EF Core RowVersion + ETag           | Built-in support, RESTful standard                          |
+| **Pagination**             | Offset-Based (pageNumber/pageSize)  | Simple, bookmarkable, spec requirement                      |
 
 ---
 
@@ -1133,7 +1134,6 @@ This research document has been enhanced with findings from:
   - CORS configuration with middleware ordering requirements
   - Swashbuckle/OpenAPI with XML documentation comments
   - API versioning strategies (URI, query, header, media type)
-  
 - **Context7 MCP Server**: Validated React ecosystem patterns from official sources:
   - React hooks patterns (useState, useEffect, useContext) from official React compiler tests
   - React Router v6/v7 routing patterns (BrowserRouter, useNavigate, useParams, useLocation)
@@ -1141,6 +1141,7 @@ This research document has been enhanced with findings from:
   - React Hook Form patterns (noted but not chosen for educational reasons)
 
 All technology decisions align with:
+
 - Latest official documentation (as of November 2025)
 - Microsoft's recommended practices for ASP.NET Core
 - React community standards and official React documentation

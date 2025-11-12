@@ -351,22 +351,27 @@
 ### Parallel Opportunities
 
 #### Setup Phase (Phase 1)
+
 - Tasks T002, T003, T004, T005 can run in parallel (different directories)
 - Tasks T010, T011, T012 can run in parallel (frontend setup)
 
 #### Foundational Phase (Phase 2)
+
 - Tasks T014, T017, T018, T019, T020, T021, T023, T024 can run in parallel (independent files)
 
 #### Within Each User Story (Backend)
+
 - DTOs (Create/Update variants) can be created in parallel
 - Controller endpoints can be implemented in parallel after service exists
 
 #### Within Each User Story (Frontend)
+
 - Types and API client can be created in parallel
 - Components can be created in parallel after API client exists
 - Pages can be created in parallel after components exist
 
 #### Across User Stories (if multiple developers)
+
 - After Foundational phase completes:
   - Developer A: User Story 1 (Students) 🎯
   - Developer B: User Story 2 (Courses)

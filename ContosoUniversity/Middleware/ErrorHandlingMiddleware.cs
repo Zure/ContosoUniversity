@@ -114,7 +114,7 @@ public class ErrorHandlingMiddleware
         {
             Status = StatusCodes.Status409Conflict,
             Title = "Database Error",
-            Detail = _environment.IsDevelopment() 
+            Detail = _environment.IsDevelopment()
                 ? ex.InnerException?.Message ?? ex.Message
                 : "A database error occurred. The operation could not be completed.",
             Instance = context.Request.Path

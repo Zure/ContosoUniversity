@@ -40,3 +40,56 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Checkbox group styles for instructor form */
+.checkbox-group {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  background-color: #fff;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.checkbox-item:last-child {
+  border-bottom: none;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.checkbox-item label {
+  cursor: pointer;
+  flex: 1;
+  margin: 0;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.form-help {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.course-item {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
