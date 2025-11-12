@@ -2,22 +2,22 @@
 
 ## Overview
 
-Implement a course registration system allowing students to browse available course offerings and enroll. This builds on the scheduling system from Lab 7 (or works with the basic course system if Lab 7 wasn't completed).
+Use Spec-Kit to implement a complete course registration workflow. This lab demonstrates specifying complex user flows, business rules, and edge cases - all implemented by Copilot from your specifications.
 
 ## Learning Objectives
 
-- Build a user-facing registration workflow with Spec-Kit
-- Implement shopping cart pattern for course selection
-- Handle concurrent registration scenarios
-- Manage enrollment constraints and prerequisites
-- Use GitHub Copilot for complex business logic
+- Specify user workflows and business processes
+- Define constraint handling in specifications
+- Let Copilot implement shopping cart patterns
+- Use specs to handle concurrency scenarios
+- Validate complex workflows against success criteria
 
 ## Prerequisites
 
-- Completed Lab 1 (basic setup)
+- Completed Lab 1 (spec-kit basics)
 - GitHub Copilot enabled in your IDE
-- Completed Lab 7 (recommended but not required)
-- Understanding of the Enrollment entity
+- Completed Lab 7 (recommended)
+- Understanding of workflows
 
 ## Duration
 
@@ -25,7 +25,75 @@ Approximately 90-120 minutes
 
 ---
 
-## Part 1: Planning the Registration System
+## Part 1: Specify the Registration Workflow
+
+### Step 1: Define User Stories
+
+```bash
+/speckit.specify Implement a student course registration system with shopping cart workflow. Students should browse available courses, add/remove from cart, see schedule conflicts, check prerequisites, submit registration (all-or-nothing transaction), and receive confirmation. Include waitlist when courses are full.
+```
+
+### Step 2: Specify Business Rules
+
+```bash
+/speckit.clarify Define all registration rules: prerequisite checking, schedule conflict detection, credit hour limits, enrollment capacity, waitlist behavior, registration periods, withdrawal deadlines, concurrent registration handling (race conditions when course fills up).
+```
+
+### Step 3: Plan the Implementation
+
+```bash
+/speckit.plan Create a comprehensive plan including: shopping cart data model, registration service with transaction handling, prerequisite checker, conflict detector, enrollment capacity management, optimistic concurrency control, UI workflow (browse, cart, submit, confirm), and testing strategy for concurrent scenarios.
+```
+
+---
+
+## Part 2: Implement the Registration System
+
+### Step 1: Execute Implementation
+
+```bash
+/speckit.tasks
+/speckit.implement
+```
+
+Copilot builds the entire registration system.
+
+### Step 2: Guide Critical Logic
+
+```
+For the registration submission, use a database transaction. Check all validations again inside the transaction before committing. Handle DbUpdateConcurrencyException for when courses fill up during registration - show clear error message.
+```
+
+---
+
+## Part 3: Test Complex Scenarios
+
+### Test Cases
+
+1. **Happy path**: Browse, add to cart, submit, confirm
+2. **Prerequisites**: Block registration if not met
+3. **Conflicts**: Prevent conflicting times
+4. **Capacity**: Waitlist when full
+5. **Concurrency**: Two students, one remaining seat
+6. **Transaction**: Partial failure rolls back entirely
+
+---
+
+## Key Takeaways
+
+1. **Workflow Specifications**: Complex user flows fully specified
+2. **Concurrency in Specs**: Race conditions addressed in requirements
+3. **Transaction Logic**: Business logic constraints expressed clearly
+
+## Next Steps
+
+Complete **Lab 9: Semester View** for the final dashboard feature!
+
+## Resources
+
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
+- [EF Core Concurrency Handling](https://learn.microsoft.com/ef/core/saving/concurrency)
 
 ### Step 1: Create Feature Branch
 
@@ -108,7 +176,7 @@ Review and enhance the existing Enrollment entity for the registration system.
 
 Current Enrollment has:
 - Student
-- Course  
+- Course
 - Grade
 
 I need to add:
@@ -212,7 +280,7 @@ Help me create REST API endpoints for course registration:
 
 GET    /api/registration/available-courses?studentId={id}&semester={id}
 POST   /api/registration/cart/add
-POST   /api/registration/cart/remove  
+POST   /api/registration/cart/remove
 GET    /api/registration/cart/{studentId}
 POST   /api/registration/submit
 DELETE /api/registration/drop/{enrollmentId}
@@ -258,7 +326,7 @@ Create Razor Pages for the student registration workflow:
    - Calendar view
    - Drop course functionality (if before deadline)
 
-Use the modern UI from Lab 5 if completed. 
+Use the modern UI from Lab 5 if completed.
 Show me the page models and views.
 ```
 
@@ -347,7 +415,7 @@ Show me validation attribute classes or FluentValidation rules.
 Ask GitHub Copilot:
 
 ```
-When multiple students register for the same course simultaneously, 
+When multiple students register for the same course simultaneously,
 I need to handle race conditions properly.
 
 Help me implement:
@@ -437,6 +505,7 @@ dotnet run
 ```
 
 Walk through complete registration workflow:
+
 1. Log in as a student
 2. Browse course catalog
 3. Filter by department
@@ -453,7 +522,7 @@ Walk through complete registration workflow:
 ## Key Takeaways
 
 1. **Complex Workflows**: Registration systems have many interdependent rules
-2. **Concurrency**: Must handle simultaneous user actions gracefully  
+2. **Concurrency**: Must handle simultaneous user actions gracefully
 3. **User Experience**: Clear feedback at every step is critical
 4. **Transactions**: All-or-nothing operations prevent partial state
 5. **Testing**: Comprehensive testing is essential for user-facing features
@@ -473,15 +542,15 @@ Walk through complete registration workflow:
 
 ```
 Ask GitHub Copilot:
-"I'm getting DbUpdateConcurrencyException when multiple students 
-register for the same course. Help me implement proper optimistic 
+"I'm getting DbUpdateConcurrencyException when multiple students
+register for the same course. Help me implement proper optimistic
 concurrency control with retry logic."
 ```
 
 ### Performance Issues with Large Course Catalogs
 
 ```
-"The course catalog loads slowly with 1000+ courses. Help me optimize 
+"The course catalog loads slowly with 1000+ courses. Help me optimize
 with pagination, indexing, and lazy loading."
 ```
 
@@ -494,4 +563,3 @@ with pagination, indexing, and lazy loading."
 ---
 
 Continue to **Lab 9: Semester View** to create a personalized student schedule view!
-

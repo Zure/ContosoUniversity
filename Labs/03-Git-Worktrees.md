@@ -1,499 +1,437 @@
-# Lab 3: Git Worktrees - Working on Multiple UI Iterations
+# Lab 3: Git Worktrees - Parallel Development with Spec-Kit
 
 ## Overview
 
-Learn how to use Git worktrees to work on multiple feature branches simultaneously without switching contexts. This is especially useful when experimenting with different UI approaches or working on features that need comparison side-by-side.
+Learn how to use Git worktrees combined with Spec-Kit to work on multiple feature variations simultaneously. This lab demonstrates a powerful workflow for comparing different implementation approaches, experimenting with UI variations, and working on features in parallel without losing context.
 
 ## Learning Objectives
 
-- Understand Git worktrees and their benefits
-- Set up multiple worktrees for parallel development
-- Compare different UI implementations side-by-side
-- Manage multiple running instances of the same application
-- Clean up and merge worktree branches
+- Understand Git worktrees for parallel development
+- Use worktrees with Spec-Kit workflow for comparing implementations
+- Run multiple VS Code instances with different branches
+- Compare and evaluate different technical approaches side-by-side
+- Clean up and merge selected implementations
 
 ## Prerequisites
 
 - Git 2.5+ (worktrees feature)
-- Completed Labs 1-2 (or familiar with the codebase)
-- Basic Git knowledge
+- Completed Labs 1-2 (spec-kit basics and React if following that path)
+- GitHub Copilot enabled in your IDE
+- VS Code (or your preferred IDE that supports multiple windows)
 
 ## Duration
 
-Approximately 45-60 minutes
+Approximately 60-90 minutes
 
 ---
 
-## Part 1: Understanding Git Worktrees
+## Part 1: Understanding the Worktree + Spec-Kit Workflow
 
-### What Are Worktrees?
+### What Are Git Worktrees?
 
-Git worktrees allow you to have multiple working directories attached to the same repository. Each worktree can be on a different branch, enabling you to:
+Git worktrees allow multiple working directories for the same repository, each on a different branch. Instead of switching branches and losing context, you can:
 
-- Work on multiple features without stashing or committing incomplete work
-- Run different versions of the application simultaneously
+- Work on multiple feature branches simultaneously
 - Compare implementations side-by-side
-- Quickly switch between branches without checkout overhead
+- Run different versions of the application at the same time
+- Keep each feature's context intact (open files, terminal state, etc.)
 
-### Traditional Workflow vs. Worktrees
+### Combining with Spec-Kit
 
-**Traditional:**
-```bash
-git checkout feature-a
-# Make changes, test
-git checkout feature-b
-# Make changes, test
-# Repeat, losing context each time
-```
+The power multiplies when you combine worktrees with Spec-Kit:
 
-**With Worktrees:**
-```bash
-# Both features available simultaneously
-cd ../repo-feature-a  # Feature A running here
-cd ../repo-feature-b  # Feature B running here
-```
+1. Create a spec for a feature
+2. After planning, create multiple worktrees for different approaches
+3. Implement each approach in parallel using `/speckit.implement`
+4. Run and compare them side-by-side
+5. Merge the best implementation
 
 ---
 
-## Part 2: Setting Up Worktrees
+## Part 2: Create the Base Specification
 
-### Step 1: View Current Worktrees
+### Context
 
-```bash
-# From the main repository
-git worktree list
-```
+Assuming you've completed Lab 2 and have React with Tailwind CSS and shadcn/ui set up, you now want to enhance the Students list page with better filtering and interactions. Instead of committing to one approach, you'll explore multiple design variations in parallel.
 
-You'll see your main worktree listed.
+### Step 1: Create the Feature Spec
 
-### Step 2: Create Worktrees for UI Iterations
-
-Let's create worktrees for different UI approaches:
+Start by creating a specification for the core feature (without mentioning multiple variations):
 
 ```bash
-# From repository root
-
-# Create worktree for Material-UI iteration
-git worktree add ../ContosoUniversity-ui-material -b feature/ui-material-ui
-
-# Create worktree for Tailwind CSS iteration
-git worktree add ../ContosoUniversity-ui-tailwind -b feature/ui-tailwind
-
-# Create worktree for Bootstrap 5 upgrade
-git worktree add ../ContosoUniversity-ui-bootstrap5 -b feature/ui-bootstrap5
+# In your main worktree
+/speckit.specify Enhance the Students list page with improved filtering and user interactions. Add a search bar with real-time filtering, sortable columns, action buttons for edit/delete, and pagination. Use Tailwind CSS and shadcn/ui components for a modern, accessible interface.
 ```
 
-This creates three new directories at the same level as your main repository:
-```
-parent-directory/
-  ContosoUniversity/              # Main worktree (main branch)
-  ContosoUniversity-ui-material/  # Material-UI branch
-  ContosoUniversity-ui-tailwind/  # Tailwind branch
-  ContosoUniversity-ui-bootstrap5/ # Bootstrap 5 branch
-```
+This creates the initial spec in `specs/003-**/spec.md` and a new branch `003-**`.
 
-### Step 3: Verify Worktrees
+### Step 2: Complete Planning and Tasks
+
+Generate the implementation plan and tasks:
 
 ```bash
-git worktree list
+/speckit.plan Create a detailed implementation plan for the Students page enhancements including: search/filter UI, sorting functionality, action button placement, pagination controls, responsive layout, and accessibility features.
+
+/speckit.tasks
 ```
 
-Expected output:
-```
-/path/to/ContosoUniversity              [main]
-/path/to/ContosoUniversity-ui-material  [feature/ui-material-ui]
-/path/to/ContosoUniversity-ui-tailwind  [feature/ui-tailwind]
-/path/to/ContosoUniversity-ui-bootstrap5 [feature/ui-bootstrap5]
-```
+Review the generated `specs/003-**/plan.md` and `specs/003-**/tasks.md`. At this point, you have a complete specification for the feature.
+
+**Important**: Don't implement yet! We'll branch to explore different UI approaches.
 
 ---
 
-## Part 3: Working with Multiple UI Iterations
+## Part 3: Branch into Multiple Worktrees
 
-### Scenario: Comparing React UI Frameworks
+### Step 1: Create Worktrees from the Spec Branch
 
-Let's implement the same UI feature using different frameworks to compare them.
-
-### Step 1: Material-UI Implementation
+Now that you have a complete spec, create multiple worktrees to explore different UI variations. Each worktree will branch from your `003-**` branch:
 
 ```bash
-cd ../ContosoUniversity-ui-material
+# Note the name of your spec branch (e.g., 003-enhance-students-list)
+# Replace 003-enhance-students-list below with your actual branch name
+
+# View current worktrees
+git worktree list
+
+# Create worktree for Variation A (traditional table layout)
+git worktree add ../ContosoUniversity-003-variant-a -b 003-variant-a-table 003-enhance-students-list
+
+# Create worktree for Variation B (card grid layout)
+git worktree add ../ContosoUniversity-003-variant-b -b 003-variant-b-cards 003-enhance-students-list
+
+# Create worktree for Variation C (compact with sidebar)
+git worktree add ../ContosoUniversity-003-variant-c -b 003-variant-c-sidebar 003-enhance-students-list
+
+# Verify all worktrees
+git worktree list
 ```
 
-If you have the React app from Lab 2:
+You should now see:
+
+```
+/path/to/ContosoUniversity                [003-enhance-students-list] (your spec branch)
+/path/to/ContosoUniversity-003-variant-a  [003-variant-a-table]
+/path/to/ContosoUniversity-003-variant-b  [003-variant-b-cards]
+/path/to/ContosoUniversity-003-variant-c  [003-variant-c-sidebar]
+```
+
+**Key Point**: Each worktree now has a copy of the specs directory and the same base code. They're isolated environments for different implementations.
+
+---
+
+## Part 4: Modify Specs and Implement in Parallel
+
+### Step 1: Open VS Code for Each Worktree
+
+Open a separate VS Code window for each worktree:
+
 ```bash
-cd contoso-university-ui
-npm install @mui/material @emotion/react @emotion/styled
+# From your main terminal
+code ../ContosoUniversity-003-variant-a
+code ../ContosoUniversity-003-variant-b
+code ../ContosoUniversity-003-variant-c
 ```
 
-**Using GitHub Copilot for Implementation:**
+You now have **three VS Code windows** open, each on a different branch!
 
-In GitHub Copilot Chat:
-```
-I want to convert the Students list component to use Material-UI. 
-Help me refactor the component to use:
-- MUI Table for the students list
-- MUI Pagination
-- MUI Button for actions  
-- MUI Card for student details
+### Step 2: Clarify the Approach in Each Worktree
 
-Show me the implementation step by step.
-```
+In each VS Code window, ask Spec-Kit to modify the plan for that specific variation. **Spec-Kit doesn't know about the other variants** - each worktree has its own isolated context.
 
-Run the application:
+**Variant A window** (Traditional Table Layout):
+
 ```bash
-# Terminal 1: Backend
-cd ContosoUniversity
-dotnet run --urls "https://localhost:7054"
+/speckit.clarify For the UI layout, use a traditional table approach: shadcn/ui Table component for the data, search bar at the top with shadcn/ui Input, action buttons using shadcn/ui Button with icons (Edit/Delete) in the rightmost column, column headers with sort indicators, and standard pagination controls at the bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+```
 
-# Terminal 2: Frontend
+**Variant B window** (Card Grid Layout):
+
+```bash
+/speckit.clarify For the UI layout, use a card-based grid approach: shadcn/ui Card components in a responsive grid (3 columns on desktop, 2 on tablet, 1 on mobile), each card displaying student information. Include inline filter controls using shadcn/ui Select and Input at the top, rounded pill-style action buttons within each card, and load-more button at bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+```
+
+**Variant C window** (Compact Sidebar Layout):
+
+```bash
+/speckit.clarify For the UI layout, use a compact sidebar approach: compact table with condensed spacing, shadcn/ui Sheet component as a fixed sidebar containing all filter controls, icon-only action buttons with shadcn/ui Tooltip for accessibility, sticky table header that remains visible on scroll, and minimal visual chrome for information density. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+```
+
+### Step 3: Implement Each Variation
+
+Now in each VS Code window, implement the feature with that variation's approach:
+
+In each VS Code window, start implementation:
+
+```bash
+/speckit.implement
+```
+
+GitHub Copilot will implement according to each branch's modified plan. You can:
+
+- **Switch between windows** to see progress on different variations
+- **Guide each implementation** with specific feedback on layout/styling
+- **Test each variant** as it develops
+
+---
+
+## Part 5: Run and Compare Side-by-Side
+
+### Step 1: Run Each Variation on Different Ports
+
+You can run all three UI variations simultaneously:
+
+**Terminal in Variant A worktree**:
+
+```bash
 cd contoso-university-ui
 PORT=3001 npm start
 ```
 
-Access at `http://localhost:3001`
-
-### Step 2: Tailwind CSS Implementation
-
-Open a new terminal:
+**Terminal in Variant B worktree**:
 
 ```bash
-cd ../ContosoUniversity-ui-tailwind/contoso-university-ui
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-**Using GitHub Copilot for Configuration:**
-
-In GitHub Copilot Chat:
-```
-I've installed Tailwind CSS. Help me:
-1. Configure tailwind.config.js properly for React
-2. Set up the main CSS file with Tailwind directives
-3. Convert the Students list component to use Tailwind utility classes
-4. Implement responsive design with Tailwind breakpoints
-```
-
-Run on a different port:
-```bash
+cd contoso-university-ui
 PORT=3002 npm start
 ```
 
-Access at `http://localhost:3002`
-
-### Step 3: Bootstrap 5 Implementation
-
-Open another terminal:
+**Terminal in Variant C worktree**:
 
 ```bash
-cd ../ContosoUniversity-ui-bootstrap5/contoso-university-ui
-npm install bootstrap@5 react-bootstrap
-```
-
-**Using GitHub Copilot:**
-
-```
-I've installed Bootstrap 5 and React Bootstrap. Help me:
-1. Import Bootstrap CSS properly
-2. Update the Students components to use React Bootstrap components
-3. Use Bootstrap Table, Pagination, Modal, and Card components
-4. Ensure responsive layout
-```
-
-Run on another port:
-```bash
+cd contoso-university-ui
 PORT=3003 npm start
 ```
 
-Access at `http://localhost:3003`
+### Step 2: Open All in Browser Tabs
 
-### Step 4: Side-by-Side Comparison
+Open three browser tabs:
 
-Now you have three versions running simultaneously:
-- Material-UI: `http://localhost:3001`
-- Tailwind: `http://localhost:3002`
-- Bootstrap 5: `http://localhost:3003`
+- `http://localhost:3001` - Table layout with advanced filters
+- `http://localhost:3002` - Card grid layout
+- `http://localhost:3003` - List with sidebar filters
 
-Open them side-by-side in your browser and compare:
-- Visual appearance
-- User experience
-- Code complexity
-- Bundle size
-- Developer experience
+**Compare them side-by-side!**
 
----
+### Step 3: Evaluate Against Criteria
 
-## Part 4: Using Worktrees with Spec-Kit
-
-### Iteration A: Modern Minimalist Design
+Create an evaluation document in your main worktree:
 
 ```bash
-cd ../ContosoUniversity-ui-tailwind
-```
-
-**Using Spec-Kit with GitHub Copilot:**
-
-In GitHub Copilot Chat:
-```
-Following spec-kit methodology, help me create a specification 
-for a minimalist UI design in specs/003-ui-minimalist/spec.md with:
-- Clean typography
-- Lots of whitespace
-- Subtle animations
-- Muted color palette
-
-Then help me implement it using /speckit.implement
-```
-
-### Iteration B: Data-Dense Dashboard
-
-```bash
-cd ../ContosoUniversity-ui-material
-```
-
-In GitHub Copilot Chat:
-```
-Create a specification in specs/003-ui-dashboard/spec.md for a 
-data-dense dashboard UI with:
-- Charts and visualizations
-- Multiple data tables
-- Dense information display
-- Quick actions sidebar
-
-Then implement using /speckit.implement
+# In main worktree
+/speckit.clarify Create an evaluation matrix comparing the three UI layout approaches based on: user experience, information density, mobile responsiveness, development complexity, and how well they meet the requirements for filtering/sorting/searching students. Use insights from all three implementations.
 ```
 
 ---
 
-## Part 5: Selecting and Merging
+## Part 6: Selecting and Merging the Winner
 
-### Step 1: Evaluate Implementations
+### Step 1: Make Your Decision
 
-Create a comparison document:
-
-```markdown
-# UI Framework Comparison
-
-## Material-UI
-**Pros:**
-- Rich component library
-- Good TypeScript support
-- Accessible by default
-
-**Cons:**
-- Large bundle size
-- Opinionated styling
-- Learning curve
-
-**Bundle Size:** X MB
-
-## Tailwind CSS
-**Pros:**
-- Small bundle size
-- Highly customizable
-- Fast development
-
-**Cons:**
-- Verbose HTML
-- Need to build components
-- Purging configuration
-
-**Bundle Size:** Y MB
-
-## Bootstrap 5
-**Pros:**
-- Familiar to team
-- Good documentation
-- Battle-tested
-
-**Cons:**
-- Generic look
-- Heavier than Tailwind
-- Less modern
-
-**Bundle Size:** Z MB
-
-## Decision: [Selected Framework]
-
-**Rationale:** [Your reasoning]
-```
+Based on your evaluation and user feedback, choose the best approach. Let's say **the card grid layout (Variant B)** wins.
 
 ### Step 2: Merge the Selected Implementation
 
-Let's say you choose Material-UI:
+From the main worktree:
 
 ```bash
-cd ../ContosoUniversity  # Main worktree
+cd /path/to/ContosoUniversity  # Main worktree
 
 # Merge the selected branch
-git merge feature/ui-material-ui
+git merge 003-variant-b-cards
 
 # Push to remote
 git push origin main
 ```
 
-### Step 3: Clean Up Worktrees
+### Step 3: Clean Up Unneeded Worktrees
 
 Remove worktrees you're not using:
 
 ```bash
-# Remove the worktree
-git worktree remove ../ContosoUniversity-ui-tailwind
+# Remove Variant A worktree
+git worktree remove ../ContosoUniversity-variant-a
+git branch -D 003-variant-a-table
 
-# Delete the branch (if not needed)
-git branch -D feature/ui-tailwind
+# Remove Variant C worktree
+git worktree remove ../ContosoUniversity-variant-c
+git branch -D 003-variant-c-sidebar
 
-# Repeat for other worktrees
-git worktree remove ../ContosoUniversity-ui-bootstrap5
-git branch -D feature/ui-bootstrap5
+# Optionally remove Variant B worktree (branch is already merged)
+git worktree remove ../ContosoUniversity-variant-b
 ```
 
-Keep the Material-UI worktree if you want to continue work there, or remove it:
-
-```bash
-git worktree remove ../ContosoUniversity-ui-material
-git branch -D feature/ui-material-ui  # Only if fully merged and not needed
-```
-
-### Step 4: Verify Cleanup
+Verify cleanup:
 
 ```bash
 git worktree list
+git branch -a
 ```
-
-Should show only the main worktree.
 
 ---
 
-## Part 6: Advanced Worktree Workflows
+## Part 7: Advanced Workflow - Iterating on the Winner
 
-### A/B Testing Features
+### Scenario: Refining the Selected Variation
+
+You can use worktrees to try refinements of your chosen design:
 
 ```bash
-# Create worktrees for A/B test variations
-git worktree add ../ContosoUniversity-variant-a -b feature/variant-a
-git worktree add ../ContosoUniversity-variant-b -b feature/variant-b
-
-# Implement different approaches
-# Deploy both for user testing
-# Collect metrics
-# Merge the winning variant
+# Create worktrees for Card Grid refinements
+git worktree add ../ContosoUniversity-cards-animated -b 003-cards-animated
+git worktree add ../ContosoUniversity-cards-condensed -b 003-cards-condensed
 ```
 
-### Bug Fix Without Context Switch
+**First worktree**: Add subtle hover animations and transitions to cards
+**Second worktree**: Try a more condensed card layout with smaller text
+
+Implement both in parallel, test, then merge the best elements from each.
+
+### Scenario: Apply the Pattern to Other Pages
+
+Once you've chosen the best Students page design, apply it to other entities:
 
 ```bash
-# You're working on a feature in main worktree
-# Critical bug reported
+# Create worktrees for Courses and Instructors using the same pattern
+git worktree add ../ContosoUniversity-courses-ui -b 003-courses-enhanced-list
+git worktree add ../ContosoUniversity-instructors-ui -b 003-instructors-enhanced-list
+```
 
-# Create worktree from production branch
+Work on both simultaneously, ensuring consistent design across all entity list pages.
+
+---
+
+## Part 8: Worktrees for Bug Fixes During Development
+
+### Scenario: Critical Bug While Working on Feature
+
+You're working on the UI in a worktree when a critical bug is reported in production:
+
+```bash
+# You're in ../ContosoUniversity-variant-b working on UI
+
+# Create a hotfix worktree from main
 git worktree add ../ContosoUniversity-hotfix -b hotfix/critical-bug
 
-cd ../ContosoUniversity-hotfix
-# Fix the bug
-# Test
-# Commit and push
-
-# Back to your feature work - no context lost
-cd ../ContosoUniversity
+# Open in new VS Code window
+code ../ContosoUniversity-hotfix
 ```
 
-### Code Review Workflow
+In the hotfix window:
+
+1. Fix the bug
+2. Test thoroughly
+3. Commit and push
+4. Merge to main
+5. Remove hotfix worktree
+
+Meanwhile, your feature work remains untouched in the other worktree!
+
+---
+
+## Part 9: Worktrees for Code Review
+
+### Reviewing Pull Requests Without Disrupting Work
 
 ```bash
-# Reviewer creates worktree of PR branch
-git worktree add ../ContosoUniversity-pr-123 -b review/pr-123
+# Someone opens a PR you need to review
+# Create a worktree to check it out
 
-cd ../ContosoUniversity-pr-123
-# Review code
-# Run application
-# Test changes
+git worktree add ../ContosoUniversity-pr-review -b review/pr-123
 
-# Leave comments
-# Remove worktree when done
+# Open in VS Code
+code ../ContosoUniversity-pr-review
+
+# Review, test, leave comments
+# When done, remove worktree
 cd ..
-git worktree remove ContosoUniversity-pr-123
+git worktree remove ContosoUniversity-pr-review
 ```
+
+Your main development work stays intact!
 
 ---
 
 ## Key Takeaways
 
-1. **Parallel Development**: Work on multiple features without losing context
-2. **Easy Comparison**: Run multiple versions side-by-side for A/B testing
-3. **No Stashing**: Keep work-in-progress without commits or stashes
-4. **Review Efficiency**: Checkout PR branches without disrupting current work
-5. **Experimentation**: Try different approaches with easy rollback
+1. **Parallel Experimentation**: Worktrees enable trying multiple approaches without commit/stash churn
+2. **Context Preservation**: Each worktree maintains its own state (open files, terminals, etc.)
+3. **Side-by-Side Comparison**: Run multiple implementations simultaneously for real-time comparison
+4. **Spec-Kit with Worktrees**: Create a base spec first, then modify it independently in each worktree for different approaches
+5. **Clean Workflow**: Easy to merge winners and discard experiments
 
 ## Best Practices
 
-1. **Naming Convention**: Use descriptive worktree directory names
+1. **Naming Convention**: Use descriptive worktree directory names with consistent prefixes
+
    ```bash
-   ../project-feature-name
-   ../project-hotfix-issue-123
+   ../project-variant-a
+   ../project-variant-b
    ```
 
-2. **Cleanup Regularly**: Remove worktrees you're done with
+2. **Port Management**: Use different ports for simultaneous running
+
+   ```bash
+   PORT=3001 npm start  # Worktree 1
+   PORT=3002 npm start  # Worktree 2
+   ```
+
+3. **Clean Up Regularly**: Remove worktrees when done
+
    ```bash
    git worktree prune
+   git worktree list
    ```
 
-3. **Port Management**: Use different ports for simultaneous running apps
+4. **Document Decisions**: Keep evaluation notes in your spec
    ```bash
-   # .env.local in each React worktree
-   PORT=3001  # worktree 1
-   PORT=3002  # worktree 2
+   /speckit.clarify Document why we chose the card grid layout over the table and sidebar approaches, including usability insights and trade-offs considered.
    ```
-
-4. **Branch Protection**: Don't delete branches with active worktrees
-   ```bash
-   # Git prevents this by default
-   ```
-
-5. **Documentation**: Keep notes on what each worktree is for
 
 ## Challenge Extensions
 
-1. **Multi-Backend Worktrees**: Test different database providers in parallel
-2. **Performance Testing**: Compare build times and bundle sizes across worktrees
-3. **Feature Flags**: Implement feature flags and test variations
-4. **CI/CD Integration**: Set up CI to test multiple worktree branches
+1. **A/B Testing**: Create worktrees for user-facing variations and deploy both for real user testing
+2. **Performance Comparison**: Benchmark different UI implementations objectively (load time, bundle size, render performance)
+3. **Responsive Design Variations**: Try different mobile layouts in parallel worktrees
+4. **Accessibility Experiments**: Test different approaches to keyboard navigation and screen reader support
 
 ## Troubleshooting
 
-### Can't Create Worktree
+### Can't Create Worktree - Branch Already Checked Out
 
-**Error:** `fatal: 'branch-name' is already checked out`
+**Error**: `fatal: 'branch-name' is already checked out`
 
-**Solution:** A branch can only be checked out in one worktree at a time.
+**Solution**: A branch can only be checked out in one worktree at a time. Use a different branch name or remove the existing worktree.
 
-### Worktree Not Removed
+### Worktree Directory Deleted Manually
+
+If you deleted the directory without using `git worktree remove`:
 
 ```bash
-# Force remove if directory was deleted manually
 git worktree prune
 ```
 
-### Port Conflicts
+This cleans up references to deleted worktrees.
 
-Make sure each running instance uses a unique port:
+### Spec Changes Not Reflected in Other Worktrees
+
+Specs are per-worktree. If you update a spec in one worktree and want it in others:
+
 ```bash
-# Backend
-dotnet run --urls "https://localhost:7054;https://localhost:7055"
-
-# Frontend
-PORT=3001 npm start
+# From worktree with updated spec
+cp -r specs ../other-worktree/
 ```
+
+Or commit and pull in each worktree.
 
 ## Resources
 
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
 - [Git Worktree Documentation](https://git-scm.com/docs/git-worktree)
 - [Pro Git Book - Worktrees](https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging)
-- [Git Worktree Tutorial](https://morgan.cugerone.com/blog/workarounds-to-git-worktree-using-bare-repository-and-cannot-fetch-remote-branches/)
 
 ---
 
 ## Next Steps
 
-Explore the optional feature labs (Labs 4-9) to add new functionality to Contoso University using the Spec-Kit and worktree workflows you've learned!
-
+Continue to the optional feature labs (Labs 4-9) to add new functionality using the Spec-Kit and worktree workflows you've mastered!
