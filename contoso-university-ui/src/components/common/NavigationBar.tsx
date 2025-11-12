@@ -10,8 +10,10 @@ const NavigationBar: React.FC = () => {
     { path: '/', label: 'Home' },
     { path: '/students', label: 'Students' },
     { path: '/courses', label: 'Courses' },
+    { path: '/enrollments', label: 'Enrollments' },
     { path: '/departments', label: 'Departments' },
     { path: '/instructors', label: 'Instructors' },
+    { path: '/statistics', label: 'Statistics' },
   ];
 
   const isActive = (path: string): boolean => {

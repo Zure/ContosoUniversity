@@ -14,8 +14,12 @@ builder.Services.AddDbContext<SchoolContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Register application services - T031
+// Register application services - T031, T058, T083, T108, T134
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IInstructorService, InstructorService>();
 
 // Add API Controllers
 builder.Services.AddControllers();
