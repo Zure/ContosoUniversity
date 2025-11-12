@@ -2,22 +2,103 @@
 
 ## Overview
 
-Add functionality to assign instructors to courses, creating a many-to-many relationship. This allows multiple instructors to teach multiple courses, and courses to have multiple instructors.
+Use Spec-Kit to add course-instructor assignment functionality. This lab demonstrates using the spec-kit process for a feature that involves database modeling, business logic, and UI - all driven by specifications.
 
 ## Learning Objectives
 
-- Implement many-to-many relationships in Entity Framework Core
-- Create join tables and navigation properties
-- Build UI for managing relationships
-- Use Spec-Kit for feature development
-- Handle data validation and business rules
+- Specify database relationships and business rules clearly
+- Let Copilot implement EF Core relationships from specs
+- Define UI requirements that Copilot can build
+- Use spec-kit for complete feature development
+- Practice validation through success criteria
 
 ## Prerequisites
 
-- Completed Lab 1 (basic setup)
+- Completed Lab 1 (spec-kit basics)
 - GitHub Copilot enabled in your IDE
-- Understanding of Entity Framework relationships
-- Completed Lab 2 (optional, for API implementation)
+- Understanding of many-to-many relationships
+- Completed Lab 2 or using Razor Pages
+
+## Duration
+
+Approximately 90-120 minutes
+
+---
+
+## Part 1: Specify the Feature
+
+### Step 1: Define the Requirement
+
+```bash
+/speckit.specify Implement course-instructor assignments where courses can have multiple instructors and instructors can teach multiple courses. Include UI to manage assignments, validation to prevent duplicates, and proper cascade delete behavior.
+```
+
+### Step 2: Clarify Business Rules
+
+```bash
+/speckit.clarify Define all business rules: Can a course have zero instructors? Maximum instructors per course? What happens when an instructor is deleted? When a course is deleted? Prerequisites or constraints on assignments?
+```
+
+### Step 3: Plan Implementation
+
+```bash
+/speckit.plan Create a comprehensive plan including: database schema updates (CourseAssignment join table), Entity Framework configuration, API endpoints or page models, UI components (assignment management interface), validation logic, and testing strategy.
+```
+
+---
+
+## Part 2: Implement the Feature
+
+### Step 1: Generate Tasks
+
+```bash
+/speckit.tasks
+```
+
+### Step 2: Start Implementation
+
+```bash
+/speckit.implement
+```
+
+Copilot will create:
+
+- CourseAssignment entity with composite key
+- EF Core configuration for many-to-many
+- Database migration
+- Page models or API controllers
+- UI for managing assignments
+- Validation logic
+
+### Step 3: Guide Specific Requirements
+
+```
+For the course edit page, show a list of all instructors with checkboxes. Pre-check currently assigned instructors. On save, update assignments based on checked state.
+```
+
+---
+
+## Part 3: Test and Validate
+
+### Test Scenarios
+
+1. **Assign instructor to course**: Verify it appears on both course and instructor pages
+2. **Remove assignment**: Confirm removal from both sides
+3. **Delete instructor**: Ensure their assignments are removed
+4. **Delete course**: Ensure its assignments are removed
+5. **Prevent duplicate**: Try assigning same instructor twice
+
+---
+
+## Key Takeaways
+
+1. **Relationship Specs**: Clearly specify cardinality and constraints
+2. **Business Rules First**: Define rules before implementation
+3. **Bidirectional Testing**: Test from both sides of relationship
+
+## Next Steps
+
+Continue to **Lab 7: Course Scheduling** to add temporal data!
 
 ## Duration
 

@@ -2,22 +2,97 @@
 
 ## Overview
 
-Extend the Contoso University application to include course scheduling functionality. Add start/end dates, meeting times, and class locations to courses. This lab demonstrates using Spec-Kit with GitHub Copilot to add temporal data to an existing system.
+Use Spec-Kit to add course scheduling with dates, times, and locations. This lab shows how to specify complex temporal features and business rules, letting Copilot handle the implementation details.
 
 ## Learning Objectives
 
-- Model temporal data in Entity Framework Core
-- Use Spec-Kit to plan feature additions systematically
-- Implement date/time validation and business rules
-- Handle timezone considerations
-- Build intuitive scheduling UI with GitHub Copilot
+- Specify temporal data models and business rules
+- Define conflict detection requirements clearly
+- Let Copilot implement complex date/time logic
+- Use specifications to handle edge cases
+- Validate scheduling features against criteria
 
 ## Prerequisites
 
-- Completed Lab 1 (basic setup)
+- Completed Lab 1 (spec-kit basics)
 - GitHub Copilot enabled in your IDE
-- Basic understanding of date/time handling
-- Completed Lab 6 (optional, for instructor assignments)
+- Understanding of temporal data
+- Completed Lab 6 (optional)
+
+## Duration
+
+Approximately 90-120 minutes
+
+---
+
+## Part 1: Specify Scheduling Requirements
+
+### Step 1: Define the Feature
+
+```bash
+/speckit.specify Add course scheduling with semesters, meeting times (days/times), locations, and conflict detection. Courses should have start/end dates, recurring meeting patterns (e.g., MWF 10-11am), room assignments, and validation to prevent instructor and room double-booking.
+```
+
+### Step 2: Clarify Temporal Logic
+
+```bash
+/speckit.clarify How should we handle timezones? Use DateTime or DateTimeOffset? Define the data model for semesters, course offerings (specific instance of a course in a term), meeting times (recurring patterns), and locations. Research best practices for academic scheduling.
+```
+
+### Step 3: Specify Conflict Detection
+
+```bash
+/speckit.clarify Define conflict detection rules: What constitutes a conflict? Same instructor, overlapping time? Same room, overlapping time? How to check for overlaps efficiently? Edge cases like courses spanning midnight or daylight saving transitions?
+```
+
+---
+
+## Part 2: Plan and Implement
+
+### Step 1: Create Implementation Plan
+
+```bash
+/speckit.plan Create a plan for scheduling including: new entities (Semester, CourseOffering, MeetingTime, Location), conflict detection service, scheduling validation, UI for creating course offerings with meeting times, calendar/schedule views, and testing approach for edge cases.
+```
+
+### Step 2: Generate and Execute Tasks
+
+```bash
+/speckit.tasks
+/speckit.implement
+```
+
+Copilot will create the entire scheduling system based on your spec.
+
+### Step 3: Guide Complex Logic
+
+```
+For conflict detection, create a SchedulingService with a method CheckConflicts(courseOffering) that queries for overlapping times using LINQ. Consider only the same semester and check both day-of-week and time-range overlaps.
+```
+
+---
+
+## Part 3: Test Scheduling
+
+### Test Scenarios
+
+1. **Create offering without conflicts**: Should succeed
+2. **Create with instructor conflict**: Should be prevented
+3. **Create with room conflict**: Should be prevented
+4. **Multiple meeting times**: Course meets MWF and also has Thu lab
+5. **Edge cases**: Midnight spanning, DST transitions
+
+---
+
+## Key Takeaways
+
+1. **Complex Logic in Specs**: Temporal logic specified, not coded manually
+2. **Edge Cases Upfront**: Specify edge cases in requirements
+3. **Validation-First**: Define validation rules before implementation
+
+## Next Steps
+
+Continue to **Lab 8: Student Course Registration** to let students enroll!
 
 ## Duration
 
@@ -31,7 +106,7 @@ Approximately 90-120 minutes
 
 ```bash
 git checkout main
-git pull  
+git pull
 git checkout -b feature/course-scheduling
 ```
 
@@ -40,7 +115,7 @@ git checkout -b feature/course-scheduling
 Ask GitHub Copilot Chat:
 
 ```
-Help me create a comprehensive specification for adding course scheduling 
+Help me create a comprehensive specification for adding course scheduling
 to Contoso University. Save it as specs/007-course-scheduling/spec.md.
 
 The specification should include:
@@ -177,7 +252,7 @@ Create a service class ConflictDetectionService with methods to check:
 
 Use LINQ to query overlapping time slots. Consider:
 - Days of week overlap
-- Time range overlap  
+- Time range overlap
 - Same semester/term
 
 Show me the implementation with proper error handling.
@@ -203,7 +278,7 @@ Show me the implementation.
 ### Step 1: Create Scheduling Form Specification
 
 ```
-Create a UI specification (specs/007-course-scheduling/schedule-form-ui.md) for 
+Create a UI specification (specs/007-course-scheduling/schedule-form-ui.md) for
 the course offering creation/edit form. It should include:
 
 1. Semester selection dropdown
@@ -408,8 +483,8 @@ Help me implement this.
 
 ```
 Ask GitHub Copilot:
-"I'm having timezone issues with course meeting times. 
-Should I use DateTime or DateTimeOffset? How do I handle 
+"I'm having timezone issues with course meeting times.
+Should I use DateTime or DateTimeOffset? How do I handle
 different timezones for online courses?"
 ```
 
@@ -430,4 +505,3 @@ Help me optimize the LINQ queries and add appropriate database indexes."
 ---
 
 Continue to **Lab 8: Course Registration** to allow students to enroll in scheduled courses!
-

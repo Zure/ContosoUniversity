@@ -2,22 +2,116 @@
 
 ## Overview
 
-Create a personalized semester view that shows students their enrolled courses in an intuitive, visual format. This dashboard includes upcoming assignments, grade tracking, and schedule visualization - building a complete student portal experience.
+Use Spec-Kit to create a personalized student dashboard with visual schedules and analytics. This final lab shows how to specify data visualizations and user experience requirements for Copilot to implement.
 
 ## Learning Objectives
 
-- Build user-specific dashboards with Spec-Kit
-- Implement data aggregation and visualization
-- Create responsive calendar/schedule views
-- Use GitHub Copilot for UI-heavy features
-- Apply modern dashboard design patterns
+- Specify dashboard layouts and data requirements
+- Define visualization needs in specifications
+- Let Copilot create responsive calendar views
+- Use specs for personalization features
+- Complete the spec-kit learning journey
 
 ## Prerequisites
 
-- Completed Lab 1 (basic setup)
+- Completed Lab 1 (spec-kit basics)
 - GitHub Copilot enabled in your IDE
-- Completed Lab 8 (or at least have enrollments working)
-- Completed Lab 5 (recommended for UI components)
+- Completed Lab 8 (registration system)
+- UI modernization helpful
+
+## Duration
+
+Approximately 90-120 minutes
+
+---
+
+## Part 1: Specify the Dashboard
+
+### Step 1: Define Dashboard Requirements
+
+```bash
+/speckit.specify Create a personalized student semester dashboard showing enrolled courses, weekly visual schedule, current grades, GPA calculation, quick actions, and academic progress. Design should be responsive, print-friendly, and accessible.
+```
+
+### Step 2: Specify Data Requirements
+
+```bash
+/speckit.clarify What data does the dashboard need? Student enrollments for selected semester, course details (time, location, instructor), grade data, calculated stats (GPA, credits), historical semesters for comparison. How should data be aggregated efficiently?
+```
+
+### Step 3: Specify Visualizations
+
+```bash
+/speckit.clarify Design the visual schedule: weekly calendar grid (Mon-Fri, 8am-6pm), course blocks in time slots, color-coding by department, tooltips with details, responsive (switch to list on mobile). Include mockup or wireframe description.
+```
+
+---
+
+## Part 2: Plan and Implement
+
+### Step 1: Create Dashboard Plan
+
+```bash
+/speckit.plan Create a plan including: dashboard service layer for data aggregation, view models/DTOs, API endpoints or page model, React components or Razor views, weekly schedule visualization, GPA calculator, semester selector, responsive design, and accessibility features.
+```
+
+### Step 2: Implement Dashboard
+
+```bash
+/speckit.tasks
+/speckit.implement
+```
+
+Copilot creates the complete dashboard based on your specifications.
+
+### Step 3: Guide Visual Components
+
+```
+For the weekly schedule, use CSS Grid with 5 columns (days) and rows for each hour. Position course blocks with absolute positioning calculated from start/end times. Use different background colors for each course.
+```
+
+---
+
+## Part 3: Validate and Refine
+
+### Validation Checklist
+
+- [ ] Dashboard loads with current semester
+- [ ] Semester selector works
+- [ ] Weekly schedule displays accurately
+- [ ] Course cards show correct information
+- [ ] GPA calculates correctly
+- [ ] Mobile layout responsive
+- [ ] Print version formatted well
+- [ ] Keyboard navigation works
+- [ ] Screen reader accessible
+
+---
+
+## Key Takeaways
+
+1. **Complete Spec-Kit Journey**: You've used spec-kit for everything from upgrades to complex features
+2. **Visualization Specs**: Even visual layouts can be specified for AI implementation
+3. **User Experience in Specs**: UX requirements translate to implementation
+4. **Spec-Driven Development**: Define what, let AI handle how
+
+## Congratulations!
+
+You've completed all labs and mastered the Spec-Kit workflow:
+
+1. **Specify** requirements clearly
+2. **Plan** implementation systematically
+3. **Task** breakdown for execution
+4. **Implement** with AI assistance
+5. **Validate** against success criteria
+
+Apply this process to your own projects!
+
+## Resources
+
+- [Spec-Kit Repository](https://github.com/github/spec-kit)
+- [GitHub Copilot Documentation](https://docs.github.com/copilot)
+- [Spec-Driven Development Guide](https://github.com/github/spec-kit/blob/main/docs/methodology.md)
 
 ## Duration
 
@@ -476,6 +570,7 @@ dotnet run
 ```
 
 Test the complete dashboard:
+
 1. Navigate to student dashboard
 2. Verify current semester displays
 3. Check all enrolled courses shown
@@ -512,7 +607,7 @@ Test the complete dashboard:
 
 ```
 Ask GitHub Copilot:
-"My weekly schedule grid isn't displaying courses correctly. 
+"My weekly schedule grid isn't displaying courses correctly.
 The time slots are off and courses aren't showing in the right positions.
 Help me debug the layout calculation."
 ```
@@ -527,7 +622,7 @@ Help me implement pagination or lazy loading for historical data."
 ### Mobile Schedule Cramped
 
 ```
-"The schedule grid is unusable on mobile devices. Help me create an 
+"The schedule grid is unusable on mobile devices. Help me create an
 alternative mobile-friendly view that shows the same information."
 ```
 
@@ -552,10 +647,10 @@ You've completed all the Contoso University labs! You've learned how to:
 - Work with multiple branches using git worktrees
 
 **Next Steps:**
+
 - Apply these techniques to your own projects
 - Explore the GitHub Spec-Kit repository for more patterns
 - Share your learnings with your team
 - Continue experimenting with AI-assisted development
 
 Thank you for participating in the Migrate and Modernize MicroHack! 🚀
-
