@@ -89,13 +89,11 @@ For the registration submission, use a database transaction. Check all validatio
 
 Complete **Lab 9: Semester View** for the final dashboard feature!
 
-## Duration
+## Resources
 
-Approximately 90-120 minutes
-
----
-
-## Part 1: Planning the Registration System
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
+- [EF Core Concurrency Handling](https://learn.microsoft.com/ef/core/saving/concurrency)
 
 ### Step 1: Create Feature Branch
 

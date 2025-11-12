@@ -100,13 +100,11 @@ For the course edit page, show a list of all instructors with checkboxes. Pre-ch
 
 Continue to **Lab 7: Course Scheduling** to add temporal data!
 
-## Duration
+## Resources
 
-Approximately 90-120 minutes
-
----
-
-## Part 1: Planning with Spec-Kit
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
+- [EF Core Many-to-Many Relationships](https://learn.microsoft.com/ef/core/modeling/relationships/many-to-many)
 
 ### Step 1: Create Feature Branch
 

@@ -185,6 +185,7 @@ Ask Copilot: "My table is slow with 1000+ rows. Help me implement virtualization
 
 ## Resources
 
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
 - [TanStack Table Documentation](https://tanstack.com/table)
 - [React Hook Form](https://react-hook-form.com/)
 - [Recharts](https://recharts.org/)

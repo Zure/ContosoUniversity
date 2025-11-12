@@ -94,13 +94,12 @@ For conflict detection, create a SchedulingService with a method CheckConflicts(
 
 Continue to **Lab 8: Student Course Registration** to let students enroll!
 
-## Duration
+## Resources
 
-Approximately 90-120 minutes
-
----
-
-## Part 1: Planning with Spec-Kit
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
+- [.NET DateTime Documentation](https://learn.microsoft.com/dotnet/api/system.datetime)
+- [EF Core Date/Time Best Practices](https://learn.microsoft.com/ef/core/modeling/entity-properties?tabs=data-annotations%2Cwithout-nrt#datetime-handling)
 
 ### Step 1: Create Feature Branch
 

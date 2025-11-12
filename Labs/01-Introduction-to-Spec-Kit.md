@@ -231,6 +231,7 @@ Proceed to **Lab 2: UI Modernization** to learn how to use Spec-Kit for larger a
 
 ## Resources
 
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
+- [Spec-Kit Documentation](https://github.com/github/spec-kit)
 - [.NET 8 Release Notes](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-8)
 - [EF Core 8 Breaking Changes](https://learn.microsoft.com/ef/core/what-is-new/ef-core-8.0/breaking-changes)
-- [Spec-Kit Documentation](https://github.com/github/spec-kit)

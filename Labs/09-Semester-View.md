@@ -97,29 +97,30 @@ For the weekly schedule, use CSS Grid with 5 columns (days) and rows for each ho
 
 ## Congratulations!
 
-You've completed all labs and mastered the Spec-Kit workflow:
+You've completed all the Contoso University labs! You've learned how to:
 
-1. **Specify** requirements clearly
-2. **Plan** implementation systematically
-3. **Task** breakdown for execution
-4. **Implement** with AI assistance
-5. **Validate** against success criteria
+- Use GitHub Spec-Kit for spec-driven development
+- Leverage GitHub Copilot for rapid feature implementation
+- Modernize applications with current best practices
+- Build complex, user-facing features systematically
+- Work with multiple branches using git worktrees
 
-Apply this process to your own projects!
+**Next Steps:**
+
+- Apply these techniques to your own projects
+- Explore the GitHub Spec-Kit repository for more patterns
+- Share your learnings with your team
+- Continue experimenting with AI-assisted development
+
+Thank you for participating in the Migrate and Modernize MicroHack! 🚀
 
 ## Resources
 
+- [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
 - [Spec-Kit Repository](https://github.com/github/spec-kit)
 - [GitHub Copilot Documentation](https://docs.github.com/copilot)
-- [Spec-Driven Development Guide](https://github.com/github/spec-kit/blob/main/docs/methodology.md)
-
-## Duration
-
-Approximately 90-120 minutes
-
----
-
-## Part 1: Planning with Spec-Kit
+- [Full Calendar](https://fullcalendar.io/)
+- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 
 ### Step 1: Create Feature Branch
 
