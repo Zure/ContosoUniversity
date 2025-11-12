@@ -18,10 +18,100 @@ In this lab, you'll use Spec-Kit with GitHub Copilot to plan and execute a signi
 - Node.js 18+ and npm installed
 - Basic React and TypeScript knowledge helpful
 - GitHub Copilot enabled in your IDE
+- VS Code with MCP support (recommended)
 
 ## Duration
 
-Approximately 2-3 hours
+Approximately 1-1,5 hours
+
+---
+
+## Setup: Installing MCP Servers
+
+Before starting the main lab, set up two MCP servers that will help you access up-to-date documentation and library information.
+
+### What are MCP Servers?
+
+Model Context Protocol (MCP) servers provide AI assistants with real-time access to external data sources and tools. For this lab, we'll use:
+
+1. **Microsoft Docs MCP Server**: Access to Microsoft Learn documentation for .NET, ASP.NET Core, etc.
+2. **Context7 MCP Server**: Access to library documentation for React, shadcn/ui, Tailwind CSS, etc.
+
+### Installing Microsoft Docs MCP Server
+
+#### For VS Code
+
+1. Install the MCP extension for VS Code (if not already installed):
+
+   - Open VS Code
+   - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+   - Type "Extensions: Install Extensions"
+   - Search for "Model Context Protocol" and install
+
+2. Add the Microsoft Docs MCP server to your VS Code settings:
+   - Open VS Code settings JSON: `Cmd+Shift+P` → "Preferences: Open User Settings (JSON)"
+   - Add to the `mcpServers` configuration:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "microsoft-docs": {
+        "command": "npx",
+        "args": ["-y", "@microsoft/docs-mcp-server"]
+      }
+    }
+  }
+}
+```
+
+### Installing Context7 MCP Server
+
+1. Add Context7 to your MCP configuration in VS Code settings JSON:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "microsoft-docs": {
+        "command": "npx",
+        "args": ["-y", "@microsoft/docs-mcp-server"]
+      },
+      "context7": {
+        "command": "npx",
+        "args": ["-y", "@context7/mcp-server"]
+      }
+    }
+  }
+}
+```
+
+### Alternative: Claude Desktop Configuration
+
+If you're using Claude Desktop instead of VS Code, configure MCP servers in `~/Library/Application Support/Claude/claude_desktop_config.json` (Mac) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "microsoft-docs": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/docs-mcp-server"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    }
+  }
+}
+```
+
+### Verify Installation
+
+1. Restart VS Code or Claude Desktop
+2. You should see the MCP servers appear in the tools menu or sidebar
+3. Test by asking: "What MCP servers are available?"
+
+You should see both `microsoft-docs` and `context7` listed.
 
 ---
 
@@ -29,10 +119,23 @@ Approximately 2-3 hours
 
 ### Step 1: Start with Spec-Kit
 
-Use the `/speckit.specify` command to create your specification:
+**Important**: Before creating your specification, leverage the MCP servers you installed to get the latest information:
+
+```bash
+# Get latest ASP.NET Core API documentation from Microsoft Docs MCP
+Use the microsoft-docs MCP server to retrieve current best practices for ASP.NET Core Web API development, including REST conventions, CORS configuration, and Swagger/OpenAPI setup.
+
+# Get latest React and TypeScript patterns from Context7
+Use the context7 MCP server to retrieve documentation for React (latest version), TypeScript integration patterns, and recommended project structure for SPA applications.
+```
+
+Now use the `/speckit.specify` command to create your specification:
 
 ````bash
 /speckit.specify Migrate the Contoso University UI from Razor Pages to a React SPA with a REST API backend. Focus on separating frontend and backend concerns, maintaining all existing CRUD functionality, and enabling future mobile app development.
+
+Use the Microsoft Docs MCP server to reference current ASP.NET Core Web API best practices.
+Use the Context7 MCP server to reference current React and TypeScript patterns.
 
 ```markdown
 ````
@@ -83,11 +186,29 @@ Review the generated `specs/002-**/plan.md`. It should break down the work into 
 
 ### Step 2: Research Best Practices
 
-Spec-Kit may generate `specs/002-**/research.md` automatically, or you can request it:
+Use both MCP servers to gather comprehensive information:
 
 ```bash
-/speckit.clarify Research best practices for ASP.NET Core REST APIs, React TypeScript patterns, and state management with React Query. Include examples of DTO patterns and API versioning strategies.
+# Get Microsoft's latest guidance on ASP.NET Core APIs
+/speckit.clarify Use the microsoft-docs MCP server to research:
+- Latest ASP.NET Core REST API best practices
+- DTO patterns and AutoMapper configuration
+- CORS setup for SPA applications
+- Swagger/OpenAPI documentation standards
+- API versioning strategies
+- Error handling and validation patterns
+
+# Get React ecosystem best practices
+/speckit.clarify Use the context7 MCP server to research:
+- Current React TypeScript project setup
+- React Query (TanStack Query) for data fetching
+- React Router v6 patterns
+- Component composition patterns
+- State management recommendations
+- Form handling with React Hook Form
 ```
+
+Spec-Kit will gather this information and potentially generate `specs/002-**/research.md` with findings from both MCP servers.
 
 ---
 
@@ -176,16 +297,39 @@ npm start
 
 ### Step 1: Specify the Design System Setup
 
-Now that your React app is functional, add a modern design system:
+Now that your React app is functional, add a modern design system using the latest library information:
 
 ```bash
-/speckit.specify Set up Tailwind CSS and shadcn/ui in the React application. Configure a professional design system with cohesive color palette, typography scale, and reusable component patterns. Install essential shadcn/ui components (Button, Input, Card, Table) and create a base layout with navigation.
+# First, get the latest shadcn/ui and Tailwind CSS information
+Use the context7 MCP server to retrieve:
+- Latest shadcn/ui installation and configuration guide
+- Tailwind CSS v3+ setup for React applications
+- shadcn/ui component catalog and usage patterns
+- Best practices for theming and customization
+
+# Then create your specification
+/speckit.specify Set up Tailwind CSS and shadcn/ui in the React application. Configure a professional design system with cohesive color palette, typography scale, and reusable component patterns. Install essential shadcn/ui components (Button, Input, Card, Table, Select, Form) and create a base layout with navigation. Use the latest installation methods and configuration patterns from the context7 MCP server.
 ```
 
 ### Step 2: Plan and Implement
 
 ```bash
-/speckit.plan Create a setup plan for Tailwind CSS and shadcn/ui including: installation steps, configuration, theme customization, component installation, and updating one page (Students) as an example.
+# Get comprehensive setup guidance
+Use the context7 MCP server to get detailed information about:
+- shadcn/ui CLI installation and initialization
+- Tailwind configuration for shadcn/ui
+- Component installation commands
+- Theme customization best practices
+
+# Create your plan
+/speckit.plan Create a setup plan for Tailwind CSS and shadcn/ui including:
+- Installation steps using the latest CLI tools
+- Configuration for Vite/Create React App
+- Theme customization with design tokens
+- Component installation (Button, Input, Card, Table, Select, Form, Dialog)
+- Update the Students page as a reference implementation
+
+Use guidance from the context7 MCP server for all setup steps.
 
 /speckit.tasks
 /speckit.implement
@@ -193,11 +337,12 @@ Now that your React app is functional, add a modern design system:
 
 Copilot will:
 
-- Install and configure Tailwind CSS
-- Initialize shadcn/ui with proper configuration
-- Set up design tokens (colors, fonts, spacing)
-- Install base components (Button, Input, Card, Table, Select)
+- Install and configure Tailwind CSS with the latest version
+- Initialize shadcn/ui using the official CLI
+- Set up design tokens (colors, fonts, spacing) following shadcn/ui conventions
+- Install base components using the shadcn CLI
 - Update the Students page to use the new components
+- Ensure TypeScript types are properly configured
 
 ### Step 3: Verify Design System
 
@@ -311,6 +456,7 @@ Merge the current branch into main branch.
 3. **AI-Assisted Implementation**: Copilot implements from specs, not ad-hoc requests
 4. **Validation at Each Step**: Test and validate against success criteria throughout
 5. **Documentation as Code**: Specs serve as living documentation of architectural decisions
+6. **MCP Servers for Current Information**: Leverage microsoft-docs and context7 MCP servers to access the latest library documentation and best practices, ensuring your implementation uses current patterns and versions
 
 ## What You Learned About Spec-Kit
 
@@ -336,18 +482,58 @@ For each extension, follow the same spec-kit process!
 
 ## Troubleshooting
 
-If you encounter issues, ask Copilot for help with context:
+When you encounter issues, leverage your MCP servers for the most current solutions:
+
+### API Issues
 
 ```
 I'm getting a CORS error when the React app calls the API.
-Review the spec at specs/002-**/spec.md and help me troubleshoot the CORS configuration in Program.cs.
+
+Use the microsoft-docs MCP server to:
+1. Get the latest ASP.NET Core CORS configuration guidance
+2. Review current best practices for SPA CORS setup
+3. Check for any recent security updates
+
+Then review the spec at specs/002-**/spec.md and help me update the CORS configuration in Program.cs with the latest approach.
 ```
 
-Or:
+### React/UI Issues
 
 ```
 The pagination isn't working correctly in the Students list.
-Help me debug the API endpoint and React component based on our implementation plan.
+
+Use the context7 MCP server to:
+1. Get current React state management patterns for pagination
+2. Review React Query pagination documentation
+3. Find examples of table pagination with React
+
+Help me debug the API endpoint and React component based on current best practices.
+```
+
+### shadcn/ui Issues
+
+```
+I'm having trouble with the shadcn/ui Form component validation.
+
+Use the context7 MCP server to:
+1. Get the latest shadcn/ui Form component documentation
+2. Review React Hook Form integration patterns
+3. Find validation examples with Zod
+
+Update my Students form component following the current recommended patterns.
+```
+
+### Getting Latest Library Versions
+
+```
+What versions of React, Tailwind, and shadcn/ui should I be using?
+
+Use the context7 MCP server to:
+1. Check the latest stable versions of React
+2. Get current Tailwind CSS version recommendations
+3. Review shadcn/ui compatibility requirements
+
+Provide installation commands with the correct versions.
 ```
 
 ## Next Steps
@@ -358,6 +544,11 @@ Proceed to **Lab 3: Git Worktrees** to learn how to work on multiple feature var
 
 - [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
 - [Spec-Kit Documentation](https://github.com/github/spec-kit)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
+- [Microsoft Docs MCP Server](https://github.com/microsoft/docs-mcp-server)
+- [Context7 MCP Server](https://context7.com/)
 - [React Documentation](https://react.dev/)
 - [React Query](https://tanstack.com/query/latest)
 - [ASP.NET Core Web API](https://learn.microsoft.com/aspnet/core/web-api)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
