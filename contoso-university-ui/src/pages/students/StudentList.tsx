@@ -7,6 +7,11 @@ import { usePagination } from '../../hooks/usePagination';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Pagination from '../../components/common/Pagination';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Plus, Search, X } from 'lucide-react';
 import type { Student } from '../../types/student';
 
 const StudentList: React.FC = () => {
@@ -85,147 +90,125 @@ const StudentList: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Students</h1>
-        <Link
-          to="/students/create"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <svg
-            className="mr-2 h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Create New Student
-        </Link>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Students</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage student records and enrollments
+          </p>
+        </div>
+        <Button asChild>
+          <Link to="/students/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Create New Student
+          </Link>
+        </Button>
       </div>
 
-      {/* Search form */}
-      <div className="mb-6">
-        <form onSubmit={handleSearch} className="flex gap-2">
-          <input
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search by name..."
-            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Search
-          </button>
-          {searchString && (
-            <button
-              type="button"
-              onClick={handleClearSearch}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              Clear
-            </button>
-          )}
-        </form>
-      </div>
+      {/* Search Card */}
+      <Card>
+        <CardContent className="pt-6">
+          <form onSubmit={handleSearch} className="flex gap-2">
+            <div className="flex-1">
+              <Input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search by name..."
+              />
+            </div>
+            <Button type="submit">
+              <Search className="mr-2 h-4 w-4" />
+              Search
+            </Button>
+            {searchString && (
+              <Button type="button" variant="outline" onClick={handleClearSearch}>
+                <X className="mr-2 h-4 w-4" />
+                Clear
+              </Button>
+            )}
+          </form>
+        </CardContent>
+      </Card>
 
       {error && <ErrorMessage message={error} onRetry={fetchStudents} className="mb-6" />}
 
-      {/* Results summary */}
-      <div className="mb-4 text-sm text-gray-600">
+      {/* Results Summary */}
+      <div className="text-sm text-muted-foreground">
         Showing {students.length} of {totalCount} students
         {searchString && ` (filtered by "${searchString}")`}
       </div>
 
-      {/* Students table */}
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Last Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                First Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Enrollment Date
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Enrollments
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+      {/* Students Table Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Student List</CardTitle>
+          <CardDescription>
+            View and manage all enrolled students
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Last Name</TableHead>
+                <TableHead>First Name</TableHead>
+                <TableHead>Enrollment Date</TableHead>
+                <TableHead>Enrollments</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
             {students.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                   {searchString ? 'No students found matching your search.' : 'No students found.'}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               students.map((student) => (
-                <tr key={student.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {student.lastName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {student.firstMidName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(student.enrollmentDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {student.enrollmentCount}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    <Link
-                      to={`/students/${student.id}`}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      Details
-                    </Link>
-                    <Link
-                      to={`/students/edit/${student.id}`}
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(student.id, student.fullName)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <TableRow key={student.id}>
+                  <TableCell className="font-medium">{student.lastName}</TableCell>
+                  <TableCell>{student.firstMidName}</TableCell>
+                  <TableCell>{new Date(student.enrollmentDate).toLocaleDateString()}</TableCell>
+                  <TableCell>{student.enrollmentCount}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link to={`/students/${student.id}`}>Details</Link>
+                      </Button>
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link to={`/students/edit/${student.id}`}>Edit</Link>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(student.id, student.fullName)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
-      </div>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-6">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            hasPrevious={hasPrevious}
-            hasNext={hasNext}
-          />
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+        />
       )}
     </div>
   );
