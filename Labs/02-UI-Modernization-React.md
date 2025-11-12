@@ -86,28 +86,9 @@ Model Context Protocol (MCP) servers provide AI assistants with real-time access
 }
 ```
 
-### Alternative: Claude Desktop Configuration
-
-If you're using Claude Desktop instead of VS Code, configure MCP servers in `~/Library/Application Support/Claude/claude_desktop_config.json` (Mac) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
-
-```json
-{
-  "mcpServers": {
-    "microsoft-docs": {
-      "command": "npx",
-      "args": ["-y", "@microsoft/docs-mcp-server"]
-    },
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@context7/mcp-server"]
-    }
-  }
-}
-```
-
 ### Verify Installation
 
-1. Restart VS Code or Claude Desktop
+1. Restart VS Code
 2. You should see the MCP servers appear in the tools menu or sidebar
 3. Test by asking: "What MCP servers are available?"
 
