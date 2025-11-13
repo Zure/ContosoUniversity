@@ -1,13 +1,17 @@
-// T069: Pagination component with Button components and design system
+// Enhanced pagination component with page jumping and size selection
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  pageSize: number;
+  totalCount: number;
   onPageChange: (page: number) => void;
+  onPageSizeChange?: (size: number) => void;
   hasPrevious: boolean;
   hasNext: boolean;
   className?: string;
@@ -16,7 +20,10 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
+  pageSize,
+  totalCount,
   onPageChange,
+  onPageSizeChange,
   hasPrevious,
   hasNext,
   className = '',
@@ -67,73 +74,117 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <nav
-      className={cn(
-        'flex items-center justify-between border-t border-border px-4 sm:px-0',
-        className
+    <div className={cn('flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between', className)}>
+      {/* Page Size Selector */}
+      {onPageSizeChange && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Items per page:</span>
+          <Select
+            value={pageSize.toString()}
+            onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
+          >
+            <SelectTrigger className="w-[100px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       )}
-      aria-label="Pagination"
-    >
-      <div className="flex w-0 flex-1">
+
+      {/* Page Navigation */}
+      <nav
+        className="flex items-center gap-1"
+        aria-label="Pagination"
+      >
+        {/* First Page Button */}
+        <Button
+          onClick={() => onPageChange(1)}
+          disabled={!hasPrevious}
+          variant="outline"
+          size="sm"
+          aria-label="First page"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </Button>
+
+        {/* Previous Page Button */}
         <Button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={!hasPrevious}
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="border-t-2 border-transparent pr-1 pt-4"
           aria-label="Previous page"
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Previous
+          <ChevronLeft className="h-4 w-4" />
         </Button>
-      </div>
-      <div className="hidden md:flex gap-1">
-        {getPageNumbers().map((page, index) => {
-          if (page === '...') {
+
+        {/* Page Numbers */}
+        <div className="hidden sm:flex gap-1">
+          {getPageNumbers().map((page, index) => {
+            if (page === '...') {
+              return (
+                <span
+                  key={`ellipsis-${index}`}
+                  className="inline-flex items-center px-4 text-sm font-medium text-muted-foreground"
+                >
+                  ...
+                </span>
+              );
+            }
+
+            const pageNum = page as number;
+            const isCurrent = pageNum === currentPage;
+
             return (
-              <span
-                key={`ellipsis-${index}`}
-                className="inline-flex items-center px-4 pt-4 text-sm font-medium text-muted-foreground"
+              <Button
+                key={pageNum}
+                onClick={() => onPageChange(pageNum)}
+                variant={isCurrent ? 'default' : 'outline'}
+                size="sm"
+                aria-current={isCurrent ? 'page' : undefined}
+                aria-label={`Page ${pageNum}`}
               >
-                ...
-              </span>
+                {pageNum}
+              </Button>
             );
-          }
+          })}
+        </div>
 
-          const pageNum = page as number;
-          const isCurrent = pageNum === currentPage;
+        {/* Current Page Indicator (Mobile) */}
+        <div className="flex sm:hidden items-center px-3">
+          <span className="text-sm text-muted-foreground">
+            {currentPage} / {totalPages}
+          </span>
+        </div>
 
-          return (
-            <Button
-              key={pageNum}
-              onClick={() => onPageChange(pageNum)}
-              variant={isCurrent ? 'default' : 'ghost'}
-              size="sm"
-              className={cn(
-                'border-t-2 pt-4',
-                isCurrent ? 'border-primary' : 'border-transparent'
-              )}
-              aria-current={isCurrent ? 'page' : undefined}
-            >
-              {pageNum}
-            </Button>
-          );
-        })}
-      </div>
-      <div className="flex w-0 flex-1 justify-end">
+        {/* Next Page Button */}
         <Button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={!hasNext}
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="border-t-2 border-transparent pl-1 pt-4"
           aria-label="Next page"
         >
-          Next
-          <ChevronRight className="ml-2 h-4 w-4" />
+          <ChevronRight className="h-4 w-4" />
         </Button>
-      </div>
-    </nav>
+
+        {/* Last Page Button */}
+        <Button
+          onClick={() => onPageChange(totalPages)}
+          disabled={!hasNext}
+          variant="outline"
+          size="sm"
+          aria-label="Last page"
+        >
+          <ChevronsRight className="h-4 w-4" />
+        </Button>
+      </nav>
+    </div>
   );
 };
 

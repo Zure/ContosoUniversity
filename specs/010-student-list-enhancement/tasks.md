@@ -7,6 +7,8 @@
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
+**UI Layout**: Traditional table approach using shadcn/ui Table component for data display, search bar at top with Input component, action buttons with icons (Edit/Delete) in rightmost column, sortable column headers with indicators, and standard pagination controls at bottom.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -24,12 +26,12 @@
 
 **Purpose**: Prepare development environment and verify prerequisites
 
-- [ ] T001 Verify frontend dev server running: `cd contoso-university-ui && npm run dev`
-- [ ] T002 Verify backend API running: `cd ContosoUniversity && dotnet run`
-- [ ] T003 Verify SQL Server container running (Docker or Podman)
-- [ ] T004 Review existing StudentList.tsx implementation in contoso-university-ui/src/pages/students/StudentList.tsx
-- [ ] T005 Review existing shadcn/ui components: Button, Input, Dialog, Select, Table in contoso-university-ui/src/components/ui/
-- [ ] T006 Verify lucide-react icons available (ArrowUp, ArrowDown, ArrowUpDown, Chevrons, Search, X)
+- [x] T001 Verify frontend dev server running: `cd contoso-university-ui && npm run dev`
+- [x] T002 Verify backend API running: `cd ContosoUniversity && dotnet run`
+- [x] T003 Verify SQL Server container running (Docker or Podman)
+- [x] T004 Review existing StudentList.tsx implementation in contoso-university-ui/src/pages/students/StudentList.tsx
+- [x] T005 Review existing shadcn/ui components: Button, Input, Dialog, Select, Table in contoso-university-ui/src/components/ui/
+- [x] T006 Verify lucide-react icons available (ArrowUp, ArrowDown, ArrowUpDown, ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight, Search, X, Pencil, Trash2)
 
 **Checkpoint**: Development environment ready, existing code reviewed
 
@@ -41,9 +43,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until these hooks are complete
 
-- [ ] T007 [P] Create useDebounce hook in contoso-university-ui/src/hooks/useDebounce.ts
-- [ ] T008 [P] Create useStudentListParams hook for URL query param management in contoso-university-ui/src/hooks/useQueryParams.ts
-- [ ] T009 Verify existing usePagination hook in contoso-university-ui/src/hooks/usePagination.ts (confirm setPageSize resets to page 1)
+- [x] T007 [P] Create useDebounce hook in contoso-university-ui/src/hooks/useDebounce.ts
+- [x] T008 [P] Create useStudentListParams hook for URL query param management in contoso-university-ui/src/hooks/useQueryParams.ts
+- [x] T009 Verify existing usePagination hook in contoso-university-ui/src/hooks/usePagination.ts (confirm setPageSize resets to page 1)
 
 **Checkpoint**: Foundation ready - all custom hooks available for user stories
 
@@ -57,15 +59,17 @@
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Add search input state to StudentList.tsx: searchInput, debouncedSearch (using useDebounce hook)
-- [ ] T011 [US1] Update search Card component in StudentList.tsx to use controlled Input with value={searchInput}
-- [ ] T012 [US1] Implement handleSearchChange handler in StudentList.tsx to update searchInput on keystroke
-- [ ] T013 [US1] Update useEffect in StudentList.tsx to trigger fetchStudents when debouncedSearch changes
-- [ ] T014 [US1] Update handleSearchClear handler in StudentList.tsx to reset searchInput and update URL params
-- [ ] T015 [US1] Synchronize search state with URL query params using useStudentListParams hook in StudentList.tsx
-- [ ] T016 [US1] Update results summary in StudentList.tsx to show filtered count when search is active
-- [ ] T017 [US1] Add loading indicator during debounce period in StudentList.tsx
-- [ ] T018 [US1] Update empty state message in StudentList.tsx to show "No students found matching '[term]'" when search has no results
+- [x] T010 [US1] Add search input state to StudentList.tsx: searchInput, debouncedSearch (using useDebounce hook)
+- [x] T011 [US1] Add search bar at top of page in StudentList.tsx using shadcn/ui Input component with Search icon from lucide-react
+- [x] T012 [US1] Implement controlled Input with value={searchInput} and placeholder="Search students by name..."
+- [x] T013 [US1] Implement handleSearchChange handler in StudentList.tsx to update searchInput on keystroke
+- [x] T014 [US1] Update useEffect in StudentList.tsx to trigger fetchStudents when debouncedSearch changes
+- [x] T015 [US1] Add clear button (X icon) to search input when searchInput is not empty
+- [x] T016 [US1] Update handleSearchClear handler in StudentList.tsx to reset searchInput and update URL params
+- [x] T017 [US1] Synchronize search state with URL query params using useStudentListParams hook in StudentList.tsx
+- [x] T018 [US1] Update results summary below search bar to show filtered count when search is active
+- [x] T019 [US1] Add loading indicator during debounce period in StudentList.tsx
+- [x] T020 [US1] Update empty state in table body to show "No students found matching '[term]'" when search has no results
 
 **Checkpoint**: Real-time search fully functional - can search students by name with debouncing
 
@@ -79,14 +83,16 @@
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Create SortableTableHead component in contoso-university-ui/src/components/common/SortableTableHead.tsx
-- [ ] T020 [US2] Add sort state to StudentList.tsx: sortBy, sortDirection (using useStudentListParams for URL sync)
-- [ ] T021 [US2] Implement handleSort function in StudentList.tsx to toggle sort direction and update URL params
-- [ ] T022 [US2] Replace existing TableHead elements with SortableTableHead components in StudentList.tsx table
-- [ ] T023 [US2] Update fetchStudents function in StudentList.tsx to pass sortBy and sortDirection to API (if backend supports)
-- [ ] T024 [US2] If backend doesn't support sorting: Implement client-side sorting with useMemo in StudentList.tsx
-- [ ] T025 [US2] Synchronize sort state with URL query params in StudentList.tsx
-- [ ] T026 [US2] Ensure search + sort work together (sorting applies to filtered results) in StudentList.tsx
+- [x] T021 [P] [US2] Create SortableTableHead component in contoso-university-ui/src/components/common/SortableTableHead.tsx with icons (ArrowUp, ArrowDown, ArrowUpDown)
+- [x] T022 [US2] Add sort state to StudentList.tsx: sortBy, sortDirection (using useStudentListParams for URL sync)
+- [x] T023 [US2] Implement handleSort function in StudentList.tsx to toggle sort direction and update URL params
+- [x] T024 [US2] Replace TableHead elements with SortableTableHead for: Last Name, First Name, Enrollment Date, Enrollments columns
+- [x] T025 [US2] Style SortableTableHead to show sort indicator icons: ArrowUp (asc), ArrowDown (desc), ArrowUpDown (unsorted)
+- [x] T026 [US2] Update fetchStudents function in StudentList.tsx to pass sortBy and sortDirection to API (if backend supports)
+- [x] T027 [US2] If backend doesn't support sorting: Implement client-side sorting with useMemo in StudentList.tsx
+- [x] T028 [US2] Synchronize sort state with URL query params in StudentList.tsx
+- [x] T029 [US2] Ensure search + sort work together (sorting applies to filtered results) in StudentList.tsx
+- [x] T030 [US2] Add hover state to sortable column headers for better UX
 
 **Checkpoint**: Column sorting fully functional - can sort by any column with visual indicators
 
@@ -100,17 +106,22 @@
 
 ### Implementation for User Story 3
 
-- [ ] T027 [P] [US3] Create StudentDeleteDialog component in contoso-university-ui/src/components/features/StudentDeleteDialog.tsx
-- [ ] T028 [US3] Add delete dialog state to StudentList.tsx: deleteDialog { isOpen, studentId, studentName }, isDeleting
-- [ ] T029 [US3] Implement handleDeleteClick handler in StudentList.tsx to open dialog with student details
-- [ ] T030 [US3] Implement handleDeleteConfirm handler in StudentList.tsx to call deleteStudent API and refresh list
-- [ ] T031 [US3] Implement handleDeleteCancel handler in StudentList.tsx to close dialog
-- [ ] T032 [US3] Update Delete button in StudentList.tsx to call handleDeleteClick instead of window.confirm
-- [ ] T033 [US3] Add StudentDeleteDialog component to StudentList.tsx render (at end of component)
-- [ ] T034 [US3] Handle edge case: If deleting last student on page, navigate to previous page in StudentList.tsx
-- [ ] T035 [US3] Add loading state to delete button in StudentDeleteDialog (spinner during API call)
-- [ ] T036 [US3] Verify ARIA labels on action buttons for screen reader accessibility in StudentList.tsx
-- [ ] T037 [US3] Test keyboard navigation: Tab through buttons, Enter to activate, Escape to close dialog
+- [x] T031 [P] [US3] Create StudentDeleteDialog component in contoso-university-ui/src/components/features/StudentDeleteDialog.tsx
+- [x] T032 [US3] Add delete dialog state to StudentList.tsx: deleteDialog { isOpen, studentId, studentName }, isDeleting
+- [x] T033 [US3] Add Actions column as rightmost column in Table with TableHead "Actions"
+- [x] T034 [US3] Add Edit button in Actions column: Button variant="ghost" size="sm" with Pencil icon from lucide-react
+- [x] T035 [US3] Add Delete button in Actions column: Button variant="ghost" size="sm" with Trash2 icon from lucide-react
+- [x] T036 [US3] Implement handleEditClick handler to navigate to student edit page
+- [x] T037 [US3] Implement handleDeleteClick handler in StudentList.tsx to open dialog with student details
+- [x] T038 [US3] Implement handleDeleteConfirm handler in StudentList.tsx to call deleteStudent API and refresh list
+- [x] T039 [US3] Implement handleDeleteCancel handler in StudentList.tsx to close dialog
+- [x] T040 [US3] Update Delete button to call handleDeleteClick instead of window.confirm
+- [x] T041 [US3] Add StudentDeleteDialog component to StudentList.tsx render (at end of component)
+- [x] T042 [US3] Handle edge case: If deleting last student on page, navigate to previous page in StudentList.tsx
+- [x] T043 [US3] Add loading state to delete button in StudentDeleteDialog (spinner during API call)
+- [x] T044 [US3] Add ARIA labels to action buttons: aria-label="Edit {studentName}" and "Delete {studentName}"
+- [x] T045 [US3] Style action buttons with proper spacing and hover states
+- [x] T046 [US3] Test keyboard navigation: Tab through buttons, Enter to activate, Escape to close dialog
 
 **Checkpoint**: Delete confirmation dialog fully functional with accessibility support
 
@@ -124,17 +135,21 @@
 
 ### Implementation for User Story 4
 
-- [ ] T038 [US4] Add getPageNumbers function to Pagination.tsx for ellipsis logic (show first, last, current ± 1 with ellipsis)
-- [ ] T039 [US4] Add page size selector (Select component) to Pagination.tsx with options [10, 25, 50, 100]
-- [ ] T040 [US4] Add onPageSizeChange prop and handler to Pagination.tsx
-- [ ] T041 [US4] Add first page button (ChevronsLeft icon) to Pagination.tsx
-- [ ] T042 [US4] Add last page button (ChevronsRight icon) to Pagination.tsx
-- [ ] T043 [US4] Add page number buttons to Pagination.tsx (using getPageNumbers result)
-- [ ] T044 [US4] Style current page button with variant="default", others with variant="outline" in Pagination.tsx
-- [ ] T045 [US4] Update StudentList.tsx to pass onPageSizeChange handler to Pagination component
-- [ ] T046 [US4] Implement handlePageSizeChange in StudentList.tsx to update URL params and reset to page 1
-- [ ] T047 [US4] Synchronize pageSize with URL query params in StudentList.tsx
-- [ ] T048 [US4] Update responsive layout in Pagination.tsx: stack controls on mobile, row on desktop
+- [x] T047 [US4] Place pagination controls at bottom of table (below TableBody) in StudentList.tsx
+- [x] T048 [US4] Add getPageNumbers function to Pagination.tsx for ellipsis logic (show first, last, current ± 1 with ellipsis)
+- [x] T049 [US4] Add page size selector (Select component) to Pagination.tsx with label "Items per page:" and options [10, 25, 50, 100]
+- [x] T050 [US4] Add onPageSizeChange prop and handler to Pagination.tsx
+- [x] T051 [US4] Add first page button with ChevronsLeft icon to Pagination.tsx
+- [x] T052 [US4] Add previous page button with ChevronLeft icon to Pagination.tsx
+- [x] T053 [US4] Add page number buttons to Pagination.tsx (using getPageNumbers result)
+- [x] T054 [US4] Add next page button with ChevronRight icon to Pagination.tsx
+- [x] T055 [US4] Add last page button with ChevronsRight icon to Pagination.tsx
+- [x] T056 [US4] Style current page button with variant="default", others with variant="outline" in Pagination.tsx
+- [x] T057 [US4] Disable first/previous buttons when hasPrevious is false, last/next when hasNext is false
+- [x] T058 [US4] Update StudentList.tsx to pass onPageSizeChange handler to Pagination component
+- [x] T059 [US4] Implement handlePageSizeChange in StudentList.tsx to update URL params and reset to page 1
+- [x] T060 [US4] Synchronize pageSize with URL query params in StudentList.tsx
+- [x] T061 [US4] Update responsive layout in Pagination.tsx: stack controls on mobile, row on desktop
 
 **Checkpoint**: Enhanced pagination fully functional with page jumping and size selection
 
@@ -148,12 +163,13 @@
 
 ### Implementation for User Story 5
 
-- [ ] T049 [US5] Calculate results range in StudentList.tsx: startIndex = (currentPage - 1) * pageSize + 1, endIndex = min(startIndex + students.length - 1, totalCount)
-- [ ] T050 [US5] Update results summary text in StudentList.tsx to show "Showing {startIndex}-{endIndex} of {totalCount} students"
-- [ ] T051 [US5] Add filtered indicator to results summary when search is active: "(filtered by '{searchTerm}')"
-- [ ] T052 [US5] Show loading indicator in results area during data fetch in StudentList.tsx
-- [ ] T053 [US5] Update results summary styling with text-sm and text-muted-foreground classes
-- [ ] T054 [US5] Handle edge case: When totalCount is 0, show "No students found" instead of "Showing 0-0"
+- [x] T062 [US5] Place results summary between search bar and table in StudentList.tsx
+- [x] T063 [US5] Calculate results range in StudentList.tsx: startIndex = (currentPage - 1) \* pageSize + 1, endIndex = min(startIndex + students.length - 1, totalCount)
+- [x] T064 [US5] Update results summary text in StudentList.tsx to show "Showing {startIndex}-{endIndex} of {totalCount} students"
+- [x] T065 [US5] Add filtered indicator to results summary when search is active: "(filtered by '{searchTerm}')"
+- [x] T066 [US5] Show loading indicator in results area during data fetch in StudentList.tsx
+- [x] T067 [US5] Update results summary styling with text-sm and text-muted-foreground classes
+- [x] T068 [US5] Handle edge case: When totalCount is 0, show "No students found" instead of "Showing 0-0"
 
 **Checkpoint**: Results summary fully functional with filter indicators
 
@@ -165,44 +181,47 @@
 
 ### Responsive Design & Accessibility
 
-- [ ] T055 [P] Add responsive classes to table columns in StudentList.tsx: hide firstName on mobile (md:table-cell), hide enrollmentDate and enrollmentCount on mobile/tablet (lg:table-cell)
-- [ ] T056 [P] Stack action buttons vertically on mobile in StudentList.tsx: flex-col sm:flex-row
-- [ ] T057 [P] Add mobile-friendly layout: show firstName under lastName on small screens in StudentList.tsx
-- [ ] T058 [P] Test keyboard navigation: Tab through all interactive elements, Enter/Space to activate
-- [ ] T059 [P] Verify WCAG 2.1 AA compliance: focus indicators visible (3:1 contrast), ARIA labels present
-- [ ] T060 [P] Test responsive breakpoints: 320px (mobile), 640px (tablet), 1024px (desktop)
+- [x] T069 [P] Make Table responsive: add overflow-x-auto wrapper for horizontal scrolling on small screens
+- [x] T070 [P] Add responsive classes to table columns: hide First Name on mobile (md:table-cell), hide Enrollment Date and Enrollments on mobile/tablet (lg:table-cell)
+- [x] T071 [P] Keep Last Name and Actions columns always visible for essential data
+- [x] T072 [P] Adjust action buttons size for mobile: use icon-only on small screens if needed
+- [x] T073 [P] Test keyboard navigation: Tab through all interactive elements, Enter/Space to activate
+- [x] T074 [P] Verify WCAG 2.1 AA compliance: focus indicators visible (3:1 contrast), ARIA labels present
+- [x] T075 [P] Test responsive breakpoints: 320px (mobile), 640px (tablet), 1024px (desktop)
+- [x] T076 [P] Ensure table remains usable and readable at all breakpoints
 
 ### Performance Optimization
 
-- [ ] T061 [P] Memoize StudentRow component with React.memo in StudentList.tsx
-- [ ] T062 [P] Use useMemo for sorted/filtered student list in StudentList.tsx
-- [ ] T063 [P] Use useCallback for event handlers passed to child components in StudentList.tsx
-- [ ] T064 Verify debounce working: Only 1 API call after typing stops (400ms delay)
-- [ ] T065 Test with 1000 students: Verify no lag, <500ms filter response time
+- [x] T077 [P] Memoize TableRow rendering with React.memo in StudentList.tsx
+- [x] T078 [P] Use useMemo for sorted/filtered student list in StudentList.tsx
+- [x] T079 [P] Use useCallback for event handlers passed to child components in StudentList.tsx
+- [x] T080 Verify debounce working: Only 1 API call after typing stops (400ms delay)
+- [x] T081 Test with 1000 students: Verify no lag, <500ms filter response time
 
 ### URL State Management
 
-- [ ] T066 Initialize state from URL query params on mount in StudentList.tsx
-- [ ] T067 Update URL when state changes: search, sort, page, pageSize
-- [ ] T068 Test browser back/forward buttons: Verify state restores correctly
-- [ ] T069 Test bookmarkability: Copy URL, paste in new tab, verify state restored
+- [x] T082 Initialize state from URL query params on mount in StudentList.tsx
+- [x] T083 Update URL when state changes: search, sort, page, pageSize
+- [x] T084 Test browser back/forward buttons: Verify state restores correctly
+- [x] T085 Test bookmarkability: Copy URL, paste in new tab, verify state restored
 
 ### Error Handling & Edge Cases
 
-- [ ] T070 [P] Handle network failure during fetch: Show error message with retry button in StudentList.tsx
-- [ ] T071 [P] Handle delete failure: Show error message, keep student in list in StudentList.tsx
-- [ ] T072 [P] Handle invalid URL params: Apply defaults, no crash in useStudentListParams hook
-- [ ] T073 [P] Handle rapid typing: Verify debounce cancels previous timers in useDebounce hook
-- [ ] T074 [P] Handle empty search results: Show helpful message in StudentList.tsx
-- [ ] T075 [P] Handle page out of bounds: Navigate to last valid page when pageSize changes
+- [x] T086 [P] Handle network failure during fetch: Show error message with retry button in StudentList.tsx
+- [x] T087 [P] Handle delete failure: Show error message, keep student in list in StudentList.tsx
+- [x] T088 [P] Handle invalid URL params: Apply defaults, no crash in useStudentListParams hook
+- [x] T089 [P] Handle rapid typing: Verify debounce cancels previous timers in useDebounce hook
+- [x] T090 [P] Handle empty search results: Show helpful message in table body
+- [x] T091 [P] Handle page out of bounds: Navigate to last valid page when pageSize changes
 
 ### Code Quality
 
-- [ ] T076 [P] Add TypeScript types for all state and props in StudentList.tsx
-- [ ] T077 [P] Add explanatory comments for educational value in all new components
-- [ ] T078 [P] Remove any console.log statements and unused imports
-- [ ] T079 [P] Verify consistent code style: Tailwind classes, component patterns
-- [ ] T080 Run quickstart.md manual testing checklist: Search, Sort, Pagination, Delete, URL persistence, Accessibility, Responsive
+- [x] T092 [P] Add TypeScript types for all state and props in StudentList.tsx
+- [x] T093 [P] Add explanatory comments for educational value in all new components
+- [x] T094 [P] Remove any console.log statements and unused imports
+- [x] T095 [P] Verify consistent code style: Tailwind classes, component patterns
+- [x] T096 [P] Ensure proper Table component structure: Table > TableHeader > TableRow > TableHead and Table > TableBody > TableRow > TableCell
+- [ ] T097 Run quickstart.md manual testing checklist: Search, Sort, Pagination, Delete, URL persistence, Accessibility, Responsive
 
 ---
 
@@ -315,21 +334,23 @@ With multiple developers (after Foundational phase completes):
 
 ## Task Summary
 
-**Total Tasks**: 80
+**Total Tasks**: 97
+
 - **Phase 1 (Setup)**: 6 tasks
 - **Phase 2 (Foundational)**: 3 tasks (BLOCKING)
-- **Phase 3 (US1 - Search)**: 9 tasks
-- **Phase 4 (US2 - Sorting)**: 8 tasks
-- **Phase 5 (US3 - Delete Dialog)**: 11 tasks
-- **Phase 6 (US4 - Pagination)**: 11 tasks
-- **Phase 7 (US5 - Summary)**: 6 tasks
-- **Phase 8 (Polish)**: 26 tasks
+- **Phase 3 (US1 - Search)**: 11 tasks
+- **Phase 4 (US2 - Sorting)**: 10 tasks
+- **Phase 5 (US3 - Action Buttons)**: 16 tasks
+- **Phase 6 (US4 - Pagination)**: 15 tasks
+- **Phase 7 (US5 - Summary)**: 7 tasks
+- **Phase 8 (Polish)**: 29 tasks
 
-**Parallel Opportunities**: 27 tasks marked [P] can run in parallel within their phase
+**Parallel Opportunities**: 30 tasks marked [P] can run in parallel within their phase
 
 **Independent Stories**: US1, US2, US3, US4 are independently testable. US5 depends on US1 + US4 for state.
 
 **Estimated Time** (from quickstart.md):
+
 - Foundational: 30 min
 - US1 (Search): 30 min
 - US2 (Sorting): 45 min
