@@ -1,4 +1,4 @@
-# Quickstart: Student List Enhancement
+# Quickstart: Student List Enhancement (Card-Based Grid)
 
 **Feature**: Student List Page Enhancement  
 **Date**: November 13, 2025  
@@ -6,7 +6,7 @@
 
 ## Overview
 
-This guide helps you implement the enhanced Students list page with real-time search, sortable columns, improved pagination, and accessible action buttons. The implementation is frontend-only using existing React, TypeScript, shadcn/ui, and Tailwind CSS infrastructure.
+This guide helps you implement the enhanced Students list page with a modern card-based grid layout (3 columns desktop, 2 tablet, 1 mobile), real-time search with inline filters, sortable data via Select dropdown, Load More button for progressive loading, and accessible action buttons with rounded pill styling. The implementation is frontend-only using existing React, TypeScript, shadcn/ui, and Tailwind CSS infrastructure.
 
 ---
 
@@ -15,19 +15,22 @@ This guide helps you implement the enhanced Students list page with real-time se
 Before starting implementation:
 
 ✅ **Environment Setup**
+
 - Node.js and npm installed
 - Frontend dev server running: `cd contoso-university-ui && npm run dev`
 - Backend API running: `cd ContosoUniversity && dotnet run`
 - SQL Server container running (Docker or Podman)
 
 ✅ **Knowledge Required**
+
 - React 19.2.0 (functional components, hooks)
 - TypeScript 5.9.3 (interfaces, generics)
 - React Router DOM 7.9.5 (useSearchParams hook)
-- shadcn/ui components (Button, Input, Dialog, Select, Table)
-- Tailwind CSS 4.x (utility classes, responsive design)
+- shadcn/ui components (Button, Input, Dialog, Select, Card)
+- Tailwind CSS 4.x (utility classes, responsive grid, rounded-full for pill buttons)
 
 ✅ **Documentation Review**
+
 - Read [`spec.md`](./spec.md) - Feature specification
 - Read [`research.md`](./research.md) - Technical decisions
 - Read [`data-model.md`](./data-model.md) - State and type definitions
@@ -46,16 +49,16 @@ Before starting implementation:
 **File**: `contoso-university-ui/src/hooks/useDebounce.ts`
 
 ```typescript
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * Debounces a value by delaying its update until after a specified delay.
  * Useful for search inputs to avoid excessive API calls.
- * 
+ *
  * @param value - The value to debounce
  * @param delay - Delay in milliseconds (e.g., 400)
  * @returns The debounced value
- * 
+ *
  * @example
  * const [searchTerm, setSearchTerm] = useState('');
  * const debouncedSearchTerm = useDebounce(searchTerm, 400);
@@ -86,10 +89,14 @@ export function useDebounce<T>(value: T, delay: number): T {
 **File**: `contoso-university-ui/src/hooks/useQueryParams.ts`
 
 ```typescript
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 
-type SortColumn = 'lastName' | 'firstName' | 'enrollmentDate' | 'enrollmentCount';
-type SortDirection = 'asc' | 'desc';
+type SortColumn =
+  | "lastName"
+  | "firstName"
+  | "enrollmentDate"
+  | "enrollmentCount";
+type SortDirection = "asc" | "desc";
 
 interface QueryParamState {
   page: number;
@@ -103,43 +110,50 @@ interface QueryParamState {
  * Custom hook for managing URL query parameters for the student list page.
  * Provides type-safe access to query params with validation and defaults.
  * Enables bookmarkability and browser back/forward navigation.
- * 
+ *
  * @returns Query parameters and update function
  */
 export function useStudentListParams() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Parse and validate query parameters
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
-  const pageSizeParam = parseInt(searchParams.get('pageSize') || '10');
-  const pageSize = [10, 25, 50, 100].includes(pageSizeParam) ? pageSizeParam : 10;
-  const search = searchParams.get('search') || '';
-  
-  const sortByParam = searchParams.get('sortBy') || 'lastName';
-  const sortBy: SortColumn = ['lastName', 'firstName', 'enrollmentDate', 'enrollmentCount'].includes(sortByParam)
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+  const pageSizeParam = parseInt(searchParams.get("pageSize") || "10");
+  const pageSize = [10, 25, 50, 100].includes(pageSizeParam)
+    ? pageSizeParam
+    : 10;
+  const search = searchParams.get("search") || "";
+
+  const sortByParam = searchParams.get("sortBy") || "lastName";
+  const sortBy: SortColumn = [
+    "lastName",
+    "firstName",
+    "enrollmentDate",
+    "enrollmentCount",
+  ].includes(sortByParam)
     ? (sortByParam as SortColumn)
-    : 'lastName';
-  
-  const sortDirParam = searchParams.get('sortDir') || 'asc';
-  const sortDir: SortDirection = sortDirParam === 'desc' ? 'desc' : 'asc';
+    : "lastName";
+
+  const sortDirParam = searchParams.get("sortDir") || "asc";
+  const sortDir: SortDirection = sortDirParam === "desc" ? "desc" : "asc";
 
   /**
    * Updates query parameters in the URL.
    * Merges new values with existing params.
-   * 
+   *
    * @param updates - Partial object of params to update
    */
   const updateParams = (updates: Partial<QueryParamState>) => {
     const newParams = new URLSearchParams(searchParams);
-    
+
     Object.entries(updates).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
+      if (value !== undefined && value !== null && value !== "") {
         newParams.set(key, value.toString());
-      } else if (value === '' && key === 'search') {
+      } else if (value === "" && key === "search") {
         newParams.delete(key); // Remove empty search param
       }
     });
-    
+
     setSearchParams(newParams, { replace: true }); // Use replace to avoid cluttering history
   };
 
@@ -175,12 +189,16 @@ export function useStudentListParams() {
 **File**: `contoso-university-ui/src/components/common/SortableTableHead.tsx` (NEW)
 
 ```typescript
-import { Button } from '@/components/ui/button';
-import { TableHead } from '@/components/ui/table';
-import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { TableHead } from "@/components/ui/table";
+import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
-type SortColumn = 'lastName' | 'firstName' | 'enrollmentDate' | 'enrollmentCount';
-type SortDirection = 'asc' | 'desc';
+type SortColumn =
+  | "lastName"
+  | "firstName"
+  | "enrollmentDate"
+  | "enrollmentCount";
+type SortDirection = "asc" | "desc";
 
 interface SortableTableHeadProps {
   column: SortColumn;
@@ -194,7 +212,7 @@ interface SortableTableHeadProps {
 /**
  * Sortable table header cell with visual sort indicators.
  * Shows arrow icons to indicate sort state (unsorted, ascending, descending).
- * 
+ *
  * @example
  * <SortableTableHead
  *   column="lastName"
@@ -213,12 +231,12 @@ export function SortableTableHead({
   className,
 }: SortableTableHeadProps) {
   const isSorted = currentSort === column;
-  const isAscending = isSorted && currentDirection === 'asc';
-  const isDescending = isSorted && currentDirection === 'desc';
+  const isAscending = isSorted && currentDirection === "asc";
+  const isDescending = isSorted && currentDirection === "desc";
 
   // Determine aria-label for accessibility
   const ariaLabel = isSorted
-    ? `Sort by ${label} ${isAscending ? 'descending' : 'ascending'}`
+    ? `Sort by ${label} ${isAscending ? "descending" : "ascending"}`
     : `Sort by ${label}`;
 
   return (
@@ -259,9 +277,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface StudentDeleteDialogProps {
   isOpen: boolean;
@@ -275,7 +293,7 @@ interface StudentDeleteDialogProps {
  * Confirmation dialog for deleting a student.
  * Shows student name to prevent accidental deletions.
  * Accessible with keyboard navigation and screen reader support.
- * 
+ *
  * @example
  * <StudentDeleteDialog
  *   isOpen={deleteDialog.isOpen}
@@ -298,16 +316,12 @@ export function StudentDeleteDialog({
         <DialogHeader>
           <DialogTitle>Delete Student</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete <strong>{studentName}</strong>?
-            This action cannot be undone.
+            Are you sure you want to delete <strong>{studentName}</strong>? This
+            action cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={onCancel}
-            disabled={isDeleting}
-          >
+          <Button variant="outline" onClick={onCancel} disabled={isDeleting}>
             Cancel
           </Button>
           <Button
@@ -332,6 +346,7 @@ export function StudentDeleteDialog({
 **File**: `contoso-university-ui/src/components/common/Pagination.tsx` (MODIFY)
 
 **Changes needed**:
+
 1. Add page size selector (Select component)
 2. Add page number buttons with ellipsis logic
 3. Add first/last page buttons (double chevrons)
@@ -339,6 +354,7 @@ export function StudentDeleteDialog({
 **Implementation**: See [`contracts/ui-components.md`](./contracts/ui-components.md) Component 4 for detailed code.
 
 **Key additions**:
+
 - `onPageSizeChange` prop and handler
 - `getPageNumbers()` function for ellipsis logic
 - `<Select>` component for page size dropdown
@@ -355,28 +371,37 @@ export function StudentDeleteDialog({
 **File**: `contoso-university-ui/src/pages/students/StudentList.tsx`
 
 **Add new state**:
+
 ```typescript
 // Search state
-const [searchInput, setSearchInput] = useState('');
+const [searchInput, setSearchInput] = useState("");
 const debouncedSearch = useDebounce(searchInput, 400);
 
 // Sort state
-const [sortBy, setSortBy] = useState<SortColumn>('lastName');
-const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+const [sortBy, setSortBy] = useState<SortColumn>("lastName");
+const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
 // Delete dialog state
 const [deleteDialog, setDeleteDialog] = useState({
   isOpen: false,
   studentId: null as number | null,
-  studentName: '',
+  studentName: "",
 });
 const [isDeleting, setIsDeleting] = useState(false);
 
 // URL synchronization
-const { page, pageSize, search, sortBy: urlSortBy, sortDir, updateParams } = useStudentListParams();
+const {
+  page,
+  pageSize,
+  search,
+  sortBy: urlSortBy,
+  sortDir,
+  updateParams,
+} = useStudentListParams();
 ```
 
 **Synchronize with URL on mount**:
+
 ```typescript
 useEffect(() => {
   setSearchInput(search);
@@ -390,6 +415,7 @@ useEffect(() => {
 #### 3.2 Update fetchStudents Function
 
 **Modify API call** to include sort parameters (if backend supports):
+
 ```typescript
 const fetchStudents = async () => {
   try {
@@ -428,13 +454,14 @@ const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 };
 
 const handleSearchClear = () => {
-  setSearchInput('');
-  updateParams({ search: '', page: 1 });
+  setSearchInput("");
+  updateParams({ search: "", page: 1 });
 };
 
 // Sort handler
 const handleSort = (column: SortColumn) => {
-  const newDirection = sortBy === column && sortDirection === 'asc' ? 'desc' : 'asc';
+  const newDirection =
+    sortBy === column && sortDirection === "asc" ? "desc" : "asc";
   setSortBy(column);
   setSortDirection(newDirection);
   updateParams({ sortBy: column, sortDir: newDirection });
@@ -451,35 +478,36 @@ const handleDeleteClick = (id: number, fullName: string) => {
 
 const handleDeleteConfirm = async () => {
   if (!deleteDialog.studentId) return;
-  
+
   setIsDeleting(true);
   try {
     await deleteStudent(deleteDialog.studentId);
     success(`Successfully deleted ${deleteDialog.studentName}`);
-    
+
     // If last student on page, go to previous page
     if (students.length === 1 && currentPage > 1) {
       updateParams({ page: currentPage - 1 });
     } else {
       fetchStudents(); // Refresh current page
     }
-    
-    setDeleteDialog({ isOpen: false, studentId: null, studentName: '' });
+
+    setDeleteDialog({ isOpen: false, studentId: null, studentName: "" });
   } catch (err: any) {
-    showError(err.response?.data?.message || 'Failed to delete student');
+    showError(err.response?.data?.message || "Failed to delete student");
   } finally {
     setIsDeleting(false);
   }
 };
 
 const handleDeleteCancel = () => {
-  setDeleteDialog({ isOpen: false, studentId: null, studentName: '' });
+  setDeleteDialog({ isOpen: false, studentId: null, studentName: "" });
 };
 ```
 
 #### 3.4 Update Table Rendering
 
 **Replace existing TableHeader** with sortable headers:
+
 ```tsx
 <TableHeader>
   <TableRow>
@@ -520,6 +548,7 @@ const handleDeleteCancel = () => {
 ```
 
 **Update action buttons** to use delete dialog:
+
 ```tsx
 <Button
   variant="ghost"
@@ -534,6 +563,7 @@ const handleDeleteCancel = () => {
 #### 3.5 Add StudentDeleteDialog
 
 **Add dialog at end of component**:
+
 ```tsx
 <StudentDeleteDialog
   isOpen={deleteDialog.isOpen}
@@ -547,6 +577,7 @@ const handleDeleteCancel = () => {
 #### 3.6 Update useEffect Dependencies
 
 **Sync with URL params**:
+
 ```typescript
 useEffect(() => {
   fetchStudents();
@@ -554,6 +585,7 @@ useEffect(() => {
 ```
 
 **Sync URL when state changes**:
+
 ```typescript
 useEffect(() => {
   updateParams({
@@ -579,6 +611,7 @@ useEffect(() => {
 **File**: `ContosoUniversity/Controllers/StudentsController.cs`
 
 **Add parameters** to `GetStudents` method:
+
 ```csharp
 [HttpGet]
 public async Task<ActionResult<PaginatedResponseDto<StudentDto>>> GetStudents(
@@ -590,10 +623,10 @@ public async Task<ActionResult<PaginatedResponseDto<StudentDto>>> GetStudents(
 {
     // Validation...
     var result = await _studentService.GetStudentsAsync(
-        pageNumber, 
-        pageSize, 
-        searchString, 
-        sortBy, 
+        pageNumber,
+        pageSize,
+        searchString,
+        sortBy,
         sortDirection);
     return Ok(result);
 }
@@ -604,24 +637,25 @@ public async Task<ActionResult<PaginatedResponseDto<StudentDto>>> GetStudents(
 **File**: `ContosoUniversity/Services/StudentService.cs`
 
 **Add sorting logic** to query:
+
 ```csharp
 public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
-    int pageNumber, 
-    int pageSize, 
+    int pageNumber,
+    int pageSize,
     string? searchString,
     string? sortBy,
     string? sortDirection)
 {
     var query = _context.Students.AsQueryable();
-    
+
     // Search filter (existing)
     if (!string.IsNullOrWhiteSpace(searchString))
     {
-        query = query.Where(s => 
-            s.LastName.Contains(searchString) || 
+        query = query.Where(s =>
+            s.LastName.Contains(searchString) ||
             s.FirstMidName.Contains(searchString));
     }
-    
+
     // Sorting (NEW)
     query = (sortBy?.ToLower(), sortDirection?.ToLower()) switch
     {
@@ -634,7 +668,7 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
         (_, "desc") => query.OrderByDescending(s => s.LastName), // Default
         _ => query.OrderBy(s => s.LastName) // Default
     };
-    
+
     // Pagination (existing)
     return await PaginatedList<Student>.CreateAsync(query, pageNumber, pageSize);
 }
@@ -649,12 +683,14 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
 #### 5.1 Manual Testing Checklist
 
 **Search Functionality**:
+
 - [ ] Type in search field → results filter in real-time (after 400ms)
 - [ ] Clear search → all students restored
 - [ ] Search with no results → helpful empty state message shown
 - [ ] Rapid typing → only one API call after typing stops
 
 **Sorting Functionality**:
+
 - [ ] Click "Last Name" header → sorts A-Z
 - [ ] Click "Last Name" again → sorts Z-A
 - [ ] Click different column → sorts by new column ascending
@@ -662,6 +698,7 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
 - [ ] Search + sort → sorting applies to filtered results
 
 **Pagination**:
+
 - [ ] Page numbers shown correctly (with ellipsis for many pages)
 - [ ] Click page number → navigates to that page
 - [ ] Click next/previous → navigates correctly
@@ -671,6 +708,7 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
 - [ ] Disabled states correct (prev/first on page 1, next/last on last page)
 
 **Delete Functionality**:
+
 - [ ] Click "Delete" → confirmation dialog opens
 - [ ] Dialog shows student's full name
 - [ ] Click "Cancel" → dialog closes, no deletion
@@ -680,12 +718,14 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
 - [ ] Delete button shows spinner during API call
 
 **URL Persistence**:
+
 - [ ] Search, sort, paginate → URL updates with query params
 - [ ] Copy URL, paste in new tab → state restored correctly
 - [ ] Browser back button → previous state restored
 - [ ] Browser forward button → next state restored
 
 **Accessibility**:
+
 - [ ] Tab key navigates through all interactive elements
 - [ ] Focus indicators visible on all elements
 - [ ] Enter key activates buttons
@@ -694,6 +734,7 @@ public async Task<PaginatedResponseDto<StudentDto>> GetStudentsAsync(
 - [ ] ARIA labels present on sortable headers
 
 **Responsive Design**:
+
 - [ ] Mobile (< 640px): Last Name + Actions visible, others hidden
 - [ ] Tablet (640px-1023px): Last Name, First Name, Actions visible
 - [ ] Desktop (≥ 1024px): All columns visible

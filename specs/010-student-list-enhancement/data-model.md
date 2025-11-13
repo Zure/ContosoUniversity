@@ -63,20 +63,22 @@ These models represent the state of the enhanced UI components and do not corres
 
 ```typescript
 interface SearchState {
-  searchTerm: string;           // Current value in search input (changes on every keystroke)
-  debouncedSearchTerm: string;  // Debounced value (changes after 400ms delay)
-  isSearching: boolean;         // True during debounce delay or API call
+  searchTerm: string; // Current value in search input (changes on every keystroke)
+  debouncedSearchTerm: string; // Debounced value (changes after 400ms delay)
+  isSearching: boolean; // True during debounce delay or API call
 }
 ```
 
 **Description**: Tracks the state of the search functionality, including the raw input value and the debounced value used for API calls.
 
 **State Transitions**:
+
 1. User types → `searchTerm` updates immediately, `isSearching` = true
 2. 400ms after last keystroke → `debouncedSearchTerm` updates, API call triggered
 3. API responds → `isSearching` = false
 
 **Validation Rules**:
+
 - `searchTerm`: Any string (no validation, empty string allowed)
 - `debouncedSearchTerm`: Derived from `searchTerm` after delay
 - `isSearching`: Boolean flag for loading indicators
@@ -88,8 +90,12 @@ interface SearchState {
 **Location**: `contoso-university-ui/src/pages/students/StudentList.tsx` (local state)
 
 ```typescript
-type SortColumn = 'lastName' | 'firstName' | 'enrollmentDate' | 'enrollmentCount';
-type SortDirection = 'asc' | 'desc';
+type SortColumn =
+  | "lastName"
+  | "firstName"
+  | "enrollmentDate"
+  | "enrollmentCount";
+type SortDirection = "asc" | "desc";
 
 interface SortState {
   sortBy: SortColumn;
@@ -100,56 +106,63 @@ interface SortState {
 **Description**: Tracks which column is currently sorted and in which direction.
 
 **State Transitions**:
+
 1. User clicks unsorted column → `sortBy` = clicked column, `sortDirection` = 'asc'
 2. User clicks same column (already sorted asc) → `sortDirection` = 'desc'
 3. User clicks same column (already sorted desc) → `sortDirection` = 'asc' (toggle)
 4. User clicks different column → `sortBy` = new column, `sortDirection` = 'asc'
 
 **Default Values**:
+
 - `sortBy`: 'lastName' (alphabetical by last name)
 - `sortDirection`: 'asc' (A-Z)
 
 **Validation Rules**:
+
 - `sortBy`: Must be one of the four valid columns
 - `sortDirection`: Must be 'asc' or 'desc'
 
 ---
 
-### PaginationState
+### LoadMoreState
 
-**Location**: `contoso-university-ui/src/hooks/usePagination.ts` (custom hook state)
+**Location**: `contoso-university-ui/src/pages/students/StudentList.tsx` (local state)
 
 ```typescript
-interface PaginationState {
-  currentPage: number;    // 1-based page number
-  pageSize: number;       // Number of items per page
-  totalPages: number;     // Calculated by backend
-  totalCount: number;     // Total items in dataset
-  hasPrevious: boolean;   // Can navigate to previous page
-  hasNext: boolean;       // Can navigate to next page
+interface LoadMoreState {
+  currentPage: number; // 1-based page number (increments with Load More)
+  pageSize: number; // Number of items per page (fixed at 12)
+  totalPages: number; // Calculated by backend
+  totalCount: number; // Total items in dataset
+  hasMoreStudents: boolean; // Can load more (currentPage < totalPages)
+  isLoadingMore: boolean; // Loading indicator for Load More button
 }
 ```
 
-**Description**: Tracks pagination state including current position and metadata from the API response.
+**Description**: Tracks progressive loading state for Load More functionality.
 
 **State Transitions**:
-1. User changes page size → `currentPage` resets to 1, API call with new `pageSize`
-2. User clicks page number → `currentPage` updates to clicked page, API call
-3. User clicks next/previous → `currentPage` increments/decrements, API call
-4. Search/sort changes → `currentPage` resets to 1, API call with filters
+
+1. User clicks Load More → `isLoadingMore` = true, `currentPage` increments, API call
+2. API responds → New students append to existing array, `isLoadingMore` = false
+3. Search/sort changes → `currentPage` resets to 1, existing students cleared, API call
+4. All students loaded → `hasMoreStudents` = false, Load More button hidden
 
 **Validation Rules**:
+
 - `currentPage`: Integer ≥ 1, ≤ `totalPages`
-- `pageSize`: One of [10, 25, 50, 100] (preset options)
+- `pageSize`: Fixed at 12 (4 rows × 3 columns on desktop)
 - `totalPages`, `totalCount`: Provided by API (read-only)
-- `hasPrevious`: `currentPage > 1`
-- `hasNext`: `currentPage < totalPages`
+- `hasMoreStudents`: `currentPage < totalPages`
 
 **Default Values**:
+
 - `currentPage`: 1
-- `pageSize`: 10
+- `pageSize`: 12
 - `totalPages`: 0 (until first API response)
 - `totalCount`: 0 (until first API response)
+- `hasMoreStudents`: false
+- `isLoadingMore`: false
 
 ---
 
@@ -168,16 +181,19 @@ interface DeleteDialogState {
 **Description**: Tracks the state of the delete confirmation dialog.
 
 **State Transitions**:
+
 1. User clicks "Delete" → `isOpen` = true, `studentId` and `studentName` set
 2. User clicks "Cancel" or Escape → `isOpen` = false, `studentId` = null
 3. User confirms deletion → API call, then `isOpen` = false after success
 
 **Validation Rules**:
+
 - `isOpen`: Boolean flag
 - `studentId`: Required when `isOpen` is true, null otherwise
 - `studentName`: Required when `isOpen` is true (used in confirmation message)
 
 **Default Values**:
+
 - `isOpen`: false
 - `studentId`: null
 - `studentName`: '' (empty string)
@@ -190,32 +206,31 @@ interface DeleteDialogState {
 
 ```typescript
 interface QueryParamState {
-  page: number;           // From ?page=N (default: 1)
-  pageSize: number;       // From ?pageSize=N (default: 10)
-  search: string;         // From ?search=term (default: '')
-  sortBy: SortColumn;     // From ?sortBy=column (default: 'lastName')
+  search: string; // From ?search=term (default: '')
+  sortBy: SortColumn; // From ?sortBy=column (default: 'lastName')
   sortDir: SortDirection; // From ?sortDir=asc|desc (default: 'asc')
 }
 ```
 
-**Description**: Represents the state extracted from URL query parameters. This state is the source of truth for bookmarkability and browser navigation.
+**Description**: Represents the state extracted from URL query parameters. This state is the source of truth for bookmarkability and browser navigation. Note: Load More functionality doesn't persist page state in URL.
 
 **State Synchronization**:
-- URL changes → `QueryParamState` updates → Component state updates → UI re-renders
+
+- URL changes → `QueryParamState` updates → Component state updates → UI re-renders (students reset to page 1)
 - User interaction → Component state updates → URL updates (via `setSearchParams`)
 
 **Validation Rules**:
-- `page`: Parse as integer, default to 1 if invalid or missing
-- `pageSize`: Parse as integer, validate against [10, 25, 50, 100], default to 10
+
 - `search`: String, default to empty string if missing
 - `sortBy`: Validate against SortColumn type, default to 'lastName'
 - `sortDir`: Validate against 'asc' | 'desc', default to 'asc'
 
 **Example URLs**:
+
 ```
-/students?page=2&pageSize=25&search=john&sortBy=enrollmentDate&sortDir=desc
+/students?search=john&sortBy=enrollmentDate&sortDir=desc
 /students?search=smith
-/students?page=5
+/students?sortBy=firstName&sortDir=asc
 ```
 
 ---
@@ -224,31 +239,23 @@ interface QueryParamState {
 
 These interfaces define the shape of props passed to reusable components.
 
-### SortableTableHeadProps
+### StudentCardProps
 
-**Location**: `contoso-university-ui/src/components/common/SortableTableHead.tsx` (new component)
+**Location**: `contoso-university-ui/src/components/features/StudentCard.tsx` (new component)
 
 ```typescript
-interface SortableTableHeadProps {
-  column: SortColumn;
-  label: string;
-  currentSort: SortColumn;
-  currentDirection: SortDirection;
-  onSort: (column: SortColumn) => void;
+interface StudentCardProps {
+  student: Student;
+  onDelete: (id: number, fullName: string) => void;
 }
 ```
 
-**Description**: Props for a sortable table header cell.
+**Description**: Props for a student card component in the grid layout.
 
 **Usage Example**:
+
 ```typescript
-<SortableTableHead
-  column="lastName"
-  label="Last Name"
-  currentSort={sortBy}
-  currentDirection={sortDirection}
-  onSort={handleSort}
-/>
+<StudentCard student={student} onDelete={handleDeleteClick} />
 ```
 
 ---
@@ -270,6 +277,7 @@ interface StudentDeleteDialogProps {
 **Description**: Props for the delete confirmation dialog.
 
 **Usage Example**:
+
 ```typescript
 <StudentDeleteDialog
   isOpen={deleteDialog.isOpen}
@@ -277,41 +285,6 @@ interface StudentDeleteDialogProps {
   onConfirm={handleConfirmDelete}
   onCancel={handleCancelDelete}
   isDeleting={isDeleting}
-/>
-```
-
----
-
-### EnhancedPaginationProps
-
-**Location**: `contoso-university-ui/src/components/common/Pagination.tsx` (modified existing component)
-
-```typescript
-interface EnhancedPaginationProps {
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  onPageChange: (page: number) => void;
-  onPageSizeChange: (size: number) => void;
-  hasPrevious: boolean;
-  hasNext: boolean;
-}
-```
-
-**Description**: Props for the enhanced pagination component with page jumping and size selection.
-
-**Usage Example**:
-```typescript
-<Pagination
-  currentPage={currentPage}
-  totalPages={totalPages}
-  pageSize={pageSize}
-  totalCount={totalCount}
-  onPageChange={setCurrentPage}
-  onPageSizeChange={handlePageSizeChange}
-  hasPrevious={hasPrevious}
-  hasNext={hasNext}
 />
 ```
 
@@ -326,14 +299,15 @@ These interfaces define the shape of values returned by custom hooks.
 **Location**: `contoso-university-ui/src/hooks/useDebounce.ts` (new hook)
 
 ```typescript
-function useDebounce<T>(value: T, delay: number): T
+function useDebounce<T>(value: T, delay: number): T;
 ```
 
 **Description**: Generic debounce hook that delays updating a value until after a specified delay.
 
 **Usage Example**:
+
 ```typescript
-const [searchTerm, setSearchTerm] = useState('');
+const [searchTerm, setSearchTerm] = useState("");
 const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
 useEffect(() => {
@@ -361,14 +335,16 @@ interface UseStudentListParamsReturn {
 **Description**: Hook for managing URL query parameters for the student list page.
 
 **Usage Example**:
+
 ```typescript
-const { page, pageSize, search, sortBy, sortDir, updateParams } = useStudentListParams();
+const { page, pageSize, search, sortBy, sortDir, updateParams } =
+  useStudentListParams();
 
 // Update search and reset to page 1
-updateParams({ search: 'john', page: 1 });
+updateParams({ search: "john", page: 1 });
 
 // Update sort
-updateParams({ sortBy: 'enrollmentDate', sortDir: 'desc' });
+updateParams({ sortBy: "enrollmentDate", sortDir: "desc" });
 ```
 
 ---
@@ -383,27 +359,27 @@ interface UsePaginationReturn {
   pageSize: number;
   totalPages: number;
   totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
+  hasMoreStudents: boolean; // NEW: replaces hasNext
   setCurrentPage: (page: number) => void;
-  setPageSize: (size: number) => void;
   setPaginationData: (data: {
     totalCount: number;
     totalPages: number;
     hasPrevious: boolean;
     hasNext: boolean;
   }) => void;
-  goToFirstPage: () => void;
-  goToLastPage: () => void;
-  goToNextPage: () => void;
-  goToPreviousPage: () => void;
+  incrementPage: () => void; // NEW: for Load More button
   resetPagination: () => void;
 }
 ```
 
-**Description**: Hook for managing pagination state. Existing hook with minor modifications to support page size changes.
+**Description**: Hook for managing progressive loading state with Load More functionality.
 
-**Modification Required**: Ensure `setPageSize` resets `currentPage` to 1 (already implemented in current version).
+**Modification Required**:
+
+- Add `incrementPage` function to increment `currentPage`
+- Add `hasMoreStudents` computed property (currentPage < totalPages)
+- Remove navigation functions (goToFirstPage, goToLastPage, goToNextPage, goToPreviousPage)
+- Remove `setPageSize` (fixed at 12)
 
 ---
 
@@ -415,11 +391,11 @@ The following API contract types already exist and support all requirements. No 
 
 ```typescript
 interface GetStudentsRequest {
-  pageNumber: number;      // 1-based page number
-  pageSize: number;        // Items per page (1-100)
-  searchString?: string;   // Optional: filter by name
-  sortBy?: string;         // NEW: sort column (if backend supports)
-  sortDirection?: string;  // NEW: 'asc' or 'desc' (if backend supports)
+  pageNumber: number; // 1-based page number
+  pageSize: number; // Items per page (1-100)
+  searchString?: string; // Optional: filter by name
+  sortBy?: string; // NEW: sort column (if backend supports)
+  sortDirection?: string; // NEW: 'asc' or 'desc' (if backend supports)
 }
 ```
 
@@ -448,30 +424,36 @@ interface GetStudentsResponse {
 ```
 User Actions → Component State → URL Query Params → API Request → API Response → Component State → UI Update
 
-Example: User searches for "john"
+Example: User searches for "john" and loads more students
 1. User types "john" in search input
 2. searchTerm state updates immediately → "john"
 3. After 400ms debounce → debouncedSearchTerm → "john"
-4. useEffect triggers → updateParams({ search: "john", page: 1 })
-5. URL updates → ?search=john&page=1
-6. API call → GET /api/students?pageNumber=1&pageSize=10&searchString=john
-7. API response → { data: [...], totalCount: 5, ... }
-8. students state updates → UI re-renders with filtered results
+4. useEffect triggers → updateParams({ search: "john" }), currentPage resets to 1, students array cleared
+5. URL updates → ?search=john&sortBy=lastName&sortDir=asc
+6. API call → GET /api/students?pageNumber=1&pageSize=12&searchString=john
+7. API response → { data: [...12 students], totalCount: 25, totalPages: 3, ... }
+8. students state updates → UI re-renders with 12 cards in grid
+9. User clicks Load More → currentPage increments to 2, isLoadingMore = true
+10. API call → GET /api/students?pageNumber=2&pageSize=12&searchString=john
+11. API response → { data: [...12 more students], ... }
+12. New students append to existing array → UI shows 24 cards, isLoadingMore = false
 ```
 
 ---
 
 ## Validation & Constraints Summary
 
-| Field | Type | Constraints | Default |
-|-------|------|-------------|---------|
-| `currentPage` | number | ≥ 1, ≤ totalPages | 1 |
-| `pageSize` | number | One of [10, 25, 50, 100] | 10 |
-| `searchTerm` | string | Any string | '' (empty) |
-| `sortBy` | SortColumn | 'lastName' \| 'firstName' \| 'enrollmentDate' \| 'enrollmentCount' | 'lastName' |
-| `sortDirection` | SortDirection | 'asc' \| 'desc' | 'asc' |
-| `deleteDialog.studentId` | number \| null | null when closed, valid ID when open | null |
-| `deleteDialog.isOpen` | boolean | true \| false | false |
+| Field                    | Type           | Constraints                                                        | Default    |
+| ------------------------ | -------------- | ------------------------------------------------------------------ | ---------- |
+| `currentPage`            | number         | ≥ 1, ≤ totalPages                                                  | 1          |
+| `pageSize`               | number         | Fixed at 12 (optimized for 3-column grid)                          | 12         |
+| `searchTerm`             | string         | Any string                                                         | '' (empty) |
+| `sortBy`                 | SortColumn     | 'lastName' \| 'firstName' \| 'enrollmentDate' \| 'enrollmentCount' | 'lastName' |
+| `sortDirection`          | SortDirection  | 'asc' \| 'desc'                                                    | 'asc'      |
+| `deleteDialog.studentId` | number \| null | null when closed, valid ID when open                               | null       |
+| `deleteDialog.isOpen`    | boolean        | true \| false                                                      | false      |
+| `hasMoreStudents`        | boolean        | currentPage < totalPages                                           | false      |
+| `isLoadingMore`          | boolean        | true during Load More API call                                     | false      |
 
 ---
 
@@ -481,20 +463,26 @@ Example: User searches for "john"
 StudentList (Page Component)
 ├── SearchState (local state)
 │   ├── searchTerm → useDebounce → debouncedSearchTerm
-│   └── Triggers API call on debounced value change
+│   └── Triggers API call on debounced value change (resets to page 1, clears existing students)
 ├── SortState (local state)
 │   ├── sortBy + sortDirection
-│   └── Passed to API request (if backend supports)
-├── PaginationState (usePagination hook)
-│   ├── currentPage + pageSize → API request
-│   └── totalPages + totalCount + hasPrevious + hasNext ← API response
+│   └── Controlled by Select dropdown + direction toggle button
+├── LoadMoreState (local state)
+│   ├── currentPage (increments on Load More click)
+│   ├── pageSize (fixed at 12)
+│   ├── hasMoreStudents (currentPage < totalPages)
+│   └── isLoadingMore (loading indicator for Load More button)
 ├── DeleteDialogState (local state)
 │   ├── isOpen + studentId + studentName
 │   └── Controls StudentDeleteDialog component visibility
-└── QueryParamState (useQueryParams hook)
-    ├── Derived from URL query parameters
-    ├── Synced with component state
-    └── Enables bookmarkability + browser navigation
+├── QueryParamState (useQueryParams hook)
+│   ├── Derived from URL query parameters (search, sortBy, sortDir)
+│   ├── Synced with component state
+│   └── Enables bookmarkability (note: loaded cards don't persist)
+└── StudentCard[] (grid layout)
+    ├── Rendered in responsive grid (grid-cols-1 md:grid-cols-2 lg:grid-cols-3)
+    ├── Each card shows student info + rounded pill action buttons
+    └── Progressive loading: new cards append on Load More
 ```
 
 ---
@@ -502,14 +490,16 @@ StudentList (Page Component)
 ## Summary
 
 This data model defines:
-- **4 UI state models**: SearchState, SortState, PaginationState, DeleteDialogState
-- **3 component prop interfaces**: SortableTableHeadProps, StudentDeleteDialogProps, EnhancedPaginationProps
+
+- **5 UI state models**: SearchState, SortState, LoadMoreState, DeleteDialogState, QueryParamState
+- **2 component prop interfaces**: StudentCardProps, StudentDeleteDialogProps
 - **3 custom hook interfaces**: UseDebounceReturn, UseStudentListParamsReturn, UsePaginationReturn
-- **1 URL state model**: QueryParamState (derived from query parameters)
 
 **Key Principles**:
+
 - No backend models changed (uses existing Student and PaginatedResponse)
 - All state is TypeScript-typed for type safety
 - State is normalized (single source of truth)
-- URL query parameters are the source of truth for filters/sorting/pagination
-- Local state manages UI concerns (dialog visibility, debouncing)
+- URL query parameters store filters/sorting (search, sortBy, sortDir) - Load More state not persisted
+- Local state manages UI concerns (dialog visibility, debouncing, progressive loading)
+- Fixed pageSize of 12 optimized for 3-column grid (4 rows \u00d7 3 columns)

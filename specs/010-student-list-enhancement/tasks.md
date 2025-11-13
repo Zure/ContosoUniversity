@@ -24,12 +24,12 @@
 
 **Purpose**: Prepare development environment and verify prerequisites
 
-- [ ] T001 Verify frontend dev server running: `cd contoso-university-ui && npm run dev`
-- [ ] T002 Verify backend API running: `cd ContosoUniversity && dotnet run`
-- [ ] T003 Verify SQL Server container running (Docker or Podman)
-- [ ] T004 Review existing StudentList.tsx implementation in contoso-university-ui/src/pages/students/StudentList.tsx
-- [ ] T005 Review existing shadcn/ui components: Button, Input, Dialog, Select, Table in contoso-university-ui/src/components/ui/
-- [ ] T006 Verify lucide-react icons available (ArrowUp, ArrowDown, ArrowUpDown, Chevrons, Search, X)
+- [x] T001 Verify frontend dev server running: `cd contoso-university-ui && npm run dev`
+- [x] T002 Verify backend API running: `cd ContosoUniversity && dotnet run`
+- [x] T003 Verify SQL Server container running (Docker or Podman)
+- [x] T004 Review existing StudentList.tsx implementation in contoso-university-ui/src/pages/students/StudentList.tsx
+- [x] T005 Review existing shadcn/ui components: Button, Input, Dialog, Select, Table in contoso-university-ui/src/components/ui/
+- [x] T006 Verify lucide-react icons available (ArrowUp, ArrowDown, ArrowUpDown, Chevrons, Search, X)
 
 **Checkpoint**: Development environment ready, existing code reviewed
 
@@ -41,119 +41,144 @@
 
 **⚠️ CRITICAL**: No user story work can begin until these hooks are complete
 
-- [ ] T007 [P] Create useDebounce hook in contoso-university-ui/src/hooks/useDebounce.ts
-- [ ] T008 [P] Create useStudentListParams hook for URL query param management in contoso-university-ui/src/hooks/useQueryParams.ts
-- [ ] T009 Verify existing usePagination hook in contoso-university-ui/src/hooks/usePagination.ts (confirm setPageSize resets to page 1)
+- [x] T007 [P] Create useDebounce hook in contoso-university-ui/src/hooks/useDebounce.ts
+- [x] T008 [P] Create useStudentListParams hook for URL query param management in contoso-university-ui/src/hooks/useQueryParams.ts
+- [x] T009 Verify existing usePagination hook in contoso-university-ui/src/hooks/usePagination.ts (confirm setPageSize resets to page 1)
 
 **Checkpoint**: Foundation ready - all custom hooks available for user stories
 
 ---
 
-## Phase 3: User Story 1 - Real-Time Search (Priority: P1) 🎯 MVP
+## Phase 3: Card Grid Layout (Priority: P1) 🎯 MVP
 
-**Goal**: Enable real-time filtering of student list by name with debounced input
+**Goal**: Convert table-based layout to card-based grid with responsive columns (3 desktop, 2 tablet, 1 mobile)
 
-**Independent Test**: Type in search field and observe immediate filtering (after 400ms debounce) without clicking search button. Clear search and verify full list restores.
+**Independent Test**: View student list on different screen sizes. Verify cards display correctly in grid, action buttons appear as rounded pills within each card.
+
+### Implementation for Card Grid Layout
+
+- [x] T010 [US1] Create StudentCard component in contoso-university-ui/src/components/features/StudentCard.tsx
+- [x] T011 [US1] Add responsive grid container in StudentList.tsx: grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6
+- [x] T012 [US1] Design StudentCard with shadcn/ui Card component showing student info (name, enrollment date, count)
+- [x] T013 [US1] Add rounded pill-style action buttons to StudentCard (Details, Edit, Delete with Button variant="outline" size="sm")
+- [x] T014 [US1] Remove existing Table components from StudentList.tsx
+- [x] T015 [US1] Map students array to StudentCard components in grid container
+- [x] T016 [US1] Style StudentCard with proper spacing, typography, and hover effects
+- [x] T017 [US1] Test responsive breakpoints: verify 1 column mobile (default), 2 columns tablet (md:), 3 columns desktop (lg:)
+- [x] T018 [US1] Add empty state card when no students found
+
+**Checkpoint**: Card-based grid layout fully functional with responsive columns
+
+---
+
+## Phase 4: User Story 1 - Real-Time Search with Inline Filters (Priority: P1) 🎯 MVP
+
+**Goal**: Enable real-time filtering of student list by name with inline filter controls at the top
+
+**Independent Test**: Type in search field and observe immediate filtering (after 400ms debounce) without clicking search button. Use department Select filter and verify results update.
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Add search input state to StudentList.tsx: searchInput, debouncedSearch (using useDebounce hook)
-- [ ] T011 [US1] Update search Card component in StudentList.tsx to use controlled Input with value={searchInput}
-- [ ] T012 [US1] Implement handleSearchChange handler in StudentList.tsx to update searchInput on keystroke
-- [ ] T013 [US1] Update useEffect in StudentList.tsx to trigger fetchStudents when debouncedSearch changes
-- [ ] T014 [US1] Update handleSearchClear handler in StudentList.tsx to reset searchInput and update URL params
-- [ ] T015 [US1] Synchronize search state with URL query params using useStudentListParams hook in StudentList.tsx
-- [ ] T016 [US1] Update results summary in StudentList.tsx to show filtered count when search is active
-- [ ] T017 [US1] Add loading indicator during debounce period in StudentList.tsx
-- [ ] T018 [US1] Update empty state message in StudentList.tsx to show "No students found matching '[term]'" when search has no results
+- [x] T019 [US1] Add search input state to StudentList.tsx: searchInput, debouncedSearch (using useDebounce hook)
+- [x] T020 [US1] Convert search Card to inline filter controls: flex row layout with Input and Select components
+- [x] T021 [US1] Implement handleSearchChange handler in StudentList.tsx to update searchInput on keystroke
+- [x] T022 [US1] Update useEffect in StudentList.tsx to trigger fetchStudents when debouncedSearch changes
+- [ ] T023 [US1] Add department Select filter (optional: if departments available) with shadcn/ui Select component
+- [x] T024 [US1] Synchronize search state with URL query params using useStudentListParams hook in StudentList.tsx
+- [x] T025 [US1] Update results summary in StudentList.tsx to show filtered count when search is active
+- [x] T026 [US1] Add loading indicator during debounce period in StudentList.tsx
+- [x] T027 [US1] Update empty state message to show "No students found matching '[term]'" when search has no results
+- [x] T028 [US1] Style filter controls with proper spacing and responsive layout (stack on mobile, row on tablet/desktop)
 
-**Checkpoint**: Real-time search fully functional - can search students by name with debouncing
+**Checkpoint**: Real-time search with inline filters fully functional
 
 ---
 
-## Phase 4: User Story 2 - Column Sorting (Priority: P1)
+## Phase 5: User Story 2 - Sorting with Select Dropdown (Priority: P1)
 
-**Goal**: Enable sorting student list by clicking column headers (Last Name, First Name, Enrollment Date, Enrollments)
+**Goal**: Enable sorting student list via Select dropdown in filter controls (Last Name, First Name, Enrollment Date, Enrollments)
 
-**Independent Test**: Click column headers and verify list re-sorts. Click same header twice to toggle ascending/descending. Verify arrow icons show current sort state.
+**Independent Test**: Change sort option in Select dropdown and verify list re-sorts. Verify ascending/descending toggle button works.
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Create SortableTableHead component in contoso-university-ui/src/components/common/SortableTableHead.tsx
-- [ ] T020 [US2] Add sort state to StudentList.tsx: sortBy, sortDirection (using useStudentListParams for URL sync)
-- [ ] T021 [US2] Implement handleSort function in StudentList.tsx to toggle sort direction and update URL params
-- [ ] T022 [US2] Replace existing TableHead elements with SortableTableHead components in StudentList.tsx table
-- [ ] T023 [US2] Update fetchStudents function in StudentList.tsx to pass sortBy and sortDirection to API (if backend supports)
-- [ ] T024 [US2] If backend doesn't support sorting: Implement client-side sorting with useMemo in StudentList.tsx
-- [ ] T025 [US2] Synchronize sort state with URL query params in StudentList.tsx
-- [ ] T026 [US2] Ensure search + sort work together (sorting applies to filtered results) in StudentList.tsx
+- [ ] T029 [US2] Add sort state to StudentList.tsx: sortBy, sortDirection (using useStudentListParams for URL sync)
+- [ ] T030 [US2] Add shadcn/ui Select component for sort field to inline filter controls
+- [ ] T031 [US2] Add sort direction toggle Button (ArrowUp/ArrowDown icons) next to Select
+- [ ] T032 [US2] Implement handleSortChange function in StudentList.tsx to update sortBy
+- [ ] T033 [US2] Implement handleSortDirectionToggle function in StudentList.tsx to toggle asc/desc
+- [ ] T034 [US2] Update fetchStudents function in StudentList.tsx to pass sortBy and sortDirection to API (if backend supports)
+- [ ] T035 [US2] If backend doesn't support sorting: Implement client-side sorting with useMemo in StudentList.tsx
+- [ ] T036 [US2] Synchronize sort state with URL query params in StudentList.tsx
+- [ ] T037 [US2] Ensure search + sort work together (sorting applies to filtered results) in StudentList.tsx
 
-**Checkpoint**: Column sorting fully functional - can sort by any column with visual indicators
+**Checkpoint**: Sorting via Select dropdown fully functional with visual indicators
 
 ---
 
-## Phase 5: User Story 3 - Enhanced Action Buttons (Priority: P2)
+## Phase 6: User Story 3 - Enhanced Action Buttons in Cards (Priority: P2)
 
-**Goal**: Add confirmation dialog for delete action with accessibility features
+**Goal**: Add confirmation dialog for delete action with accessibility features, rounded pill buttons in cards
 
-**Independent Test**: Click Delete button, verify confirmation dialog shows student name. Test Cancel, Escape key, and Confirm actions. Verify keyboard navigation works.
+**Independent Test**: Click Delete button in card, verify confirmation dialog shows student name. Test Cancel, Escape key, and Confirm actions. Verify keyboard navigation works.
 
 ### Implementation for User Story 3
 
-- [ ] T027 [P] [US3] Create StudentDeleteDialog component in contoso-university-ui/src/components/features/StudentDeleteDialog.tsx
-- [ ] T028 [US3] Add delete dialog state to StudentList.tsx: deleteDialog { isOpen, studentId, studentName }, isDeleting
-- [ ] T029 [US3] Implement handleDeleteClick handler in StudentList.tsx to open dialog with student details
-- [ ] T030 [US3] Implement handleDeleteConfirm handler in StudentList.tsx to call deleteStudent API and refresh list
-- [ ] T031 [US3] Implement handleDeleteCancel handler in StudentList.tsx to close dialog
-- [ ] T032 [US3] Update Delete button in StudentList.tsx to call handleDeleteClick instead of window.confirm
-- [ ] T033 [US3] Add StudentDeleteDialog component to StudentList.tsx render (at end of component)
-- [ ] T034 [US3] Handle edge case: If deleting last student on page, navigate to previous page in StudentList.tsx
-- [ ] T035 [US3] Add loading state to delete button in StudentDeleteDialog (spinner during API call)
-- [ ] T036 [US3] Verify ARIA labels on action buttons for screen reader accessibility in StudentList.tsx
-- [ ] T037 [US3] Test keyboard navigation: Tab through buttons, Enter to activate, Escape to close dialog
+- [ ] T038 [P] [US3] Create StudentDeleteDialog component in contoso-university-ui/src/components/features/StudentDeleteDialog.tsx
+- [ ] T039 [US3] Add delete dialog state to StudentList.tsx: deleteDialog { isOpen, studentId, studentName }, isDeleting
+- [ ] T040 [US3] Implement handleDeleteClick handler in StudentList.tsx to open dialog with student details
+- [ ] T041 [US3] Implement handleDeleteConfirm handler in StudentList.tsx to call deleteStudent API and refresh list
+- [ ] T042 [US3] Implement handleDeleteCancel handler in StudentList.tsx to close dialog
+- [ ] T043 [US3] Update Delete button in StudentCard to call handleDeleteClick instead of window.confirm
+- [ ] T044 [US3] Add StudentDeleteDialog component to StudentList.tsx render (at end of component)
+- [ ] T045 [US3] Handle edge case: If deleting last student on page, navigate to previous page in StudentList.tsx
+- [ ] T046 [US3] Add loading state to delete button in StudentDeleteDialog (spinner during API call)
+- [ ] T047 [US3] Style action buttons as rounded pills in StudentCard: rounded-full variant
+- [ ] T048 [US3] Verify ARIA labels on action buttons for screen reader accessibility in StudentCard.tsx
+- [ ] T049 [US3] Test keyboard navigation: Tab through buttons, Enter to activate, Escape to close dialog
 
-**Checkpoint**: Delete confirmation dialog fully functional with accessibility support
+**Checkpoint**: Delete confirmation dialog fully functional with rounded pill buttons in cards
 
 ---
 
-## Phase 6: User Story 4 - Improved Pagination Experience (Priority: P2)
+## Phase 7: User Story 4 - Load More Button (Priority: P2)
 
-**Goal**: Enhance pagination with page number buttons, page jumping, and page size selector
+**Goal**: Replace traditional pagination with "Load More" button at bottom of card grid for infinite scroll UX
 
-**Independent Test**: Navigate using page numbers, first/last buttons, and change page size. Verify correct pages load and disabled states work.
+**Independent Test**: Scroll to bottom, click Load More button, verify more cards append to grid. Verify button disabled/hidden when all students loaded.
 
 ### Implementation for User Story 4
 
-- [ ] T038 [US4] Add getPageNumbers function to Pagination.tsx for ellipsis logic (show first, last, current ± 1 with ellipsis)
-- [ ] T039 [US4] Add page size selector (Select component) to Pagination.tsx with options [10, 25, 50, 100]
-- [ ] T040 [US4] Add onPageSizeChange prop and handler to Pagination.tsx
-- [ ] T041 [US4] Add first page button (ChevronsLeft icon) to Pagination.tsx
-- [ ] T042 [US4] Add last page button (ChevronsRight icon) to Pagination.tsx
-- [ ] T043 [US4] Add page number buttons to Pagination.tsx (using getPageNumbers result)
-- [ ] T044 [US4] Style current page button with variant="default", others with variant="outline" in Pagination.tsx
-- [ ] T045 [US4] Update StudentList.tsx to pass onPageSizeChange handler to Pagination component
-- [ ] T046 [US4] Implement handlePageSizeChange in StudentList.tsx to update URL params and reset to page 1
-- [ ] T047 [US4] Synchronize pageSize with URL query params in StudentList.tsx
-- [ ] T048 [US4] Update responsive layout in Pagination.tsx: stack controls on mobile, row on desktop
+- [ ] T050 [US4] Add hasMoreStudents state to StudentList.tsx (based on currentPage < totalPages)
+- [ ] T051 [US4] Add isLoadingMore state to StudentList.tsx for Load More button loading indicator
+- [ ] T052 [US4] Modify fetchStudents function to support append mode (add new students to existing array)
+- [ ] T053 [US4] Create handleLoadMore function in StudentList.tsx to increment page and fetch next batch
+- [ ] T054 [US4] Remove existing Pagination component from StudentList.tsx
+- [ ] T055 [US4] Add Load More Button at bottom of StudentList.tsx (after card grid)
+- [ ] T056 [US4] Style Load More button: variant="outline", full width on mobile, centered on desktop
+- [ ] T057 [US4] Show loading spinner in Load More button when isLoadingMore is true
+- [ ] T058 [US4] Hide/disable Load More button when hasMoreStudents is false
+- [ ] T059 [US4] Update results summary to show "Showing X of Y students" (accumulated count)
+- [ ] T060 [US4] Handle edge case: Reset accumulated students when search/sort changes
 
-**Checkpoint**: Enhanced pagination fully functional with page jumping and size selection
+**Checkpoint**: Load More button fully functional with progressive loading
 
 ---
 
-## Phase 7: User Story 5 - Results Summary and Feedback (Priority: P3)
+## Phase 8: User Story 5 - Results Summary and Feedback (Priority: P3)
 
-**Goal**: Display clear results summary showing current range, total count, and active filters
+**Goal**: Display clear results summary showing loaded count, total count, and active filters
 
-**Independent Test**: View results summary, apply filters, change pages, verify summary updates correctly showing range and filter status.
+**Independent Test**: View results summary, apply filters, load more, verify summary updates correctly showing "Showing X of Y students" and filter status.
 
 ### Implementation for User Story 5
 
-- [ ] T049 [US5] Calculate results range in StudentList.tsx: startIndex = (currentPage - 1) * pageSize + 1, endIndex = min(startIndex + students.length - 1, totalCount)
-- [ ] T050 [US5] Update results summary text in StudentList.tsx to show "Showing {startIndex}-{endIndex} of {totalCount} students"
-- [ ] T051 [US5] Add filtered indicator to results summary when search is active: "(filtered by '{searchTerm}')"
-- [ ] T052 [US5] Show loading indicator in results area during data fetch in StudentList.tsx
-- [ ] T053 [US5] Update results summary styling with text-sm and text-muted-foreground classes
-- [ ] T054 [US5] Handle edge case: When totalCount is 0, show "No students found" instead of "Showing 0-0"
+- [ ] T061 [US5] Update results summary text in StudentList.tsx to show "Showing {students.length} of {totalCount} students"
+- [ ] T062 [US5] Add filtered indicator to results summary when search is active: "(filtered by '{searchTerm}')"
+- [ ] T063 [US5] Show loading indicator in results area during data fetch in StudentList.tsx
+- [ ] T064 [US5] Update results summary styling with text-sm and text-muted-foreground classes
+- [ ] T065 [US5] Handle edge case: When totalCount is 0, show "No students found" instead of "Showing 0 of 0"
+- [ ] T066 [US5] Position results summary above card grid, below filter controls
 
 **Checkpoint**: Results summary fully functional with filter indicators
 
@@ -165,44 +190,44 @@
 
 ### Responsive Design & Accessibility
 
-- [ ] T055 [P] Add responsive classes to table columns in StudentList.tsx: hide firstName on mobile (md:table-cell), hide enrollmentDate and enrollmentCount on mobile/tablet (lg:table-cell)
-- [ ] T056 [P] Stack action buttons vertically on mobile in StudentList.tsx: flex-col sm:flex-row
-- [ ] T057 [P] Add mobile-friendly layout: show firstName under lastName on small screens in StudentList.tsx
-- [ ] T058 [P] Test keyboard navigation: Tab through all interactive elements, Enter/Space to activate
-- [ ] T059 [P] Verify WCAG 2.1 AA compliance: focus indicators visible (3:1 contrast), ARIA labels present
-- [ ] T060 [P] Test responsive breakpoints: 320px (mobile), 640px (tablet), 1024px (desktop)
+- [ ] T067 [P] Verify card grid responsive classes: grid-cols-1 (mobile), md:grid-cols-2 (tablet), lg:grid-cols-3 (desktop)
+- [ ] T068 [P] Stack filter controls vertically on mobile: flex-col sm:flex-row
+- [ ] T069 [P] Test card layout on small screens: ensure all content readable, buttons accessible
+- [ ] T070 [P] Test keyboard navigation: Tab through all interactive elements, Enter/Space to activate
+- [ ] T071 [P] Verify WCAG 2.1 AA compliance: focus indicators visible (3:1 contrast), ARIA labels present
+- [ ] T072 [P] Test responsive breakpoints: 320px (mobile), 768px (tablet), 1024px (desktop)
 
 ### Performance Optimization
 
-- [ ] T061 [P] Memoize StudentRow component with React.memo in StudentList.tsx
-- [ ] T062 [P] Use useMemo for sorted/filtered student list in StudentList.tsx
-- [ ] T063 [P] Use useCallback for event handlers passed to child components in StudentList.tsx
-- [ ] T064 Verify debounce working: Only 1 API call after typing stops (400ms delay)
-- [ ] T065 Test with 1000 students: Verify no lag, <500ms filter response time
+- [ ] T073 [P] Memoize StudentCard component with React.memo in StudentCard.tsx
+- [ ] T074 [P] Use useMemo for sorted/filtered student list in StudentList.tsx
+- [ ] T075 [P] Use useCallback for event handlers passed to StudentCard components in StudentList.tsx
+- [ ] T076 Verify debounce working: Only 1 API call after typing stops (400ms delay)
+- [ ] T077 Test with 1000 students: Verify no lag, <500ms filter response time, smooth Load More
 
 ### URL State Management
 
-- [ ] T066 Initialize state from URL query params on mount in StudentList.tsx
-- [ ] T067 Update URL when state changes: search, sort, page, pageSize
-- [ ] T068 Test browser back/forward buttons: Verify state restores correctly
-- [ ] T069 Test bookmarkability: Copy URL, paste in new tab, verify state restored
+- [ ] T078 Initialize state from URL query params on mount in StudentList.tsx
+- [ ] T079 Update URL when state changes: search, sort
+- [ ] T080 Test browser back/forward buttons: Verify state restores correctly
+- [ ] T081 Test bookmarkability: Copy URL, paste in new tab, verify state restored (Note: loaded cards reset to page 1)
 
 ### Error Handling & Edge Cases
 
-- [ ] T070 [P] Handle network failure during fetch: Show error message with retry button in StudentList.tsx
-- [ ] T071 [P] Handle delete failure: Show error message, keep student in list in StudentList.tsx
-- [ ] T072 [P] Handle invalid URL params: Apply defaults, no crash in useStudentListParams hook
-- [ ] T073 [P] Handle rapid typing: Verify debounce cancels previous timers in useDebounce hook
-- [ ] T074 [P] Handle empty search results: Show helpful message in StudentList.tsx
-- [ ] T075 [P] Handle page out of bounds: Navigate to last valid page when pageSize changes
+- [ ] T082 [P] Handle network failure during fetch: Show error message with retry button in StudentList.tsx
+- [ ] T083 [P] Handle delete failure: Show error message, keep student in card grid in StudentList.tsx
+- [ ] T084 [P] Handle invalid URL params: Apply defaults, no crash in useStudentListParams hook
+- [ ] T085 [P] Handle rapid typing: Verify debounce cancels previous timers in useDebounce hook
+- [ ] T086 [P] Handle empty search results: Show helpful message with empty state card in StudentList.tsx
+- [ ] T087 [P] Handle Load More failure: Show error, allow retry, don't clear existing cards
 
 ### Code Quality
 
-- [ ] T076 [P] Add TypeScript types for all state and props in StudentList.tsx
-- [ ] T077 [P] Add explanatory comments for educational value in all new components
-- [ ] T078 [P] Remove any console.log statements and unused imports
-- [ ] T079 [P] Verify consistent code style: Tailwind classes, component patterns
-- [ ] T080 Run quickstart.md manual testing checklist: Search, Sort, Pagination, Delete, URL persistence, Accessibility, Responsive
+- [ ] T088 [P] Add TypeScript types for all state and props in StudentList.tsx and StudentCard.tsx
+- [ ] T089 [P] Add explanatory comments for educational value in all new components
+- [ ] T090 [P] Remove any console.log statements and unused imports
+- [ ] T091 [P] Verify consistent code style: Tailwind classes, component patterns, rounded pill buttons
+- [ ] T092 Run quickstart.md manual testing checklist: Search, Sort, Load More, Delete, URL persistence, Accessibility, Responsive cards
 
 ---
 
@@ -212,37 +237,40 @@
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3-7)**: All depend on Foundational phase completion
-  - User Story 1 (Real-Time Search) - P1 priority
-  - User Story 2 (Column Sorting) - P1 priority (can start after Foundational)
-  - User Story 3 (Enhanced Action Buttons) - P2 priority (can start after Foundational)
-  - User Story 4 (Improved Pagination) - P2 priority (can start after Foundational)
-  - User Story 5 (Results Summary) - P3 priority (can start after Foundational)
-- **Polish (Phase 8)**: Depends on all user stories being complete
+- **Card Layout (Phase 3)**: Depends on Foundational completion - BLOCKS other user stories (layout must be done first)
+- **User Stories (Phase 4-8)**: All depend on Card Layout completion
+  - User Story 1 (Real-Time Search with Inline Filters) - P1 priority
+  - User Story 2 (Sorting with Select Dropdown) - P1 priority (can start after Card Layout)
+  - User Story 3 (Enhanced Action Buttons in Cards) - P2 priority (can start after Card Layout)
+  - User Story 4 (Load More Button) - P2 priority (can start after Card Layout)
+  - User Story 5 (Results Summary) - P3 priority (can start after Card Layout)
+- **Polish (Phase 9)**: Depends on all user stories being complete
 
 ### User Story Dependencies
 
-- **User Story 1 (P1)**: Depends on Foundational (Phase 2) - useDebounce, useStudentListParams hooks
-- **User Story 2 (P1)**: Depends on Foundational (Phase 2) - useStudentListParams hook. Independent of US1.
-- **User Story 3 (P2)**: Depends on Foundational (Phase 2) - No dependencies on other stories
-- **User Story 4 (P2)**: Depends on Foundational (Phase 2) - usePagination hook. Independent of other stories.
-- **User Story 5 (P3)**: Depends on US1 (search state) and US4 (pagination state) to display correct summary
+- **Card Layout (Phase 3)**: Depends on Foundational (Phase 2) - BLOCKS all other user stories
+- **User Story 1 (P1)**: Depends on Card Layout (Phase 3) and useDebounce, useStudentListParams hooks
+- **User Story 2 (P1)**: Depends on Card Layout (Phase 3) and useStudentListParams hook. Independent of US1.
+- **User Story 3 (P2)**: Depends on Card Layout (Phase 3) and StudentCard component
+- **User Story 4 (P2)**: Depends on Card Layout (Phase 3). Replaces traditional pagination with Load More.
+- **User Story 5 (P3)**: Depends on US1 (search state) and US4 (load more state) to display correct summary
 
 ### Within Each User Story
 
-- US1: State → Handlers → UI updates → URL sync → Loading/empty states
-- US2: Component creation (parallel) → State → Handlers → Table integration → URL sync
-- US3: Component creation (parallel) → State → Handlers → Integration → Accessibility
-- US4: Component enhancements → State → Handlers → Integration → Responsive
-- US5: Calculations → UI updates → Edge cases
+- Card Layout: Component creation → Grid layout → Card design → Responsive testing
+- US1: State → Handlers → Inline filter UI → URL sync → Loading/empty states
+- US2: State → Select dropdown → Direction toggle → URL sync → Client-side sorting
+- US3: Component creation (parallel) → State → Handlers → Card integration → Accessibility
+- US4: Load more state → Append logic → Button UI → Loading states → Edge cases
+- US5: Summary calculations → UI updates → Edge cases
 
 ### Parallel Opportunities
 
 - **Phase 1 (Setup)**: All verification tasks can run in parallel
 - **Phase 2 (Foundational)**: T007 and T008 can run in parallel (different files)
+- **Phase 3 (Card Layout)**: Must be sequential (layout blocks other work)
 - **Within User Stories**:
-  - US2: T019 (component creation) can run parallel to T020 (state setup)
-  - US3: T027 (component creation) can run parallel to T028-T031 (handlers)
+  - US3: T038 (component creation) can run parallel to T039-T042 (handlers)
   - All Polish tasks marked [P] can run in parallel (different concerns)
 
 ---
@@ -255,21 +283,21 @@ Task: "Create useDebounce hook in contoso-university-ui/src/hooks/useDebounce.ts
 Task: "Create useStudentListParams hook in contoso-university-ui/src/hooks/useQueryParams.ts"
 ```
 
-## Parallel Example: User Story 2
+## Parallel Example: User Story 3
 
 ```bash
 # Component and state can be developed in parallel:
-Task: "Create SortableTableHead component in contoso-university-ui/src/components/common/SortableTableHead.tsx"
-Task: "Add sort state to StudentList.tsx"
+Task: "Create StudentDeleteDialog component in contoso-university-ui/src/components/features/StudentDeleteDialog.tsx"
+Task: "Add delete dialog state to StudentList.tsx"
 ```
 
 ## Parallel Example: Polish Phase
 
 ```bash
 # All polish tasks affect different aspects and can run in parallel:
-Task: "Add responsive classes to table columns in StudentList.tsx"
-Task: "Stack action buttons vertically on mobile in StudentList.tsx"
-Task: "Memoize StudentRow component with React.memo"
+Task: "Verify card grid responsive classes in StudentList.tsx"
+Task: "Stack filter controls vertically on mobile in StudentList.tsx"
+Task: "Memoize StudentCard component with React.memo"
 Task: "Add TypeScript types for all state and props"
 ```
 
@@ -277,69 +305,76 @@ Task: "Add TypeScript types for all state and props"
 
 ## Implementation Strategy
 
-### MVP First (User Stories 1 & 2 Only)
+### MVP First (Card Layout + Search + Sort)
 
-Since both US1 and US2 are P1 priority, the MVP includes both:
+Since card layout is required first, then US1 and US2 are P1 priority, the MVP includes:
 
 1. Complete Phase 1: Setup (verify environment)
 2. Complete Phase 2: Foundational (CRITICAL - create hooks)
-3. Complete Phase 3: User Story 1 (real-time search)
-4. Complete Phase 4: User Story 2 (column sorting)
-5. **STOP and VALIDATE**: Test search + sort together
-6. Deploy/demo if ready
+3. Complete Phase 3: Card Grid Layout (CRITICAL - new UI structure)
+4. Complete Phase 4: User Story 1 (real-time search with inline filters)
+5. Complete Phase 5: User Story 2 (sorting with Select dropdown)
+6. **STOP and VALIDATE**: Test card layout + search + sort together
+7. Deploy/demo if ready
 
-**Value Delivered**: Administrators can quickly find and organize students - the two most common workflows.
+**Value Delivered**: Modern card-based UI with quick find and organize capabilities - the two most common workflows.
 
 ### Incremental Delivery
 
 1. **Foundation** (Phases 1-2) → Hooks ready
-2. **MVP** (Phases 3-4) → Search + Sort working → Deploy/Demo
-3. **Enhanced UX** (Phases 5-6) → Add delete dialog + pagination → Deploy/Demo
-4. **Polish** (Phases 7-8) → Add summary + optimize → Deploy/Demo
+2. **Card Layout** (Phase 3) → New UI structure → Deploy/Demo
+3. **MVP** (Phases 4-5) → Search + Sort working → Deploy/Demo
+4. **Enhanced UX** (Phases 6-7) → Add delete dialog + Load More → Deploy/Demo
+5. **Polish** (Phases 8-9) → Add summary + optimize → Deploy/Demo
 
 Each delivery adds value without breaking previous functionality.
 
 ### Parallel Team Strategy
 
-With multiple developers (after Foundational phase completes):
+With multiple developers:
 
 1. **Team completes Setup + Foundational together** (required)
-2. **Parallel execution** (once hooks are ready):
-   - Developer A: User Story 1 (Search) - Tasks T010-T018
-   - Developer B: User Story 2 (Sorting) - Tasks T019-T026
-   - Developer C: User Story 3 (Delete Dialog) - Tasks T027-T037
-3. Stories complete and integrate independently
-4. Team reconvenes for Polish phase
+2. **Card Layout** (Phase 3) - Must be completed before other work - Tasks T010-T018
+3. **Parallel execution** (after Card Layout complete):
+   - Developer A: User Story 1 (Search) - Tasks T019-T028
+   - Developer B: User Story 2 (Sorting) - Tasks T029-T037
+   - Developer C: User Story 3 (Delete Dialog) - Tasks T038-T049
+4. Stories complete and integrate independently
+5. Team reconvenes for Load More + Polish phases
 
 ---
 
 ## Task Summary
 
-**Total Tasks**: 80
+**Total Tasks**: 92
+
 - **Phase 1 (Setup)**: 6 tasks
 - **Phase 2 (Foundational)**: 3 tasks (BLOCKING)
-- **Phase 3 (US1 - Search)**: 9 tasks
-- **Phase 4 (US2 - Sorting)**: 8 tasks
-- **Phase 5 (US3 - Delete Dialog)**: 11 tasks
-- **Phase 6 (US4 - Pagination)**: 11 tasks
-- **Phase 7 (US5 - Summary)**: 6 tasks
-- **Phase 8 (Polish)**: 26 tasks
+- **Phase 3 (Card Layout)**: 9 tasks (BLOCKING)
+- **Phase 4 (US1 - Search with Inline Filters)**: 10 tasks
+- **Phase 5 (US2 - Sorting with Select)**: 9 tasks
+- **Phase 6 (US3 - Delete Dialog in Cards)**: 12 tasks
+- **Phase 7 (US4 - Load More)**: 11 tasks
+- **Phase 8 (US5 - Summary)**: 6 tasks
+- **Phase 9 (Polish)**: 26 tasks
 
-**Parallel Opportunities**: 27 tasks marked [P] can run in parallel within their phase
+**Parallel Opportunities**: 25 tasks marked [P] can run in parallel within their phase
 
-**Independent Stories**: US1, US2, US3, US4 are independently testable. US5 depends on US1 + US4 for state.
+**Independent Stories**: Card Layout blocks others. US1, US2, US3 are independently testable after Card Layout. US4 replaces pagination. US5 depends on US1 + US4 for state.
 
-**Estimated Time** (from quickstart.md):
+**Estimated Time**:
+
 - Foundational: 30 min
+- Card Layout: 45 min (new)
 - US1 (Search): 30 min
-- US2 (Sorting): 45 min
+- US2 (Sorting): 30 min
 - US3 (Delete): 30 min
-- US4 (Pagination): 45 min
+- US4 (Load More): 30 min
 - US5 (Summary): 15 min
 - Polish: 30 min
-- **Total**: ~3-3.5 hours
+- **Total**: ~4 hours
 
-**MVP Scope**: Phases 1-4 (Setup + Foundation + US1 + US2) = ~1.5 hours
+**MVP Scope**: Phases 1-5 (Setup + Foundation + Card Layout + US1 + US2) = ~2 hours
 
 ---
 
