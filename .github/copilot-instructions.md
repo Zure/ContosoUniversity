@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2025-11-12
 
 ## Active Technologies
+- TypeScript 5.9.3, React 19.2.0, .NET 9.0 (backend - no changes required) (010-student-list-enhancement)
+- SQL Server (via Docker/Podman) - no schema changes required (010-student-list-enhancement)
 
 - C# / .NET 9.0 (backend), TypeScript 5.9.3 (frontend) (002-react-spa-migration)
 - React 19.2.0, React Router DOM 7.9.5 (frontend framework) (002-react-spa-migration)
@@ -196,10 +198,10 @@ className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
 Breakpoints: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px), `2xl` (1536px)
 
 ## Recent Changes
+- 010-student-list-enhancement: Added TypeScript 5.9.3, React 19.2.0, .NET 9.0 (backend - no changes required)
 
 - 003-tailwind-shadcn-setup: Added Tailwind CSS 4.x, shadcn/ui component library, design system with CSS variables, 8 core UI components
 - 002-react-spa-migration: Added React 19.2.0, TypeScript 5.9.3, Vite 7.2.2
-- 001-dotnet9-upgrade: Upgraded .NET 6.0 → .NET 9.0
 
 ## Best Practices
 
