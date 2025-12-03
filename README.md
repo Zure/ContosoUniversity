@@ -141,6 +141,7 @@ dotnet run
 ```
 
 The application will start and be available at:
+
 - HTTPS: `https://localhost:7054`
 - HTTP: `http://localhost:5054`
 
@@ -153,24 +154,28 @@ Open your browser and navigate to the application URL. You should see the Contos
 ## Managing the SQL Server Container
 
 ### Stop the container
+
 ```bash
 docker stop sql2022
 # or with Podman: podman stop sql2022
 ```
 
 ### Start the container
+
 ```bash
 docker start sql2022
 # or with Podman: podman start sql2022
 ```
 
 ### Remove the container
+
 ```bash
 docker rm sql2022
 # or with Podman: podman rm sql2022
 ```
 
 ### View logs
+
 ```bash
 docker logs sql2022
 # or with Podman: podman logs sql2022
@@ -181,11 +186,13 @@ docker logs sql2022
 This repository includes hands-on labs in the [`Labs/`](./Labs/) folder:
 
 ### Core Labs
+
 1. **Introduction to Spec-Kit** - Learn GitHub's Spec-Driven Development approach by updating the .NET version
 2. **UI Modernization** - Move the UI from Razor Pages to a modern React application
 3. **Git Worktrees** - Work on multiple features simultaneously using git worktrees
 
 ### Optional Feature Labs
+
 4. **Dockerization** - Containerize the entire application
 5. **UI Enhancement** - Modernize the look and feel
 6. **Course-Instructor Assignment** - Add instructor assignment functionality
@@ -200,6 +207,7 @@ Each lab includes detailed instructions, learning objectives, and expected outco
 ### Database Connection Issues
 
 If you get connection errors:
+
 1. Verify the SQL Server container is running: `docker ps` or `podman ps`
 2. Check the connection string in `ContosoUniversity/appsettings.json`
 3. Ensure the SA password matches between the container and connection string
@@ -207,12 +215,14 @@ If you get connection errors:
 ### Port Conflicts
 
 If port 1433 is already in use:
+
 1. Stop any existing SQL Server instances
 2. Or modify the port mapping in the container startup command and update `appsettings.json`
 
 ### Container Management
 
 To check if your SQL Server container is running:
+
 ```bash
 docker ps
 # or with Podman: podman ps
@@ -221,6 +231,7 @@ docker ps
 ### Migration Issues
 
 If migrations fail:
+
 1. Ensure the database container is running
 2. Try: `dotnet ef database drop` (WARNING: This deletes all data)
 3. Then: `dotnet ef database update`
@@ -234,11 +245,18 @@ If migrations fail:
 
 ## Workshop Agenda
 
-- **09:00 – 09:30**: Welcome & Introduction
-- **09:30 – 12:30**: Hack Challenges
-- **12:30 – 13:30**: Lunch / Networking
-- **13:30 – 16:30**: Hack Challenges
-- **16:30 – 17:00**: Wrap-up & Q&A
+- **09:00 – 09:30**: Opening
+- **09:30 – 09:50**: GitHub Copilot and spec-driven development
+- **09:50 – 10:10**: GitHub Modernization agent
+- **10:10 – 10:20**: Break
+- **10:20 – 11:00**: 1. Hackathon task
+- **11:00 – 12:00**: Lunch
+- **12:00 – 12:20**: GitHub Modernization results
+- **12:20 – 14:30**: 2. Hackathon task
+- **14:30 – 15:00**: Coffee break
+- **15:00 – 16:00**: 3. Hackathon task
+- **16:00 – 16:45**: Review and learnings
+- **16:45 – 17:00**: Closing words
 
 ## Support
 
