@@ -37,6 +37,9 @@ Approximately 60-90 minutes
 ### Step 1: Install Spec-Kit
 
 ```bash
+# Install uv
+https://docs.astral.sh/uv/getting-started/installation/
+
 # Install the Spec-Kit CLI
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
