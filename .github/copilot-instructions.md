@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2025-11-12
 
 ## Active Technologies
+- TypeScript 5.x, React 19.x + React, shadcn/ui (DropdownMenu), Tailwind CSS 4.x, lucide-react (icons) (004-dark-mode)
+- localStorage (browser) for theme persistence (004-dark-mode)
 
 - C# / .NET 9.0 (backend), TypeScript 5.9.3 (frontend) (002-react-spa-migration)
 - React 19.2.0, React Router DOM 7.9.5 (frontend framework) (002-react-spa-migration)
@@ -195,11 +197,65 @@ className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
 
 Breakpoints: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px), `2xl` (1536px)
 
-## Recent Changes
+## Dark Mode Guidelines (004-dark-mode)
 
+### Theme System Architecture
+
+```typescript
+// ThemeContext provides theme state and toggle functionality
+import { useTheme } from "@/hooks/useTheme";
+
+function MyComponent() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  // theme: "light" | "dark" | "system"
+  // resolvedTheme: "light" | "dark" (actual applied theme)
+}
+```
+
+### Theme-Aware Components
+
+All shadcn/ui components automatically respect dark mode through CSS variables:
+
+```typescript
+// ✅ These work automatically in dark mode
+<Button variant="default">Primary</Button>
+<Card>Content</Card>
+<Table>...</Table>
+
+// ✅ Use semantic color classes - they switch automatically
+<div className="bg-background text-foreground">...</div>
+<div className="bg-muted text-muted-foreground">...</div>
+
+// ❌ Avoid hardcoded colors - they don't switch
+<div className="bg-white text-gray-900">...</div>
+```
+
+### Theme Storage
+
+- Theme preference stored in `localStorage` key: `theme`
+- Values: `"light"` | `"dark"` | `"system"`
+- FOUC prevention script in `index.html` applies theme before React hydrates
+
+### Adding New Theme-Aware Styles
+
+When adding custom styles that need dark mode variants, use CSS variables from `globals.css`:
+
+```css
+/* In globals.css - CSS variables already defined */
+:root {
+  --background: oklch(1 0 0);
+  /* ... light theme values */
+}
+.dark {
+  --background: oklch(0.145 0 0);
+  /* ... dark theme values */
+}
+```
+
+## Recent Changes
+- 004-dark-mode: Added ThemeContext, useTheme hook, ThemeToggle component with DropdownMenu, FOUC prevention
 - 003-tailwind-shadcn-setup: Added Tailwind CSS 4.x, shadcn/ui component library, design system with CSS variables, 8 core UI components
 - 002-react-spa-migration: Added React 19.2.0, TypeScript 5.9.3, Vite 7.2.2
-- 001-dotnet9-upgrade: Upgraded .NET 6.0 → .NET 9.0
 
 ## Best Practices
 

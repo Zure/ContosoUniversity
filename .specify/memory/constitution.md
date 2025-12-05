@@ -1,28 +1,29 @@
 <!--
-Sync Impact Report - Constitution v1.1.0
+Sync Impact Report - Constitution v1.2.0
 ========================================
-Version Change: 1.0.0 → 1.1.0 (MINOR)
-Amendment Date: 2025-11-12
+Version Change: 1.1.0 → 1.2.0 (MINOR)
+Amendment Date: 2025-12-05
 
-Bump Rationale: Added three new principles for API and frontend modernization
-(VI. REST API Design, VII. React & Frontend Best Practices, VIII. Frontend-Backend Separation).
-No existing principles modified. This is an additive change supporting Lab 2 (React SPA Migration).
+Bump Rationale: Added new principle IX. Design System Standards (Tailwind CSS + shadcn/ui).
+Updated technology stack to reflect current state (.NET 10.0, 8 shadcn/ui components).
+This update documents the established design system from 003-tailwind-shadcn-setup and aligns
+constitution with implemented features.
 
 Principles Added:
-- VI. REST API Design (Mandatory)
-- VII. React & Frontend Best Practices (Mandatory)
-- VIII. Frontend-Backend Separation (Mandatory)
+- IX. Design System Standards (Mandatory)
 
-Principles Modified: None
+Principles Modified:
+- Technology Standards: Updated .NET version from 6.0 to 10.0, added design system requirements
 
 Sections Modified:
-- Core Principles (expanded from 5 to 8 principles)
-- Technology Standards (added React, TypeScript, REST API requirements)
+- Core Principles (expanded from 8 to 9 principles)
+- Technology Standards (corrected .NET version, added Tailwind CSS 4.x and shadcn/ui)
+- Project Structure (documented current frontend component organization)
 
 Templates Status:
-✅ plan-template.md - Aligned with new API/React principles
-✅ spec-template.md - Aligned with separation of concerns requirements
-✅ tasks-template.md - Updated to include API and frontend task categories
+✅ plan-template.md - Aligned with design system principles
+✅ spec-template.md - Aligned with current requirements
+✅ tasks-template.md - Includes frontend component tasks
 
 Follow-up TODOs: None
 -->
@@ -164,31 +165,100 @@ src/
 
 **Rationale**: Separation of concerns enables independent scaling, deployment, and development of frontend and backend. This architecture supports future mobile apps (reusing the same API), allows frontend technology changes without backend impact, and demonstrates modern cloud-native application patterns. This is a foundational principle for Lab 2 and all subsequent modernization labs.
 
+### IX. Design System Standards (Mandatory)
+
+**All frontend components MUST use the established design system for visual consistency and accessibility.**
+
+- All UI components MUST use shadcn/ui components instead of raw HTML elements:
+  - `<Button>` instead of `<button>`, `<Input>` instead of `<input>`, `<Table>` family instead of `<table>`
+- All styling MUST use Tailwind CSS utility classes following the project's design system
+- Components MUST use semantic color classes from the CSS variable system:
+  - ✅ `bg-primary`, `text-foreground`, `border-border`, `bg-destructive`
+  - ❌ Hardcoded colors like `bg-blue-500`, `text-gray-900`
+- The `cn()` utility from `@/lib/utils` MUST be used for conditional/merged class names
+- Import paths MUST use the `@/` alias for project imports (e.g., `@/components/ui/button`)
+- New shadcn/ui components MUST be added via `npx shadcn@latest add [component-name]`
+- All interactive elements MUST be keyboard accessible (Tab, Enter, Escape navigation)
+- All form inputs MUST have associated labels using `htmlFor` and `id` attributes
+- All focus states MUST be visible with proper focus rings (`ring-ring`)
+- Button variants MUST be used semantically (`variant="destructive"` for delete actions)
+
+**Available shadcn/ui Components** (as of v1.2.0):
+- **Button**: Primary actions with variants (default, destructive, outline, secondary, ghost, link)
+- **Input**: Form text inputs with proper label associations
+- **Label**: Accessible form labels
+- **Card**: Content containers with Header, Content, Footer sections
+- **Table**: Data tables (TableHeader, TableRow, TableHead, TableBody, TableCell)
+- **Select**: Dropdown selections with keyboard navigation
+- **Form**: Complete form solution with react-hook-form + zod validation
+- **Dialog**: Modal dialogs for confirmations and data entry
+
+**Typography Scale**:
+- `text-xs` (12px), `text-sm` (14px), `text-base` (16px), `text-lg` (18px)
+- `text-xl` (20px), `text-2xl` (24px), `text-3xl` (30px)
+- Font weights: `font-normal` (400), `font-medium` (500), `font-semibold` (600), `font-bold` (700)
+
+**Spacing Convention**: Use Tailwind's 4px increment scale (`p-2`=8px, `p-4`=16px, `p-6`=24px, `p-8`=32px)
+
+**Rationale**: A consistent design system ensures visual coherence across all pages, reduces cognitive load for users, improves accessibility compliance, and accelerates development by providing ready-to-use components. This principle was established in Lab 3 (Tailwind + shadcn/ui Setup) and applies to all subsequent frontend development.
+
 ## Technology Standards
 
 ### Required Stack
 
-- **Backend Framework**: ASP.NET Core (currently .NET 6.0, upgradable via labs)
-- **Backend UI** (Legacy): Razor Pages (maintained for comparison, being replaced by React SPA in Lab 2)
-- **Frontend Framework** (Modern): React with TypeScript
+- **Backend Framework**: ASP.NET Core (.NET 10.0)
+- **Backend UI** (Legacy): Razor Pages (maintained for comparison, being replaced by React SPA)
+- **Frontend Framework**: React 19.x with TypeScript 5.x
+- **Build Tool**: Vite 7.x
+- **Design System**: Tailwind CSS 4.x + shadcn/ui components
 - **API Style**: RESTful JSON APIs (ASP.NET Core Web API)
 - **Database**: SQL Server (via Docker/Podman container)
-- **ORM**: Entity Framework Core with Code-First migrations
+- **ORM**: Entity Framework Core 9.x with Code-First migrations
 - **State Management**: React Context API (for global state)
-- **HTTP Client**: Fetch API (browser native) or Axios
+- **HTTP Client**: Axios
+- **Form Handling**: react-hook-form with zod validation
+- **Routing**: React Router DOM 7.x
 - **Testing**: Built-in ASP.NET Core testing framework (when tests added)
 - **AI Tools**: GitHub Copilot + GitHub Spec-Kit
+
+### Frontend Project Structure
+
+```text
+contoso-university-ui/
+├── src/
+│   ├── components/
+│   │   ├── ui/          # shadcn/ui components (Button, Input, Card, Table, etc.)
+│   │   ├── layout/      # Layout components (AppLayout, Navigation)
+│   │   ├── common/      # Shared utility components
+│   │   └── features/    # Feature-specific components (forms, dialogs)
+│   ├── pages/           # Route/page components organized by domain
+│   │   ├── students/    # Student CRUD pages
+│   │   ├── courses/     # Course CRUD pages
+│   │   ├── instructors/ # Instructor CRUD pages
+│   │   ├── departments/ # Department CRUD pages
+│   │   └── enrollments/ # Enrollment CRUD pages
+│   ├── hooks/           # Custom React hooks
+│   ├── context/         # React Context providers
+│   ├── services/        # API clients and business logic
+│   ├── lib/             # Utility functions (cn() for className merging)
+│   ├── styles/          # Global CSS (Tailwind directives, CSS variables)
+│   └── types/           # TypeScript type definitions
+├── components.json      # shadcn/ui configuration
+├── tailwind.config.ts   # Tailwind CSS configuration
+└── vite.config.ts       # Vite configuration with path aliases
+```
 
 ### Technology Constraints
 
 - Backend MUST maintain SQL Server compatibility (Microsoft.EntityFrameworkCore.SqlServer)
 - Backend MUST support containerized database (Docker/Podman)
 - Frontend MUST target modern evergreen browsers (Chrome, Firefox, Safari, Edge - latest 2 versions)
-- Frontend MUST be responsive (768px tablet to 1920px desktop)
+- Frontend MUST be responsive (320px mobile to 2560px large desktop)
 - MUST NOT introduce platform-specific dependencies
 - SHOULD use stable packages: NuGet (Microsoft), npm (official React packages)
 - MUST document any new technology additions in lab instructions
 - TypeScript MUST use strict mode for maximum type safety
+- All UI components MUST come from shadcn/ui or follow its patterns
 
 ### API Conventions
 
@@ -240,10 +310,12 @@ Before merging to main, feature MUST:
 - Include updated lab instructions if new lab
 - Work with both Docker and Podman (where applicable)
 - Be demonstrable in under 90 minutes (for core labs)
-- Follow constitutional principles (API design, React patterns, separation of concerns)
+- Follow constitutional principles (API design, React patterns, separation of concerns, design system)
 - Validate TypeScript types compile without errors (for frontend features)
 - Verify API endpoints return correct status codes and response formats
 - Test responsive design on multiple screen sizes (for frontend features)
+- Use only shadcn/ui components for new UI elements (for frontend features)
+- Verify keyboard accessibility for all interactive elements (for frontend features)
 
 ### Commit Message Standards
 
@@ -291,4 +363,4 @@ Any violation of principles MUST be explicitly justified in the implementation p
 - Why the violation is necessary
 - What simpler alternative was rejected and why
 
-**Version**: 1.1.0 | **Ratified**: 2025-11-12 | **Last Amended**: 2025-11-12
+**Version**: 1.2.0 | **Ratified**: 2025-11-12 | **Last Amended**: 2025-12-05
