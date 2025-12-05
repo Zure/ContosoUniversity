@@ -25,9 +25,13 @@ Contoso University is an ASP.NET Core Razor Pages web application that demonstra
 
 ## Prerequisites
 
+**Note**: Install [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0). You do not need .NET 6.0 unless you specifically want to run the old version first—this is not required. Simply run the first lab and verify the functionality with the new version.
+
+Alternatively, if you prefer, you can ask LLM agents (like GitHub Copilot or Claude) to help install required tools as you go along—they can guide you through the installation process interactively.
+
 ### Mac Prerequisites
 
-- [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) or later
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later
 - [Podman](https://podman.io/getting-started/installation) or [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/downloads)
 - [UV](https://docs.astral.sh/uv/) package manager
@@ -35,7 +39,7 @@ Contoso University is an ASP.NET Core Razor Pages web application that demonstra
 
 ### Windows Prerequisites
 
-- [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) or later
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (with WSL2 backend recommended)
 - [Git for Windows](https://git-scm.com/download/win)
 - [UV](https://docs.astral.sh/uv/) package manager
