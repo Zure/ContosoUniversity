@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "I want to add a dark mode in the application"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Toggle Dark Mode Manually (Priority: P1)
 
@@ -87,7 +87,7 @@ As a user with accessibility needs, I want the theme toggle to be fully keyboard
 - What happens when multiple browser tabs are open?
   - Theme preference should be synchronized across tabs (when localStorage changes, all tabs update)
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -107,6 +107,7 @@ As a user with accessibility needs, I want the theme toggle to be fully keyboard
 ### Key Entities
 
 - **Theme Preference**: Represents the user's selected theme mode
+
   - Mode: Light, Dark, or System
   - Stored locally in the browser
   - Resolved to actual theme (light/dark) based on mode and system preference
@@ -115,7 +116,7 @@ As a user with accessibility needs, I want the theme toggle to be fully keyboard
   - Detected via browser APIs
   - Used as default when mode is "System" or no preference saved
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

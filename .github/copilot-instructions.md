@@ -3,6 +3,7 @@
 Auto-generated from all feature plans. Last updated: 2025-11-12
 
 ## Active Technologies
+
 - TypeScript 5.x, React 19.x + React, shadcn/ui (DropdownMenu), Tailwind CSS 4.x, lucide-react (icons) (004-dark-mode)
 - localStorage (browser) for theme persistence (004-dark-mode)
 
@@ -253,6 +254,7 @@ When adding custom styles that need dark mode variants, use CSS variables from `
 ```
 
 ## Recent Changes
+
 - 004-dark-mode: Added ThemeContext, useTheme hook, ThemeToggle component with DropdownMenu, FOUC prevention
 - 003-tailwind-shadcn-setup: Added Tailwind CSS 4.x, shadcn/ui component library, design system with CSS variables, 8 core UI components
 - 002-react-spa-migration: Added React 19.2.0, TypeScript 5.9.3, Vite 7.2.2

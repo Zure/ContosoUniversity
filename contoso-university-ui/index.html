@@ -5,6 +5,37 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>contoso-university-ui</title>
+    <!--
+      FOUC Prevention Script (Flash of Unstyled Content)
+      
+      This script runs synchronously before React hydrates to apply the correct
+      theme class immediately. This prevents a visible "flash" where the wrong
+      theme briefly appears before JavaScript takes over.
+      
+      How it works:
+      1. Check localStorage for saved theme preference
+      2. If 'system' or no preference, detect OS dark mode via matchMedia
+      3. Apply 'dark' class to <html> if dark theme should be active
+      
+      Why inline script? External scripts are async and would miss the first paint.
+    -->
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          // Apply dark class if:
+          // - User explicitly selected 'dark', OR
+          // - User selected 'system' (or no selection) AND system prefers dark
+          var isDark = theme === 'dark' || (theme !== 'light' && systemDark);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          // localStorage may be unavailable - fail silently
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -32,11 +32,11 @@ Navigate to `http://localhost:5173` (or the URL shown in terminal)
 
 ### 4. Verify Theme Changes
 
-| Action | Expected Result |
-|--------|-----------------|
-| Select "Dark" | Background turns dark, text turns light, all components update |
-| Select "Light" | Background turns light, text turns dark |
-| Select "System" | Theme matches your OS preference |
+| Action          | Expected Result                                                |
+| --------------- | -------------------------------------------------------------- |
+| Select "Dark"   | Background turns dark, text turns light, all components update |
+| Select "Light"  | Background turns light, text turns dark                        |
+| Select "System" | Theme matches your OS preference                               |
 
 ### 5. Test Persistence
 
@@ -83,12 +83,12 @@ After switching to dark mode, verify these components display correctly:
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Toggle not visible | Check if Navigation.tsx includes ThemeToggle component |
-| Theme not persisting | Check browser localStorage permissions |
-| Flash of wrong theme | Verify inline script in index.html |
-| System mode not working | Check browser supports `prefers-color-scheme` |
+| Issue                   | Solution                                               |
+| ----------------------- | ------------------------------------------------------ |
+| Toggle not visible      | Check if Navigation.tsx includes ThemeToggle component |
+| Theme not persisting    | Check browser localStorage permissions                 |
+| Flash of wrong theme    | Verify inline script in index.html                     |
+| System mode not working | Check browser supports `prefers-color-scheme`          |
 
 ## Files to Check
 

@@ -21,13 +21,13 @@ This feature is frontend-only and uses browser localStorage for persistence. No 
  * - 'dark': Force dark theme regardless of system preference
  * - 'system': Follow operating system preference
  */
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = "light" | "dark" | "system";
 
 /**
  * The actual theme being displayed.
  * This is the resolved value after considering system preference.
  */
-export type ResolvedTheme = 'light' | 'dark';
+export type ResolvedTheme = "light" | "dark";
 
 /**
  * Theme context value exposed to components.
@@ -35,10 +35,10 @@ export type ResolvedTheme = 'light' | 'dark';
 export interface ThemeContextValue {
   /** Current user-selected theme mode */
   theme: ThemeMode;
-  
+
   /** Resolved theme after applying system preference logic */
   resolvedTheme: ResolvedTheme;
-  
+
   /** Update the theme mode */
   setTheme: (theme: ThemeMode) => void;
 }
@@ -49,10 +49,10 @@ export interface ThemeContextValue {
 export interface ThemeProviderProps {
   /** Child components that will have access to theme context */
   children: React.ReactNode;
-  
+
   /** Default theme mode when no preference is stored */
   defaultTheme?: ThemeMode;
-  
+
   /** localStorage key for persisting theme preference */
   storageKey?: string;
 }
@@ -88,11 +88,12 @@ export interface ThemeProviderProps {
 
 ### localStorage
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
+| Key     | Type                            | Default    | Description                |
+| ------- | ------------------------------- | ---------- | -------------------------- |
 | `theme` | `'light' \| 'dark' \| 'system'` | `'system'` | User's selected theme mode |
 
 **Example stored values**:
+
 ```json
 // User selected dark mode explicitly
 {"theme": "dark"}
@@ -106,7 +107,7 @@ export interface ThemeProviderProps {
 The theme is applied by adding/removing the `dark` class on the `<html>` element:
 
 | Theme Mode | System Preference | Class on `<html>` | Resulting Theme |
-|------------|-------------------|-------------------|-----------------|
+| ---------- | ----------------- | ----------------- | --------------- |
 | `light`    | (ignored)         | (none)            | Light           |
 | `dark`     | (ignored)         | `dark`            | Dark            |
 | `system`   | light             | (none)            | Light           |
@@ -114,11 +115,11 @@ The theme is applied by adding/removing the `dark` class on the `<html>` element
 
 ## Validation Rules
 
-| Rule | Validation | Fallback |
-|------|------------|----------|
-| Invalid stored value | Check against allowed values | Default to `'system'` |
-| localStorage unavailable | Try/catch around access | Use `'system'` mode |
-| matchMedia unavailable | Check for API existence | Assume light preference |
+| Rule                     | Validation                   | Fallback                |
+| ------------------------ | ---------------------------- | ----------------------- |
+| Invalid stored value     | Check against allowed values | Default to `'system'`   |
+| localStorage unavailable | Try/catch around access      | Use `'system'` mode     |
+| matchMedia unavailable   | Check for API existence      | Assume light preference |
 
 ## Relationships
 
@@ -143,6 +144,7 @@ The theme is applied by adding/removing the `dark` class on the `<html>` element
 ## No Backend Changes
 
 This feature requires no backend modifications:
+
 - No database schema changes
 - No API endpoints
 - No server-side rendering considerations

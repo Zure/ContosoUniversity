@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { GraduationCap } from 'lucide-react';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 export function Navigation() {
   const location = useLocation();
@@ -27,7 +28,7 @@ export function Navigation() {
             <span>Contoso University</span>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Navigation Links and Theme Toggle */}
           <div className="flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path || 
@@ -48,6 +49,10 @@ export function Navigation() {
                 </Link>
               );
             })}
+            {/* Theme Toggle Button */}
+            <div className="ml-2 border-l border-border pl-2">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>

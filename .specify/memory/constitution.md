@@ -184,6 +184,7 @@ src/
 - Button variants MUST be used semantically (`variant="destructive"` for delete actions)
 
 **Available shadcn/ui Components** (as of v1.2.0):
+
 - **Button**: Primary actions with variants (default, destructive, outline, secondary, ghost, link)
 - **Input**: Form text inputs with proper label associations
 - **Label**: Accessible form labels
@@ -194,6 +195,7 @@ src/
 - **Dialog**: Modal dialogs for confirmations and data entry
 
 **Typography Scale**:
+
 - `text-xs` (12px), `text-sm` (14px), `text-base` (16px), `text-lg` (18px)
 - `text-xl` (20px), `text-2xl` (24px), `text-3xl` (30px)
 - Font weights: `font-normal` (400), `font-medium` (500), `font-semibold` (600), `font-bold` (700)

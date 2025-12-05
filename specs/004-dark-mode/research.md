@@ -11,17 +11,20 @@
 **Decision**: Use shadcn/ui `DropdownMenu` component for a 3-option theme selector (Light, Dark, System)
 
 **Rationale**:
+
 - shadcn/ui officially recommends using DropdownMenu for theme toggles (see shadcn/ui docs)
 - Provides accessibility out of the box (keyboard navigation, ARIA labels)
 - Allows for 3 options (Light/Dark/System) instead of just binary toggle
 - Consistent with project's design system standards (Constitution Principle IX)
 
 **Alternatives Considered**:
+
 - Simple Button toggle: Rejected - only supports 2 states, no "System" option
 - Custom dropdown: Rejected - reinventing what shadcn/ui already provides
 - Switch component: Rejected - semantically incorrect for 3 options
 
 **Implementation Pattern**:
+
 ```tsx
 // ThemeToggle using DropdownMenu
 <DropdownMenu>
@@ -35,7 +38,9 @@
   <DropdownMenuContent align="end">
     <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
     <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-    <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+    <DropdownMenuItem onClick={() => setTheme("system")}>
+      System
+    </DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
 ```
@@ -47,32 +52,37 @@
 **Decision**: Use `window.matchMedia('(prefers-color-scheme: dark)')` API
 
 **Rationale**:
+
 - Native browser API with excellent support (all evergreen browsers)
 - Provides both initial detection and change listener
 - No external dependencies required
 
 **Implementation Pattern**:
+
 ```typescript
 // Detect system preference
-const getSystemTheme = (): 'light' | 'dark' => {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const getSystemTheme = (): "light" | "dark" => {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 };
 
 // Listen for system preference changes
 useEffect(() => {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const handleChange = (e: MediaQueryListEvent) => {
-    if (theme === 'system') {
-      applyTheme(e.matches ? 'dark' : 'light');
+    if (theme === "system") {
+      applyTheme(e.matches ? "dark" : "light");
     }
   };
-  mediaQuery.addEventListener('change', handleChange);
-  return () => mediaQuery.removeEventListener('change', handleChange);
+  mediaQuery.addEventListener("change", handleChange);
+  return () => mediaQuery.removeEventListener("change", handleChange);
 }, [theme]);
 ```
 
 **Browser Support**:
+
 - Chrome 76+, Firefox 67+, Safari 12.1+, Edge 79+ (all within "latest 2 versions" requirement)
 
 ---
@@ -82,25 +92,27 @@ useEffect(() => {
 **Decision**: Store theme mode ('light' | 'dark' | 'system') in localStorage with key `theme`
 
 **Rationale**:
+
 - localStorage persists across browser sessions (unlike sessionStorage)
 - Synchronous API allows reading before React hydration (prevents FOUC)
 - Simple key-value storage, no need for complex serialization
 
 **Implementation Pattern**:
+
 ```typescript
-const THEME_KEY = 'theme';
+const THEME_KEY = "theme";
 
 // Read with fallback
 const getStoredTheme = (): Theme => {
   try {
     const stored = localStorage.getItem(THEME_KEY);
-    if (stored === 'light' || stored === 'dark' || stored === 'system') {
+    if (stored === "light" || stored === "dark" || stored === "system") {
       return stored;
     }
   } catch {
     // localStorage may be unavailable (private browsing, etc.)
   }
-  return 'system'; // Default to system preference
+  return "system"; // Default to system preference
 };
 
 // Write with error handling
@@ -114,6 +126,7 @@ const setStoredTheme = (theme: Theme) => {
 ```
 
 **Edge Cases Handled**:
+
 - localStorage disabled → Falls back to 'system'
 - Invalid stored value → Falls back to 'system'
 - Storage quota exceeded → Silently continues with current theme
@@ -125,26 +138,31 @@ const setStoredTheme = (theme: Theme) => {
 **Decision**: Add inline script in `index.html` that runs before React hydration
 
 **Rationale**:
+
 - Script runs synchronously before any content renders
 - Can read localStorage and apply `.dark` class immediately
 - No visual flash because theme is applied before first paint
 
 **Implementation Pattern**:
+
 ```html
 <!-- In index.html, before </head> -->
 <script>
-  (function() {
-    const theme = localStorage.getItem('theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = theme === 'dark' || (theme !== 'light' && systemDark);
+  (function () {
+    const theme = localStorage.getItem("theme");
+    const systemDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const isDark = theme === "dark" || (theme !== "light" && systemDark);
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     }
   })();
 </script>
 ```
 
 **Why `<html>` element**:
+
 - Tailwind's dark mode applies via `dark:` prefix
 - Classes on `<html>` affect entire document
 - Consistent with shadcn/ui's recommended approach
@@ -156,15 +174,17 @@ const setStoredTheme = (theme: Theme) => {
 **Decision**: Create `ThemeContext` with provider and custom `useTheme` hook
 
 **Rationale**:
+
 - React Context is the constitutional standard for global state (Principle VII)
 - Custom hook provides clean API and TypeScript autocomplete
 - Single source of truth for theme state across all components
 
 **Implementation Pattern**:
+
 ```typescript
 // types/theme.ts
-export type ThemeMode = 'light' | 'dark' | 'system';
-export type ResolvedTheme = 'light' | 'dark';
+export type ThemeMode = "light" | "dark" | "system";
+export type ResolvedTheme = "light" | "dark";
 
 // context/ThemeContext.tsx
 interface ThemeContextValue {
@@ -177,7 +197,7 @@ interface ThemeContextValue {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider');
+    throw new Error("useTheme must be used within ThemeProvider");
   }
   return context;
 }
@@ -190,11 +210,13 @@ export function useTheme() {
 **Decision**: Use `Sun` and `Moon` icons from lucide-react (already installed)
 
 **Rationale**:
+
 - lucide-react is already a project dependency
 - Sun/Moon are universally recognized symbols for light/dark mode
 - Consistent with shadcn/ui examples and industry standards
 
 **Icon States**:
+
 - Light mode active → Sun icon visible
 - Dark mode active → Moon icon visible
 - System mode → Show icon matching current resolved theme
@@ -203,9 +225,9 @@ export function useTheme() {
 
 ## Dependencies to Add
 
-| Dependency | Version | Purpose | How to Add |
-|------------|---------|---------|------------|
-| @radix-ui/react-dropdown-menu | ^2.x | DropdownMenu primitive | `npx shadcn@latest add dropdown-menu` |
+| Dependency                    | Version | Purpose                | How to Add                            |
+| ----------------------------- | ------- | ---------------------- | ------------------------------------- |
+| @radix-ui/react-dropdown-menu | ^2.x    | DropdownMenu primitive | `npx shadcn@latest add dropdown-menu` |
 
 **Note**: lucide-react, @radix-ui/react-slot, class-variance-authority already installed.
 

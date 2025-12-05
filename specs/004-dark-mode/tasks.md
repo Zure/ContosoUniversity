@@ -24,8 +24,8 @@
 
 **Purpose**: Add required shadcn/ui component and create type definitions
 
-- [ ] T001 Add shadcn/ui dropdown-menu component by running `npx shadcn@latest add dropdown-menu` in contoso-university-ui/
-- [ ] T002 [P] Create theme type definitions in contoso-university-ui/src/types/theme.ts
+- [x] T001 Add shadcn/ui dropdown-menu component by running `npx shadcn@latest add dropdown-menu` in contoso-university-ui/
+- [x] T002 [P] Create theme type definitions in contoso-university-ui/src/types/theme.ts
 
 ---
 
@@ -35,9 +35,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Create ThemeProvider component in contoso-university-ui/src/context/ThemeContext.tsx with theme state, localStorage read/write, and system preference detection
-- [ ] T004 Create useTheme custom hook in contoso-university-ui/src/hooks/useTheme.ts that wraps ThemeContext consumption
-- [ ] T005 Wrap application with ThemeProvider in contoso-university-ui/src/components/layout/AppLayout.tsx
+- [x] T003 Create ThemeProvider component in contoso-university-ui/src/context/ThemeContext.tsx with theme state, localStorage read/write, and system preference detection
+- [x] T004 Create useTheme custom hook in contoso-university-ui/src/hooks/useTheme.ts that wraps ThemeContext consumption
+- [x] T005 Wrap application with ThemeProvider in contoso-university-ui/src/components/layout/AppLayout.tsx
 
 **Checkpoint**: Foundation ready - ThemeProvider wraps app, useTheme hook available for components
 
@@ -51,8 +51,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] Create ThemeToggle component in contoso-university-ui/src/components/common/ThemeToggle.tsx using DropdownMenu with Light/Dark/System options and Sun/Moon icons
-- [ ] T007 [US1] Add ThemeToggle to Navigation component in contoso-university-ui/src/components/layout/Navigation.tsx in the header right side
+- [x] T006 [US1] Create ThemeToggle component in contoso-university-ui/src/components/common/ThemeToggle.tsx using DropdownMenu with Light/Dark/System options and Sun/Moon icons
+- [x] T007 [US1] Add ThemeToggle to Navigation component in contoso-university-ui/src/components/layout/Navigation.tsx in the header right side
 
 **Checkpoint**: Users can toggle between light and dark mode using the dropdown menu in the navigation bar
 
@@ -66,8 +66,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] Add FOUC prevention script to contoso-university-ui/index.html before </head> that reads localStorage and applies .dark class synchronously
-- [ ] T009 [US2] Verify ThemeContext persists theme to localStorage on every setTheme call (already in T003, verify working)
+- [x] T008 [US2] Add FOUC prevention script to contoso-university-ui/index.html before </head> that reads localStorage and applies .dark class synchronously
+- [x] T009 [US2] Verify ThemeContext persists theme to localStorage on every setTheme call (already in T003, verify working)
 
 **Checkpoint**: Theme persists across browser sessions. No flash of wrong theme on page load.
 
@@ -81,8 +81,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T010 [US3] Add system preference change listener in ThemeContext (contoso-university-ui/src/context/ThemeContext.tsx) using matchMedia addEventListener
-- [ ] T011 [US3] Ensure FOUC script in index.html respects system preference when no localStorage value exists
+- [x] T010 [US3] Add system preference change listener in ThemeContext (contoso-university-ui/src/context/ThemeContext.tsx) using matchMedia addEventListener
+- [x] T011 [US3] Ensure FOUC script in index.html respects system preference when no localStorage value exists
 
 **Checkpoint**: App detects and follows OS theme preference. System mode updates when OS preference changes.
 
@@ -96,9 +96,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T012 [US4] Add sr-only label "Toggle theme" to ThemeToggle button in contoso-university-ui/src/components/common/ThemeToggle.tsx
-- [ ] T013 [US4] Add icons (Sun, Moon, Monitor) and labels to each DropdownMenuItem for clarity
-- [ ] T014 [US4] Verify keyboard navigation works (Tab to button, Enter to open, Arrow to select, Escape to close) - shadcn/ui DropdownMenu handles this by default
+- [x] T012 [US4] Add sr-only label "Toggle theme" to ThemeToggle button in contoso-university-ui/src/components/common/ThemeToggle.tsx
+- [x] T013 [US4] Add icons (Sun, Moon, Monitor) and labels to each DropdownMenuItem for clarity
+- [x] T014 [US4] Verify keyboard navigation works (Tab to button, Enter to open, Arrow to select, Escape to close) - shadcn/ui DropdownMenu handles this by default
 
 **Checkpoint**: Theme toggle is fully accessible via keyboard and screen reader
 
@@ -108,10 +108,10 @@
 
 **Purpose**: Final validation and documentation
 
-- [ ] T015 [P] Test all pages (Students, Courses, Instructors, Departments, Statistics) in both light and dark modes for visual correctness
-- [ ] T016 [P] Verify all shadcn/ui components (Button, Input, Table, Card, Dialog, Select) display correctly in dark mode
-- [ ] T017 Run through quickstart.md validation checklist in specs/004-dark-mode/quickstart.md
-- [ ] T018 Add educational comments explaining theme detection and persistence logic in ThemeContext.tsx
+- [x] T015 [P] Test all pages (Students, Courses, Instructors, Departments, Statistics) in both light and dark modes for visual correctness
+- [x] T016 [P] Verify all shadcn/ui components (Button, Input, Table, Card, Dialog, Select) display correctly in dark mode
+- [x] T017 Run through quickstart.md validation checklist in specs/004-dark-mode/quickstart.md
+- [x] T018 Add educational comments explaining theme detection and persistence logic in ThemeContext.tsx
 
 ---
 

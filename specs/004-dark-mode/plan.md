@@ -21,18 +21,18 @@ Add a dark mode toggle to the Contoso University React application. The design s
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Requirement | Status |
-|-----------|-------------|--------|
-| I. Spec-Driven Development | Spec created before implementation | ✅ PASS |
-| II. Educational Clarity | Code must be readable and well-commented | ✅ Will include comments |
-| III. Cross-Platform Compatibility | Works on macOS and Windows | ✅ Browser-only, platform-agnostic |
-| IV. AI-Assisted Development | Copilot-friendly patterns | ✅ Standard React patterns |
-| V. Incremental Modernization | Independent, testable feature | ✅ No breaking changes |
-| VII. React & Frontend Best Practices | Functional components, hooks, Context API | ✅ Using useContext, custom hook |
-| VIII. Frontend-Backend Separation | Frontend-only feature | ✅ No backend changes |
-| IX. Design System Standards | Use shadcn/ui components | ✅ Using DropdownMenu |
+| Principle                            | Requirement                               | Status                             |
+| ------------------------------------ | ----------------------------------------- | ---------------------------------- |
+| I. Spec-Driven Development           | Spec created before implementation        | ✅ PASS                            |
+| II. Educational Clarity              | Code must be readable and well-commented  | ✅ Will include comments           |
+| III. Cross-Platform Compatibility    | Works on macOS and Windows                | ✅ Browser-only, platform-agnostic |
+| IV. AI-Assisted Development          | Copilot-friendly patterns                 | ✅ Standard React patterns         |
+| V. Incremental Modernization         | Independent, testable feature             | ✅ No breaking changes             |
+| VII. React & Frontend Best Practices | Functional components, hooks, Context API | ✅ Using useContext, custom hook   |
+| VIII. Frontend-Backend Separation    | Frontend-only feature                     | ✅ No backend changes              |
+| IX. Design System Standards          | Use shadcn/ui components                  | ✅ Using DropdownMenu              |
 
 **Gate Result**: ✅ ALL GATES PASS - Proceed to Phase 0
 
@@ -79,5 +79,5 @@ contoso-university-ui/
 > No constitution violations - table intentionally left empty
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| — | — | — |
+| --------- | ---------- | ------------------------------------ |
+| —         | —          | —                                    |
