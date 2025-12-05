@@ -179,7 +179,7 @@ dotnet run
 
 Review your spec's success criteria and verify each one:
 
-- [ ] Application builds successfully with .NET 8 SDK
+- [ ] Application builds successfully with .NET 9 SDK
 - [ ] All migrations run without errors
 - [ ] All CRUD operations work
 - [ ] No breaking changes in existing functionality
@@ -226,8 +226,8 @@ Please merge the current branch into main branch.
 ## Challenge Extensions
 
 1. **Performance Comparison**: Measure application startup time before and after upgrade
-2. **Feature Exploration**: Research one new .NET 8 feature and add it to the application
-3. **Migration Path**: Create a spec for upgrading from .NET 8 to .NET 9 (practice the process)
+2. **Feature Exploration**: Research one new .NET 9 feature and add it to the application
+3. **Migration Path**: Create a spec for upgrading from .NET 9 to .NET 9 (practice the process)
 
 ## Next Steps
 
@@ -237,5 +237,5 @@ Proceed to **Lab 2: UI Modernization** to learn how to use Spec-Kit for larger a
 
 - [Spec-Kit Quickstart Guide](https://github.github.io/spec-kit/quickstart.html)
 - [Spec-Kit Documentation](https://github.com/github/spec-kit)
-- [.NET 8 Release Notes](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-8)
-- [EF Core 8 Breaking Changes](https://learn.microsoft.com/ef/core/what-is-new/ef-core-8.0/breaking-changes)
+- [.NET 9 Release Notes](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-9/overview)
+- [EF Core 9 Breaking Changes](https://learn.microsoft.com/en-us/ef/core/what-is-new/ef-core-9.0/breaking-changes)
