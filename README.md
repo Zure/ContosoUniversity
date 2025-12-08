@@ -35,6 +35,7 @@ Alternatively, if you prefer, you can ask LLM agents (like GitHub Copilot or Cla
 - [Podman](https://podman.io/getting-started/installation) or [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/downloads)
 - [UV](https://docs.astral.sh/uv/) package manager
+- [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-macos?view=powershell-7.5) PowerShell
 - A code editor ([Visual Studio Code](https://code.visualstudio.com/) recommended with GitHub Copilot extension)
 
 ### Windows Prerequisites
