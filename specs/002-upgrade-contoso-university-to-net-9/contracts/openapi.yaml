@@ -1,0 +1,93 @@
+openapi: 3.0.1
+info:
+  title: Contoso University API
+  version: 9.0.0
+paths:
+  /students:
+    get:
+      summary: List all students
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '201':
+          description: Created
+  /students/{id}:
+    get:
+      summary: Get student by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Not found
+    put:
+      summary: Update student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      summary: Delete student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+  # Repeat for courses, instructors, departments
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        enrollmentDate:
+          type: string
+          format: date
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+        courseId:
+          type: integer
+        studentId:
+          type: integer
+        grade:
+          type: string
+    # Add schemas for Course, Instructor, Department, OfficeAssignment
