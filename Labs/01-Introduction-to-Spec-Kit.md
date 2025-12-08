@@ -44,7 +44,7 @@ https://docs.astral.sh/uv/getting-started/installation/
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 # Verify installation
-specify --version
+specify version
 
 # If that does not run, try the following command and restart your terminal
 uv tool update-shell
